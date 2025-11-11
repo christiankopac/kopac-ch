@@ -1,0 +1,43 @@
+/* Navigation styles - Modern and calm with tokens */
+/* Follows fluid container pattern from layout.css */
+
+.back-nav {
+  /* Width calculation already includes padding */
+  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  margin-inline: auto;
+  padding-block-start: var(--container-padding-y-sm);
+  padding-block-end: var(--space-base);
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .back-nav {
+    padding-block-start: var(--container-padding-y-md);
+    padding-block-end: var(--space-base);
+  }
+}
+
+@media (min-width: 1024px) {
+  .back-nav {
+    padding-block-start: var(--container-padding-y-md);
+    padding-block-end: var(--space-base);
+  }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary); 
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+  font-family: var(--font-system-ui);
+  font-weight: var(--font-weight-normal);
+  opacity: var(--opacity-subtle);
+}
+
+.back-link:hover {
+  color: var(--color-text);
+  opacity: var(--opacity-full);
+}

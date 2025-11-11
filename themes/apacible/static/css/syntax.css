@@ -1,0 +1,190 @@
+/* Syntax Highlighting - Light and Dark Theme Support */
+
+/* Light Theme (Default) */
+.chroma { background-color: #1a1a1a; color: #e6e6e6; }
+.chroma .err { color: #f6f8fa; background-color: #82071e; }
+.chroma .lnlinks { outline: none; text-decoration: none; color: inherit; }
+.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+.chroma .hl { background-color: #2a2a2a; }
+.chroma .lnt { white-space: pre; margin-right: 0.4em; padding: 0 0.4em 0 0.4em; color: #666; }
+.chroma .ln { white-space: pre; margin-right: 0.4em; padding: 0 0.4em 0 0.4em; color: #666; }
+.chroma .line { display: flex; }
+
+/* Keywords */
+.chroma .k { color: #ff79c6; }
+.chroma .kc { color: #ff79c6; }
+.chroma .kd { color: #ff79c6; }
+.chroma .kn { color: #ff79c6; }
+.chroma .kp { color: #ff79c6; }
+.chroma .kr { color: #ff79c6; }
+.chroma .kt { color: #8be9fd; }
+
+/* Names */
+.chroma .na { color: #50fa7b; }
+.chroma .nc { color: #8be9fd; }
+.chroma .no { color: #bd93f9; }
+.chroma .nd { color: #bd93f9; }
+.chroma .ni { color: #bd93f9; }
+.chroma .nl { color: #ffb86c; }
+.chroma .nn { color: #f8f8f2; }
+.chroma .nx { color: #f8f8f2; }
+.chroma .nt { color: #ff79c6; }
+.chroma .nb { color: #8be9fd; }
+.chroma .bp { color: #f8f8f2; }
+.chroma .nv { color: #f8f8f2; }
+.chroma .vc { color: #f8f8f2; }
+.chroma .vg { color: #f8f8f2; }
+.chroma .vi { color: #f8f8f2; }
+.chroma .vm { color: #f8f8f2; }
+.chroma .nf { color: #50fa7b; }
+.chroma .fm { color: #50fa7b; }
+
+/* Strings */
+.chroma .s { color: #f1fa8c; }
+.chroma .sa { color: #f1fa8c; }
+.chroma .sb { color: #f1fa8c; }
+.chroma .sc { color: #f1fa8c; }
+.chroma .dl { color: #f1fa8c; }
+.chroma .sd { color: #f1fa8c; }
+.chroma .s2 { color: #f1fa8c; }
+.chroma .se { color: #f1fa8c; }
+.chroma .sh { color: #f1fa8c; }
+.chroma .si { color: #f1fa8c; }
+.chroma .sx { color: #f1fa8c; }
+.chroma .sr { color: #f1fa8c; }
+.chroma .s1 { color: #f1fa8c; }
+.chroma .ss { color: #f1fa8c; }
+
+/* Numbers */
+.chroma .m { color: #bd93f9; }
+.chroma .mb { color: #bd93f9; }
+.chroma .mf { color: #bd93f9; }
+.chroma .mh { color: #bd93f9; }
+.chroma .mi { color: #bd93f9; }
+.chroma .il { color: #bd93f9; }
+.chroma .mo { color: #bd93f9; }
+
+/* Operators */
+.chroma .o { color: #ff79c6; }
+.chroma .ow { color: #ff79c6; }
+.chroma .p { color: #f8f8f2; }
+
+/* Comments */
+.chroma .c { color: #6272a4; font-style: italic; }
+.chroma .ch { color: #6272a4; font-style: italic; }
+.chroma .cm { color: #6272a4; font-style: italic; }
+.chroma .c1 { color: #6272a4; font-style: italic; }
+.chroma .cs { color: #6272a4; font-style: italic; }
+.chroma .cp { color: #6272a4; font-style: italic; }
+.chroma .cpf { color: #6272a4; font-style: italic; }
+
+/* Diffs */
+.chroma .gd { color: #ff5555; background-color: #44475a; }
+.chroma .ge { font-style: italic; }
+.chroma .gi { color: #50fa7b; background-color: #44475a; }
+.chroma .go { color: #f8f8f2; }
+.chroma .gl { text-decoration: underline; }
+.chroma .w { color: #f8f8f2; }
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+  .chroma { background-color: #0d0d0d; color: #e6e6e6; }
+  .chroma .hl { background-color: #1a1a1a; }
+  
+  /* Slightly brighter colors for dark theme */
+  .chroma .k { color: #ff92d0; }
+  .chroma .kc { color: #ff92d0; }
+  .chroma .kd { color: #ff92d0; }
+  .chroma .kn { color: #ff92d0; }
+  .chroma .kp { color: #ff92d0; }
+  .chroma .kr { color: #ff92d0; }
+  .chroma .kt { color: #9aedfe; }
+  
+  .chroma .na { color: #5af78e; }
+  .chroma .nc { color: #9aedfe; }
+  .chroma .nf { color: #5af78e; }
+  .chroma .fm { color: #5af78e; }
+  
+  .chroma .s { color: #f4f99d; }
+  .chroma .sa { color: #f4f99d; }
+  .chroma .sb { color: #f4f99d; }
+  .chroma .sc { color: #f4f99d; }
+  .chroma .dl { color: #f4f99d; }
+  .chroma .sd { color: #f4f99d; }
+  .chroma .s2 { color: #f4f99d; }
+  .chroma .se { color: #f4f99d; }
+  .chroma .sh { color: #f4f99d; }
+  .chroma .si { color: #f4f99d; }
+  .chroma .sx { color: #f4f99d; }
+  .chroma .sr { color: #f4f99d; }
+  .chroma .s1 { color: #f4f99d; }
+  .chroma .ss { color: #f4f99d; }
+  
+  .chroma .no { color: #c9a7fa; }
+  .chroma .nd { color: #c9a7fa; }
+  .chroma .ni { color: #c9a7fa; }
+  .chroma .m { color: #c9a7fa; }
+  .chroma .mb { color: #c9a7fa; }
+  .chroma .mf { color: #c9a7fa; }
+  .chroma .mh { color: #c9a7fa; }
+  .chroma .mi { color: #c9a7fa; }
+  .chroma .il { color: #c9a7fa; }
+  .chroma .mo { color: #c9a7fa; }
+  
+  .chroma .gd { color: #ff6b6b; background-color: #2a2a2a; }
+  .chroma .gi { color: #69ff94; background-color: #2a2a2a; }
+}
+
+/* Force dark background for code blocks */
+pre {
+  background: #1a1a1a !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre {
+    background: #0d0d0d !important;
+  }
+}
+
+/* Ensure code inherits proper colors */
+pre code {
+  background: transparent !important;
+  color: inherit;
+}
+
+/* Copy button styling */
+pre .copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  color: #999;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+pre:hover .copy-button {
+  opacity: 0.7;
+}
+
+pre .copy-button:hover {
+  opacity: 1;
+  background: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre .copy-button {
+    background: #1a1a1a;
+    border-color: #333;
+  }
+  
+  pre .copy-button:hover {
+    background: #222;
+  }
+}

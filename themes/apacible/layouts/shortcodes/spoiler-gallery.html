@@ -1,0 +1,67 @@
+{{/*
+  Spoiler Gallery Shortcode - Gallery with spoiler toggle
+  
+  Usage:
+  {{< spoiler-gallery file="movie-screenshots.toml" columns="3" label="Show Screenshots (Spoilers)" >}}
+  
+  Shows a button that reveals the gallery when clicked
+*/}}
+
+{{ $file := .Get "file" }}
+{{ $columns := .Get "columns" | default "3" }}
+{{ $label := .Get "label" | default "Show Screenshots (Spoilers)" }}
+{{ $hideLabel := .Get "hide_label" | default "Hide Screenshots" }}
+{{ $thumbWidth := .Get "thumb_width" | default "300" }}
+{{ $thumbHeight := .Get "thumb_height" | default "200" }}
+{{ $fullWidth := .Get "full_width" | default "2400" }}
+{{ $fullHeight := .Get "full_height" | default "1600" }}
+{{ $thumbQuality := .Get "thumb_quality" | default "75" }}
+{{ $fullQuality := .Get "full_quality" | default "95" }}
+
+{{ $images := slice }}
+{{ if $file }}
+  {{ $dataPath := replace $file (path.Ext $file) "" }}
+  {{ $dataPath = replace $dataPath "/" "." }}
+  {{ $data := index .Site.Data $dataPath }}
+  {{ if $data }}
+    {{ $images = $data.images }}
+  {{ end }}
+{{ end }}
+
+<div class="spoiler-gallery-container">
+  <button class="spoiler-toggle" 
+          aria-expanded="false"
+          data-show-text="{{ $label }}" 
+          data-hide-text="{{ $hideLabel }}">
+    {{ $label }}
+  </button>
+  <div class="spoiler-content" hidden aria-live="polite">
+    {{ if $images }}
+    <div class="spoiler-screenshots">
+      {{ range $images }}
+        {{ $imgSrc := .src }}
+        {{ $imgAlt := .alt | default "Screenshot" }}
+        {{ $imgCaption := .caption | default "" }}
+        
+        {{/* Get image resource */}}
+        {{ $img := resources.Get (strings.TrimPrefix "/" $imgSrc) }}
+        
+        {{ if $img }}
+          <figure class="screenshot-item">
+            <img src="{{ $img.RelPermalink }}" 
+                 alt="{{ $imgAlt }}" 
+                 loading="lazy"
+                 decoding="async">
+            {{ if $imgCaption }}
+            <figcaption>{{ $imgCaption }}</figcaption>
+            {{ end }}
+          </figure>
+        {{ end }}
+      {{ end }}
+    </div>
+    {{ else }}
+    <p><em>No screenshots available yet. Replace placeholder paths in data file.</em></p>
+    {{ end }}
+  </div>
+</div>
+

@@ -1,0 +1,98 @@
+{{ define "content" }}
+<article class="post">
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ if not (in .File.Path "consumed/") }}
+        <div class="post-meta">
+            <div class="post-meta-left">
+                {{ if in .File.Path "reviews/" }}
+                    {{/* Movie review metadata */}}
+                    {{ with .Params.director }}
+                        <span class="director"><span class="rune">ᛉ</span> {{ . }}</span>
+                    {{ end }}
+                    {{ with .Params.year }}
+                        <span class="year"><span class="rune">ᛋ</span> {{ . }}</span>
+                    {{ end }}
+                    {{ with .Params.rating }}
+                        <span class="rating"><span class="rune">ᛏ</span> {{ range seq . }}★{{ end }}{{ range seq (sub 5 .) }}☆{{ end }}</span>
+                    {{ end }}
+                {{ else }}
+                    {{/* Regular post metadata */}}
+                    {{ with .Date }}
+                        <time datetime="{{ .Format "2006-01-02" }}"><span class="rune">ᛉ</span> {{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}</time>
+                    {{ end }}
+                    {{ if and .Site.Params.show_word_count .WordCount }}
+                        <span class="word-count"><span class="rune">ᛋ</span> {{ .WordCount }} words</span>
+                    {{ end }}
+                    {{ if and .Site.Params.show_reading_time .ReadingTime }}
+                        <span class="reading-time"><span class="rune">ᛏ</span> {{ .ReadingTime }} min read</span>
+                    {{ end }}
+                {{ end }}
+            </div>
+            {{ with .Params.tags }}
+            <div class="post-meta-right">
+                <div class="tags">
+                    {{ range . }}
+                        <span class="tag">
+                            <span class="rune">ᛞ</span>
+                            <a href="{{ "tags" | relURL }}/{{ . | urlize }}/">{{ . }}</a>
+                        </span>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        {{ end }}
+    </header>
+
+    {{ if .Params.outdate_alert }}
+        {{ $daysOld := div (sub now.Unix .Date.Unix) 86400 }}
+        {{ $alertDays := .Params.outdate_alert_days | default 365 }}
+        {{ if gt $daysOld $alertDays }}
+            <div class="outdate-alert">
+                <span class="outdate-alert-icon">{{ if .Site.Params.use_runes | default true }}ᚢ{{ else }}!!{{ end }}</span>
+                <div class="outdate-alert-content">
+                    <strong>Outdated Content</strong>
+                    <p>This post was published {{ $daysOld }} days ago and may contain outdated information.</p>
+                </div>
+            </div>
+        {{ end }}
+    {{ end }}
+
+    <div class="post-with-toc">
+        {{ $showTOC := and .TableOfContents .Params.toc }}
+        {{ if $showTOC }}
+        <aside class="toc-sidebar">
+            <nav class="toc">
+                {{ $tocID := printf "toc-toggle-%s" (.File.ContentBaseName | urlize) }}
+                <input type="checkbox" id="{{ $tocID }}" class="toc-toggle" />
+                <label for="{{ $tocID }}" class="toc-toggle-label">
+                    <span class="toc-title">Contents</span>
+                </label>
+                <div class="toc-content">
+                    {{ .TableOfContents }}
+                </div>
+            </nav>
+        </aside>
+        {{ end }}
+        
+        <div class="content{{ if $showTOC }} has-toc{{ end }}">
+            {{ .Content }}
+        </div>
+    </div>
+    
+    {{ with .Params.categories }}
+    <footer class="post-footer">
+        <div class="post-footer-content">
+            {{ range . }}
+                <span class="post-footer-label">
+                    <span class="rune">ᚠ</span>
+                    <a href="{{ "categories" | relURL }}/{{ . | urlize }}/">{{ . }}</a>
+                </span>
+            {{ end }}
+        </div>
+    </footer>
+    {{ end }}
+</article>
+{{ end }}
+

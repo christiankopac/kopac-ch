@@ -1,0 +1,81 @@
+/* Theme System - Earthy & Playful */
+@import url('/css/tokens.css');
+
+:root,
+[data-theme="light"] {
+  /* Light theme - soft sage green for calm vibes */
+  --color-bg: #dfe5db;
+  --color-bg-secondary: #d2d9cd;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #4a524a;
+  --color-text-tertiary: #7a827a;
+  --color-border: #c8d0c2;
+  --color-border-secondary: #b8c2b0;
+  --color-link: #c75b4a;
+  --color-link-hover: #8a3d2e;
+  --color-accent: #c75b4a;
+  --color-accent-secondary: #6a9474;
+  --color-accent-tertiary: #7282a8;
+  --color-code-bg: #d0d8ca;
+  
+  /* Syntax highlighting variables */
+  --syntax-bg: var(--color-code-bg);
+  --syntax-fg: var(--color-text);
+  --syntax-comment: var(--color-text-tertiary);
+  --syntax-keyword: #5a6a5a;
+  --syntax-string: #8a5a4a;
+  --syntax-function: #5a6a7a;
+  --syntax-variable: var(--color-text-secondary);
+  --syntax-number: #6a5a4a;
+  --syntax-operator: var(--color-text-secondary);
+  --syntax-type: #5a6a5a;
+  --syntax-constant: #7a4a3a;
+  --syntax-tag: #5a6a7a;
+  --syntax-attribute: #6a5a4a;
+  
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  /* Dark theme - deep burgundy/plum with muted color pops */
+  --color-bg: #1f1619;
+  --color-bg-secondary: #2a1f23;
+  --color-text: #ebe5e7;
+  --color-text-secondary: #c5b5ba;
+  --color-text-tertiary: #8a7580;
+  --color-border: #3d2f35;
+  --color-border-secondary: #4d3d45;
+  --color-link: #f0a090;
+  --color-link-hover: #ffc0b0;
+  --color-accent: #f0a090;
+  --color-accent-secondary: #a0c8b0;
+  --color-accent-tertiary: #b0b8e0;
+  --color-code-bg: #27191e;
+  
+  /* Syntax highlighting variables */
+  --syntax-bg: var(--color-code-bg);
+  --syntax-fg: var(--color-text);
+  --syntax-comment: var(--color-text-tertiary);
+  --syntax-keyword: #7a9885;
+  --syntax-string: #b87a6a;
+  --syntax-function: #8a8aa8;
+  --syntax-variable: var(--color-text-secondary);
+  --syntax-number: #a88a6a;
+  --syntax-operator: var(--color-text-secondary);
+  --syntax-type: #7a9885;
+  --syntax-constant: #c88a7a;
+  --syntax-tag: #8a8aa8;
+  --syntax-attribute: #a88a6a;
+  
+  color-scheme: dark;
+}
+
+/* Apply theme colors */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: var(--transition-theme);
+}
+
+/* Update all color references to use CSS variables */
+

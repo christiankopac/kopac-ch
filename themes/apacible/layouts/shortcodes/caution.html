@@ -1,0 +1,13 @@
+{{/* Caution Shortcode */}}
+{{ $title := .Get "title" | default "Caution" }}
+{{ $icon := cond (.Site.Params.use_runes | default true) "ᚢ" "!!" }}
+<div class="callout callout-caution">
+  <div class="callout-header">
+    <span class="callout-icon">{{ $icon }}</span>
+    <span class="callout-title">{{ $title }}</span>
+  </div>
+  <div class="callout-content">
+    {{ .Inner | .Page.RenderString }}
+  </div>
+</div>
+

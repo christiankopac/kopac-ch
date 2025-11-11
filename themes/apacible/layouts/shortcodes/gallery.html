@@ -1,0 +1,81 @@
+{{/*
+  Gallery Shortcode - Display a grid of dithered thumbnails with Lightense lightbox
+  
+  Usage in Markdown:
+  {{< gallery file="reviews/movie-scenes.toml" columns="3" >}}
+  
+  The TOML/YAML file should have this structure:
+  [[images]]
+  src = "/assets/image1.jpg"
+  alt = "Description"
+  caption = "Optional caption"
+  
+  Parameters:
+  - file: Path to TOML/YAML/JSON file with gallery data (in data/ directory)
+  - columns: Number of columns (optional, default: 3)
+  - thumb_width: Width for thumbnails (optional, default: 300)
+  - thumb_height: Height for thumbnails (optional, default: 200)
+  - full_width: Width for full view (optional, default: 2400)
+  - full_height: Height for full view (optional, default: 1600)
+*/}}
+
+{{ $columns := .Get "columns" | default "3" }}
+{{ $thumbWidth := .Get "thumb_width" | default "300" }}
+{{ $thumbHeight := .Get "thumb_height" | default "200" }}
+{{ $fullWidth := .Get "full_width" | default "2400" }}
+{{ $fullHeight := .Get "full_height" | default "1600" }}
+{{ $op := .Get "op" | default "fit" }}
+{{ $thumbQuality := .Get "thumb_quality" | default "75" }}
+{{ $fullQuality := .Get "full_quality" | default "95" }}
+
+{{ $file := .Get "file" }}
+{{ $images := slice }}
+
+{{ if $file }}
+  {{ $data := index .Site.Data (strings.TrimSuffix (path.Ext $file) (path.Base $file)) }}
+  {{ if $data }}
+    {{ $images = $data.images }}
+  {{ end }}
+{{ end }}
+
+{{ if $images }}
+<div class="gallery" style="--gallery-columns: {{ $columns }};">
+  {{ range $images }}
+    {{ $imgSrc := .src }}
+    {{ $imgAlt := .alt | default "Gallery image" }}
+    {{ $imgCaption := .caption | default "" }}
+    
+    {{/* Get dithered version */}}
+    {{ $ditheredSrc := replace $imgSrc (path.Ext $imgSrc) (printf "_dithered%s" (path.Ext $imgSrc)) }}
+    
+    {{/* Get image resources */}}
+    {{ $img := resources.Get (strings.TrimPrefix "/" $imgSrc) }}
+    {{ $ditheredImg := resources.Get (strings.TrimPrefix "/" $ditheredSrc) }}
+    
+    {{ if and $img $ditheredImg }}
+      {{/* Process thumbnail (dithered) */}}
+      {{ $thumbDithered := $ditheredImg.Fit (printf "%sx%s q%s" $thumbWidth $thumbHeight $thumbQuality) }}
+      
+      {{/* Process full-size original */}}
+      {{ $fullImage := $img.Fit (printf "%sx%s q%s" $fullWidth $fullHeight $fullQuality) }}
+      
+      <figure class="gallery-item">
+        <img src="{{ $thumbDithered.RelPermalink }}" 
+             data-image="{{ $fullImage.RelPermalink }}"
+             alt="{{ $imgAlt }}" 
+             width="{{ $thumbDithered.Width }}" 
+             height="{{ $thumbDithered.Height }}"
+             loading="lazy"
+             decoding="async"
+             class="gallery-image">
+        {{ if $imgCaption }}
+        <figcaption>{{ $imgCaption }}</figcaption>
+        {{ end }}
+      </figure>
+    {{ end }}
+  {{ end }}
+</div>
+{{ else }}
+<p><em>Gallery: No images provided. Please specify a data file with the 'file' parameter.</em></p>
+{{ end }}
+

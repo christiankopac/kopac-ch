@@ -1,0 +1,109 @@
+{{/*
+  Image Comparison Shortcode (Dithered vs Original)
+  
+  Usage in Markdown:
+  {{< img_compare src="path/to/image.jpg" alt="Description" caption="Comparison" width="800" height="600" >}}
+  
+  This will display both dithered and original versions side by side for comparison
+*/}}
+
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" }}
+{{ $caption := .Get "caption" }}
+{{ $width := .Get "width" | default "800" }}
+{{ $height := .Get "height" | default "600" }}
+{{ $op := .Get "op" | default "fit" }}
+{{ $quality := .Get "quality" | default "75" }}
+
+{{/* Get the image resource */}}
+{{ $img := "" }}
+{{ $imgPath := strings.TrimPrefix "/" $src }}
+
+{{/* Try to get the image from various locations */}}
+{{ if .Page.Resources }}
+  {{ $img = .Page.Resources.GetMatch $imgPath }}
+{{ end }}
+{{ if not $img }}
+  {{ $img = resources.Get $imgPath }}
+{{ end }}
+{{ if not $img }}
+  {{ $img = resources.Get $src }}
+{{ end }}
+
+{{ if $img }}
+  {{/* Get dithered version */}}
+  {{ $ditheredSrc := replace $src (path.Ext $src) (printf "_dithered%s" (path.Ext $src)) }}
+  {{ $ditheredPath := strings.TrimPrefix "/" $ditheredSrc }}
+  
+  {{ $ditheredImg := "" }}
+  {{ if .Page.Resources }}
+    {{ $ditheredImg = .Page.Resources.GetMatch $ditheredPath }}
+  {{ end }}
+  {{ if not $ditheredImg }}
+    {{ $ditheredImg = resources.Get $ditheredPath }}
+  {{ end }}
+  {{ if not $ditheredImg }}
+    {{ $ditheredImg = resources.Get $ditheredSrc }}
+  {{ end }}
+
+  {{/* Process images */}}
+  {{ $processedOrig := "" }}
+  {{ $processedOrigWebP := "" }}
+  {{ $processedDithered := "" }}
+  
+  {{ if eq $op "resize" }}
+    {{ $processedOrig = $img.Resize (printf "%sx%s q%s" $width $height $quality) }}
+    {{ $processedOrigWebP = $img.Resize (printf "%sx%s webp q%s" $width $height $quality) }}
+    {{ if $ditheredImg }}
+      {{ $processedDithered = $ditheredImg.Resize (printf "%sx%s q%s" $width $height $quality) }}
+    {{ end }}
+  {{ else if eq $op "fill" }}
+    {{ $processedOrig = $img.Fill (printf "%sx%s q%s" $width $height $quality) }}
+    {{ $processedOrigWebP = $img.Fill (printf "%sx%s webp q%s" $width $height $quality) }}
+    {{ if $ditheredImg }}
+      {{ $processedDithered = $ditheredImg.Fill (printf "%sx%s q%s" $width $height $quality) }}
+    {{ end }}
+  {{ else }}
+    {{ $processedOrig = $img.Fit (printf "%sx%s q%s" $width $height $quality) }}
+    {{ $processedOrigWebP = $img.Fit (printf "%sx%s webp q%s" $width $height $quality) }}
+    {{ if $ditheredImg }}
+      {{ $processedDithered = $ditheredImg.Fit (printf "%sx%s q%s" $width $height $quality) }}
+    {{ end }}
+  {{ end }}
+
+<figure class="image-comparison">
+  {{ if $caption }}
+  <figcaption>{{ $caption }}</figcaption>
+  {{ end }}
+  
+  <div class="comparison-grid">
+    {{ if $processedDithered }}
+    <div class="comparison-item">
+      <h4>Dithered</h4>
+      <img src="{{ $processedDithered.RelPermalink }}" 
+           alt="{{ $alt }} (dithered)" 
+           width="{{ $processedDithered.Width }}" 
+           height="{{ $processedDithered.Height }}"
+           loading="lazy"
+           decoding="async">
+    </div>
+    {{ end }}
+    
+    <div class="comparison-item">
+      <h4>Original</h4>
+      <picture>
+        <source srcset="{{ $processedOrigWebP.RelPermalink }}" type="image/webp">
+        <img src="{{ $processedOrig.RelPermalink }}" 
+             alt="{{ $alt }} (original)" 
+             width="{{ $processedOrig.Width }}" 
+             height="{{ $processedOrig.Height }}"
+             loading="lazy"
+             decoding="async">
+      </picture>
+    </div>
+  </div>
+</figure>
+{{ else }}
+  <p><em>Image not found: {{ $src }}</em></p>
+{{ end }}
+

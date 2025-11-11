@@ -1,0 +1,473 @@
+/* Shortcode Styles - Callouts, Quotes, Mermaid, Math, Alerts */
+
+/* Detail - Collapsible callout */
+.detail {
+  margin: 2rem 0;
+  border-left: 3px solid var(--color-accent-tertiary);
+  border-radius: 4px;
+  background: var(--color-bg-secondary);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-tertiary);
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.detail-header::-webkit-details-marker {
+  display: none;
+}
+
+.detail-header:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  .detail-header:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.detail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  transition: transform 0.2s ease;
+  color: var(--color-accent-tertiary);
+}
+
+.detail-title {
+  flex: 1;
+}
+
+.detail[open] .detail-icon {
+  transform: rotate(90deg);
+}
+
+.detail-content {
+  padding: 0 1.5rem 1.25rem 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.detail-content p {
+  margin: 0;
+}
+
+.detail-content p:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.detail-content > *:first-child {
+  margin-top: 0.75rem;
+}
+
+/* Callouts */
+.callout {
+  margin: 1.5rem 0;
+  padding: 0. em 1.25rem; 
+  border-left: 3px solid;
+  border-radius: 4px;
+}
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.callout-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.callout-icon::before,
+.callout-icon::after {
+  content: none;
+}
+
+.callout-content {
+  padding-left: 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  /* Color is set by specific callout type */
+}
+
+.callout-content p {
+  margin: 0;
+}
+
+.callout-content p:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+/* Note - least important, minimal style */
+.callout.callout-note {
+  background: transparent;
+  border-left-color: var(--color-accent-tertiary);
+}
+
+.callout.callout-note .callout-icon,
+.callout.callout-note .callout-title,
+.callout.callout-note .callout-content {
+  color: var(--color-accent-tertiary);
+}
+
+/* Tip - slightly more important */
+.callout.callout-tip {
+  background: transparent;
+  border-left-color: var(--color-accent-secondary);
+}
+
+.callout.callout-tip .callout-icon,
+.callout.callout-tip .callout-title,
+.callout.callout-tip .callout-content {
+  color: var(--color-accent-secondary);
+}
+
+/* Important - more important, more visible */
+.callout.callout-important {
+  background: transparent;
+  border-left-color: var(--color-accent);
+}
+
+.callout.callout-important .callout-icon,
+.callout.callout-important .callout-title,
+.callout.callout-important .callout-content {
+  color: var(--color-accent);
+}
+
+/* Warning - high importance, very visible */
+.callout.callout-warning {
+  background: transparent;
+  border-left-color: #d4a574;
+}
+
+.callout.callout-warning .callout-icon,
+.callout.callout-warning .callout-title,
+.callout.callout-warning .callout-content {
+  color: #d4a574;
+}
+
+/* Caution - highest importance, most visible */
+.callout.callout-caution {
+  background: transparent;
+  border-left-color: #c75b4a;
+}
+
+.callout.callout-caution .callout-icon,
+.callout.callout-caution .callout-title,
+.callout.callout-caution .callout-content {
+  color: #c75b4a;
+}
+
+/* Quote Block - Beautiful and minimal */
+.quote-block {
+  margin: 3rem 0;
+  padding: 0;
+  border: none;
+}
+
+.quote-text {
+  margin: 0;
+  padding: 2rem 2.5rem;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--color-accent);
+  background: transparent;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 4px;
+  position: relative;
+}
+
+.quote-text::before {
+  content: '"';
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.15;
+  font-family: Georgia, serif;
+}
+
+.quote-text p {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-text p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.quote-cite {
+  margin-top: 1rem;
+  padding-left: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--color-accent);
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.quote-cite::before {
+  content: '— ';
+}
+
+@media (max-width: 640px) {
+  .quote-block {
+    margin: 2rem 0;
+  }
+  
+  .quote-text {
+    padding: 1.5rem 1.75rem;
+    font-size: 1.125rem;
+  }
+  
+  .quote-text::before {
+    top: 0.75rem;
+    left: 1.25rem;
+    font-size: 3rem;
+  }
+  
+  .quote-cite {
+    padding-left: 1.75rem;
+  }
+}
+
+/* Mermaid Container - Seamless integration */
+.mermaid-container {
+  margin: 2.5rem 0;
+  padding: 1.5rem 0;
+  background: transparent;
+  border-radius: 0;
+  overflow-x: auto;
+}
+
+.mermaid-container .mermaid {
+  margin: 0;
+  text-align: center;
+  background: transparent;
+}
+
+/* Make SVG background transparent */
+.mermaid-container .mermaid svg {
+  background: transparent !important;
+}
+
+/* Ensure text is readable */
+.mermaid-container .mermaid text {
+  fill: var(--color-text) !important;
+  font-family: inherit;
+}
+
+/* Improve contrast for labels and text */
+.mermaid-container .mermaid .label text,
+.mermaid-container .mermaid .nodeLabel,
+.mermaid-container .mermaid .edgeLabel,
+.mermaid-container .mermaid .cluster-label text {
+  fill: var(--color-text) !important;
+}
+
+/* Blend node backgrounds with page background */
+.mermaid-container .mermaid .node rect,
+.mermaid-container .mermaid .node circle,
+.mermaid-container .mermaid .node ellipse,
+.mermaid-container .mermaid .node polygon {
+  fill: var(--color-bg) !important;
+  stroke: var(--color-border) !important;
+}
+
+/* Sequence diagram improvements - blend with background */
+.mermaid-container .mermaid .actor {
+  fill: var(--color-bg) !important;
+  stroke: var(--color-accent) !important;
+}
+
+.mermaid-container .mermaid .messageLine0,
+.mermaid-container .mermaid .messageLine1 {
+  stroke: var(--color-text-secondary) !important;
+}
+
+/* Flowchart improvements */
+.mermaid-container .mermaid .flowchart-link {
+  stroke: var(--color-text-secondary) !important;
+}
+
+/* Note boxes - subtle background */
+.mermaid-container .mermaid .note {
+  fill: var(--color-bg-secondary) !important;
+  stroke: var(--color-accent) !important;
+  opacity: 0.6;
+}
+
+.mermaid-container .mermaid .noteText {
+  fill: var(--color-text) !important;
+}
+
+/* Remove any default backgrounds */
+.mermaid-container .mermaid .cluster rect,
+.mermaid-container .mermaid .cluster polygon {
+  fill: transparent !important;
+  stroke: var(--color-border) !important;
+  opacity: 0.3;
+}
+
+/* Make all backgrounds transparent or match page, but allow colored elements */
+.mermaid-container .mermaid g rect[fill]:not(.quadrant-point):not([class*="quadrant"]):not([class*="pie"]),
+.mermaid-container .mermaid g polygon[fill]:not([class*="quadrant"]):not([class*="pie"]) {
+  fill: var(--color-bg) !important;
+}
+
+/* Quadrant chart - make points and quadrants colorful */
+.mermaid-container .mermaid .quadrant-point {
+  fill: var(--color-accent) !important;
+}
+
+.mermaid-container .mermaid .quadrant-point-label {
+  fill: var(--color-text) !important;
+}
+
+/* Ensure quadrant labels are visible */
+.mermaid-container .mermaid .quadrant-label {
+  fill: var(--color-text) !important;
+}
+
+/* Pie chart slices should be colorful */
+.mermaid-container .mermaid .pieOuterCircle,
+.mermaid-container .mermaid .pieCircle {
+  stroke: var(--color-border) !important;
+}
+
+/* Git graph - add color */
+.mermaid-container .mermaid .commit-label {
+  fill: var(--color-text) !important;
+}
+
+.mermaid-container .mermaid .commit-id {
+  fill: var(--color-accent) !important;
+}
+
+.mermaid-container .mermaid .branch-label {
+  fill: var(--color-accent-secondary) !important;
+}
+
+/* Gantt chart improvements */
+.mermaid-container .mermaid .section0,
+.mermaid-container .mermaid .section1,
+.mermaid-container .mermaid .section2,
+.mermaid-container .mermaid .section3 {
+  fill: var(--color-bg-secondary) !important;
+}
+
+.mermaid-container .mermaid .task0,
+.mermaid-container .mermaid .task1,
+.mermaid-container .mermaid .task2,
+.mermaid-container .mermaid .task3 {
+  fill: var(--color-accent) !important;
+}
+
+.mermaid-container .mermaid .taskText0,
+.mermaid-container .mermaid .taskText1,
+.mermaid-container .mermaid .taskText2,
+.mermaid-container .mermaid .taskText3 {
+  fill: var(--color-text) !important;
+}
+
+@media (max-width: 640px) {
+  .mermaid-container {
+    margin: 2rem 0;
+    padding: 0.5rem 0;
+  }
+}
+
+/* Outdated Alert */
+.outdate-alert {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-bg-secondary);
+  border-left: 4px solid #d4a574;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.outdate-alert-icon {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: #d4a574;
+  line-height: 1;
+  margin-top: 0.125rem;
+}
+
+.outdate-alert-content {
+  flex: 1;
+}
+
+.outdate-alert strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.outdate-alert p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  opacity: 0.9;
+}
+
+/* Math/Katex styles - handled by KaTeX library, but we can add some spacing */
+.katex-display {
+  margin: 2rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.katex {
+  font-size: 1.1em;
+}
+
+/* Ensure math doesn't break layout */
+.katex-display > .katex {
+  text-align: left;
+  white-space: pre-wrap;
+}
+

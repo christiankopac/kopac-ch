@@ -1,0 +1,13 @@
+{{/* Tip Shortcode */}}
+{{ $title := .Get "title" | default "Tip" }}
+{{ $icon := cond (.Site.Params.use_runes | default true) "ᛏ" ">" }}
+<div class="callout callout-tip">
+  <div class="callout-header">
+    <span class="callout-icon">{{ $icon }}</span>
+    <span class="callout-title">{{ $title }}</span>
+  </div>
+  <div class="callout-content">
+    {{ .Inner | .Page.RenderString }}
+  </div>
+</div>
+

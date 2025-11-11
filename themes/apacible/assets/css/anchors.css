@@ -1,0 +1,49 @@
+/* Heading anchor links */
+
+.zola-anchor {
+  margin-left: 0.5rem;
+  font-size: 0.8em;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: var(--color-text-secondary, #666);
+}
+
+.zola-anchor::before {
+  content: "#";
+}
+
+@media (prefers-color-scheme: dark) {
+  .zola-anchor {
+    color: #888;
+  }
+}
+
+.zola-anchor:hover {
+  color: var(--color-link, #0066cc);
+}
+
+@media (prefers-color-scheme: dark) {
+  .zola-anchor:hover {
+    color: #66b3ff;
+  }
+}
+
+h1:hover .zola-anchor,
+h2:hover .zola-anchor,
+h3:hover .zola-anchor,
+h4:hover .zola-anchor,
+h5:hover .zola-anchor,
+h6:hover .zola-anchor {
+  opacity: 1;
+}
+
+/* Hide the emoji content that Zola adds */
+.zola-anchor[aria-label*="Anchor"] {
+  font-size: 0;
+}
+
+.zola-anchor[aria-label*="Anchor"]::before {
+  font-size: 1rem;
+}
+

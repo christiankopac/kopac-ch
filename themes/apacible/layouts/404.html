@@ -1,0 +1,10 @@
+{{ define "title" }}{{ .Site.Params.not_found_text | default "404 Not Found" }} | {{ .Site.Title }}{{ end }}
+
+{{ define "content" }}
+<main class="not-found">
+  <h1>{{ .Site.Params.not_found_text | default "404 Not Found" }}</h1>
+  <p>{{ .Site.Params.not_found_message | default "The page you're looking for doesn't exist." }}</p>
+  <a href="{{ "/" | relURL }}" class="back-home">{{ .Site.Params.not_found_recover_text | default "⇽ back to home" }}</a>
+</main>
+{{ end }}
+

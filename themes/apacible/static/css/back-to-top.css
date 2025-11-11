@@ -1,0 +1,107 @@
+/* Back to top button - Modern CSS with tokens */
+
+.back-to-top-footer {
+  position: fixed;
+  inset-block-end: var(--space-2xl);
+  /* Default positioning for smaller screens */
+  inset-inline-end: var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: opacity var(--transition-base);
+  opacity: 0;
+  visibility: hidden;
+  z-index: var(--z-fixed);
+  cursor: pointer;
+  font-weight: var(--font-weight-light);
+}
+
+/* Align with TOC symbol on large screens */
+@media (min-width: 1401px) {
+  .back-to-top-footer {
+    /* Match TOC positioning exactly */
+    inset-inline-end: max(var(--space-lg), calc((100vw - 75ch) / 2 - 150px));
+  }
+}
+
+.back-to-top-footer.visible {
+  opacity: var(--opacity-muted);
+  visibility: visible;
+}
+
+.back-to-top-footer:hover {
+  opacity: var(--opacity-full);
+}
+
+/* Move higher on screens under 1024px to avoid overlap with footer */
+@media (max-width: 1023px) {
+  .back-to-top-footer {
+    inset-block-end: calc(var(--space-2xl) + var(--space-xl));
+  }
+}
+
+/* On small screens, align with theme icon on the right */
+@media (max-width: 600px) {
+  .back-to-top-footer {
+    inset-block-end: calc(2rem + var(--space-xl));
+    inset-inline-end: 24px;
+  }
+}
+
+/* Keep the old fixed button styles for backward compatibility (if used elsewhere) */
+#back-to-top:not(.back-to-top-footer) {
+  position: fixed;
+  inset-block-end: 5.5rem;
+  inset-inline-end: var(--space-lg);
+  width: 2.5rem;
+  height: 2.5rem;
+  background: transparent;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-base-sm);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  z-index: var(--z-fixed);
+  border: var(--border-width-thin) solid var(--color-text-secondary);
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  font-weight: var(--font-weight-light);
+  transform: rotate(45deg);
+  box-sizing: border-box;
+}
+
+#back-to-top:not(.back-to-top-footer)::before {
+  content: 'ᛒ';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  transform: rotate(-45deg);
+}
+
+#back-to-top:not(.back-to-top-footer).visible {
+  opacity: var(--opacity-muted);
+  visibility: visible;
+}
+
+#back-to-top:not(.back-to-top-footer):hover {
+  opacity: var(--opacity-full);
+  transform: rotate(45deg) scale(1.1);
+}
+
+#back-to-top:not(.back-to-top-footer):active {
+  opacity: var(--opacity-full);
+  transform: rotate(45deg) scale(0.95);
+}

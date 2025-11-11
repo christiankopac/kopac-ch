@@ -1,0 +1,115 @@
+/* Taxonomy styles - Tags and Categories */
+
+.taxonomy header {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .taxonomy header {
+    margin-bottom: 3rem;
+  }
+}
+
+.taxonomy header h1 {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.taxonomy header p {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+.taxonomy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.taxonomy-term {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+@media (prefers-color-scheme: dark) {
+  .taxonomy-term {
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.taxonomy-term:last-child {
+  border-bottom: none;
+}
+
+.taxonomy-term h2 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.taxonomy-term h2 a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.taxonomy-term h2 a:hover {
+  opacity: 0.6;
+}
+
+.taxonomy-term .term-description {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  opacity: 0.4;
+}
+
+/* Taxonomy Single (individual tag/category page) */
+.taxonomy-single header {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .taxonomy-single header {
+    margin-bottom: 3rem;
+  }
+}
+
+.taxonomy-single header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 640px) {
+  .taxonomy-single header h1 {
+    font-size: clamp(1.5rem, 1.25rem + 0.75vw, 2rem);
+  }
+}
+
+.taxonomy-single header .taxonomy-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .taxonomy-single header .taxonomy-description {
+    font-size: 0.9375rem;
+  }
+}
+

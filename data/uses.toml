@@ -1,0 +1,47 @@
+[[collection]]
+type = "entry"
+title = "VS Code"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=vscode"
+
+[[collection]]
+type = "entry"
+title = "IntelliJ IDEA"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=idea"
+
+[[collection]]
+type = "entry"
+title = "Neovim"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=neovim"
+
+[[collection]]
+type = "entry"
+title = "Git"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=git"
+
+[[collection]]
+type = "entry"
+title = "Docker"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=docker"
+
+[[collection]]
+type = "entry"
+title = "Figma"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=figma"
+
+[[collection]]
+type = "entry"
+title = "Terminal"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=terminal"
+
+[[collection]]
+type = "entry"
+title = "Firefox"
+link = "https://example.com"
+icon = "https://skillicons.dev/icons?i=firefox"

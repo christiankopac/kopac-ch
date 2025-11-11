@@ -1,0 +1,27 @@
+[[collection]]
+type = "art_simple"
+img = "/assets/trees.jpg"
+link = "https://example.com"
+title = "The Tim Ferriss Show"
+subtitle = "Deconstruct world-class performers"
+content = "Long-form conversations with exceptional people across various fields — business, arts, sports, and more."
+rating = 5
+
+[[collection]]
+type = "art_simple"
+img = "/assets/trees.jpg"
+link = "https://example.com"
+title = "Lex Fridman Podcast"
+subtitle = "Conversations about AI, science, technology"
+content = "Deep conversations about science, technology, history, philosophy and the nature of intelligence."
+rating = 5
+
+[[collection]]
+type = "art_simple"
+img = "/assets/trees.jpg"
+link = "https://example.com"
+title = "Acquired"
+subtitle = "The history of technology companies"
+content = "Deep dives into the stories behind great technology companies and the founders who built them."
+rating = 4
+

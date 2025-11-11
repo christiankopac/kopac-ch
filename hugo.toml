@@ -1,0 +1,127 @@
+# apacible hugo theme
+#
+# > good-tempered, calm, pleasant
+#
+# - docs: https://github.com/christiankopac/apacible/blob/latest/USAGE.md
+# - check for updates: https://github.com/christiankopac/apacible/releases
+#==============================================================================
+
+# === Base ===
+baseURL = "http://localhost:1313/"
+title = "CK"
+languageCode = "en"
+theme = "apacible"
+
+# === Build ===
+[build]
+  writeStats = false
+
+# === Markup Configuration ===
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # Allow raw HTML in markdown
+    [markup.goldmark.parser]
+      autoHeadingID = true
+      autoHeadingIDType = "github"
+      [markup.goldmark.parser.attribute]
+        block = true
+        title = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
+  
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    lineNos = false
+    lineNumbersInTable = false
+    noClasses = false
+    tabWidth = 2
+  
+  [markup.tableOfContents]
+    endLevel = 4
+    ordered = false
+    startLevel = 2
+
+# === Taxonomies ===
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+# === Outputs ===
+[outputs]
+  home = ["HTML"]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
+
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = "application/rss+xml"
+    baseName = "atom"
+
+# === Privacy ===
+[privacy]
+  [privacy.youtube]
+    privacyEnhanced = true
+
+#==============================================================================
+
+[params]
+  # === Basic Config ===
+  description = "Learning in public: code that compiles, beats that don't (yet), and thoughts worth revisiting."
+  use_runes = true  # Use runes for icons (ᛟ, ᛞ, ᛉ, etc.) instead of default symbols
+  blog_section_path = "/posts"
+  back_link_text = "Back"  # Text for the back button
+  force_theme = false  # false | "light" | "dark"
+  
+  # Post metadata display
+  show_word_count = true
+  show_reading_time = true
+  
+  # Date format (Go format)
+  date_format = "Jan 2, 2006"
+  
+  # === Footer License Configuration ===
+  # Options: "cc-by", "cc-by-sa", "cc-by-nc", "cc-by-nc-sa", "cc-by-nd", "cc-by-nc-nd", "copyright", "none"
+  # Default: "cc-by-nc-nd"
+  footer_license = "cc-by-nc-nd"
+  
+  # Copyright year and holder (used for "copyright" type or as fallback)
+  copyright_holder = "Your Name"
+  copyright_year = "2025"
+  
+  # === 404 pages ===
+  not_found_text = "404 Not Found"
+  not_found_message = "The page you're looking for doesn't exist."
+  not_found_recover_text = "⇽ back to home"
+  
+  # === RSS ===
+  generate_feeds = true
+
+# Sections for navigation
+[[params.sections]]
+  name = "posts"
+  path = "/posts"
+  is_external = false
+
+[[params.sections]]
+  name = "collections"
+  path = "/collections"
+  is_external = false
+
+[[params.sections]]
+  name = "consumed"
+  path = "/consumed"
+  is_external = false
+
+[[params.sections]]
+  name = "about"
+  path = "/about"
+  is_external = false

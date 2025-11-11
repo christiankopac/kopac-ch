@@ -1,0 +1,119 @@
+/* Modern layout system with responsive breakpoints */
+
+/* Breakpoints for modern screens - using CSS custom properties */
+:root {
+  --breakpoint-sm: 640px;   /* Mobile landscape */
+  --breakpoint-md: 768px;   /* Tablet */
+  --breakpoint-lg: 1024px;  /* Desktop */
+  --breakpoint-xl: 1280px;  /* Large desktop */
+  --breakpoint-2xl: 1536px; /* Extra large */
+  
+  /* Container widths for optimal readability */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 900px;    /* Optimal for reading (65-75 chars per line) */
+  --container-xl: 1024px;
+}
+
+/* Base layout */
+html {
+  font-size: 15px;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for mobile */
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* Content wrapper for all pages - consistent spacing and centering */
+/* Only apply to top-level containers, not nested articles */
+main,
+.prose,
+.blog,
+.post,
+.taxonomy,
+.taxonomy-single {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  flex: 1 0 auto; /* Allow content to grow and push footer down */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+@media (min-width: 768px) {
+  main,
+  .prose,
+  .blog,
+  .post,
+  .taxonomy,
+  .taxonomy-single {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  main,
+  .prose,
+  .blog,
+  .post,
+  .taxonomy,
+  .taxonomy-single {
+    max-width: 900px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* Home page handles its own layout for vertical centering */
+/* (max-width is set responsively in home.css) */
+
+/* Back navigation should not push footer */
+.back-nav {
+  flex: 0 0 auto;
+}
+
+/* Wide container for collections/grids */
+.container-wide {
+  max-width: 1024px;
+}
+
+/* Narrow container for optimal reading (prose) */
+.container-narrow {
+  max-width: 680px;
+}
+

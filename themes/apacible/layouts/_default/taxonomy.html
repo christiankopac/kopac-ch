@@ -1,0 +1,23 @@
+{{/* Taxonomy list (e.g., all tags, all categories) */}}
+{{ define "content" }}
+<section class="taxonomy">
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+            <p>{{ . }}</p>
+        {{ end }}
+    </header>
+
+    <div class="taxonomy-list">
+        {{ range .Pages }}
+            <div class="taxonomy-item">
+                <h2>
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    <span class="count">({{ len .Pages }})</span>
+                </h2>
+            </div>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+

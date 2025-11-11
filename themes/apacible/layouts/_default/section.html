@@ -1,0 +1,27 @@
+{{/* Section template - for prose/other section pages */}}
+{{ define "content" }}
+<article class="prose">
+    <header>
+        <h1>{{ .Title }}</h1>
+    </header>
+    
+    <div class="content">
+        {{ .Content }}
+    </div>
+    
+    {{/* If this section has pages, show them */}}
+    {{ if .Pages }}
+    <div class="section-pages">
+        {{ range .Pages }}
+            <article class="section-page-link">
+                <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+                {{ with .Description }}
+                    <p>{{ . }}</p>
+                {{ end }}
+            </article>
+        {{ end }}
+    </div>
+    {{ end }}
+</article>
+{{ end }}
+

@@ -1,0 +1,56 @@
+/* Cursor gradient effect - Extremely Subtle, only on headings and links */
+
+#cursor {
+  width: 250px;
+  height: 250px;
+  filter: blur(60px);
+  position: fixed;
+  border-radius: var(--radius-full);
+  z-index: var(--z-modal-backdrop);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease, background var(--transition-slow);
+}
+
+/* Light theme gradient - warm pastels */
+[data-theme="light"] #cursor.gradient {
+  background: linear-gradient(to bottom right, #e8a89a 20%, #a5c9b5 50%, #b5bdd9 80%) no-repeat;
+}
+
+/* Dark theme gradient - muted jewels */
+[data-theme="dark"] #cursor.gradient {
+  background: linear-gradient(to bottom right, #8a6b60 20%, #608a75 50%, #6b7a95 80%) no-repeat;
+  mix-blend-mode: lighten;
+}
+
+/* When showing (JS will set inline opacity) */
+[data-theme="light"] #cursor[style*="opacity: 1"] {
+  opacity: 0.2 !important; /* More visible on light theme */
+}
+
+[data-theme="dark"] #cursor[style*="opacity: 1"] {
+  opacity: 0.04 !important;
+}
+
+/* Default gradient for when theme is not set yet */
+.gradient {
+  background: linear-gradient(to bottom right, #e8a89a 20%, #a5c9b5 50%, #b5bdd9 80%) no-repeat;
+}
+
+/* Use :where() to reduce specificity */
+:where(::selection, ::-moz-selection) {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+@media screen and (max-width: 680px) {
+  #cursor {
+    display: none;
+  }
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+}

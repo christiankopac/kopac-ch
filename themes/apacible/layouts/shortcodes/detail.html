@@ -1,0 +1,21 @@
+{{/*
+  Detail Shortcode - Collapsible callout-like component
+  
+  Usage:
+  {{< detail title="Optional Title" >}}
+  Content here
+  {{< /detail >}}
+*/}}
+
+{{ $title := .Get "title" | default "Details" }}
+
+<details class="detail">
+  <summary class="detail-header">
+    <span class="detail-icon">▶</span>
+    <span class="detail-title">{{ $title }}</span>
+  </summary>
+  <div class="detail-content">
+    {{ .Inner | .Page.RenderString }}
+  </div>
+</details>
+

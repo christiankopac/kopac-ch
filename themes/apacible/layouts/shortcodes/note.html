@@ -1,0 +1,22 @@
+{{/*
+  Note Shortcode - Convenience wrapper for callout with type="note"
+  
+  Usage:
+  {{< note title="Note" >}}
+  Content here
+  {{< /note >}}
+*/}}
+
+{{ $title := .Get "title" | default "Note" }}
+{{ $icon := cond (.Site.Params.use_runes | default true) "ᛁ" "i" }}
+
+<div class="callout callout-note">
+  <div class="callout-header">
+    <span class="callout-icon">{{ $icon }}</span>
+    <span class="callout-title">{{ $title }}</span>
+  </div>
+  <div class="callout-content">
+    {{ .Inner | .Page.RenderString }}
+  </div>
+</div>
+

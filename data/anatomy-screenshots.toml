@@ -1,0 +1,18 @@
+# Anatomy of a Fall Movie Screenshots
+# Using placeholder-screenshot.jpeg as placeholder
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Anatomy of a Fall scene 1"
+caption = "The courtroom"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Anatomy of a Fall scene 2"
+caption = "Sandra's testimony"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Anatomy of a Fall scene 3"
+caption = "The chalet"
+

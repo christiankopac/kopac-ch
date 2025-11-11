@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Lang | default "en" }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Set theme immediately to prevent flash -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    {{ block "desc" . }}
+      {{ if .Description }}
+        <meta name="description" content="{{ .Description }}" />
+      {{ else if .Site.Params.description }}
+        <meta name="description" content="{{ .Site.Params.description }}" />
+      {{ end }}
+    {{ end }}
+    <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ "img/favicon.svg" | relURL }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ "img/favicon-32x32.png" | relURL }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ "img/favicon-16x16.png" | relURL }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ "img/apple-touch-icon.png" | relURL }}" />
+    
+    <!-- NOTE: Optional: add custom fonts -->
+    {{ partialCached "custom_font.html" . }}
+    <!-- NOTE: Optional: add custom css -->
+    {{ partialCached "custom_css.html" . }}
+    
+    {{/* Base CSS - always needed */}}
+    <link rel="stylesheet" href="{{ "css/base.css" | relURL }}" />
+    
+    {{/* Template-specific CSS */}}
+    {{ if .IsHome }}
+      {{/* Home page */}}
+      <link rel="stylesheet" href="{{ "css/home.css" | relURL }}" />
+      {{ if .Content }}
+        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+      {{ end }}
+    {{ else if .IsPage }}
+      {{/* Check if this is a post page */}}
+      {{ $isPost := false }}
+      {{ if .Params.tags }}
+        {{ $isPost = true }}
+      {{ else if .Date }}
+        {{ $blogSection := .Site.Params.blog_section_path | default "/posts" }}
+        {{ if or (hasPrefix .RelPermalink $blogSection) (hasPrefix .RelPermalink "/reviews/") }}
+          {{ $isPost = true }}
+        {{ end }}
+      {{ end }}
+      
+      {{ if $isPost }}
+        {{/* Post page */}}
+        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+      {{ else }}
+        {{/* Prose/other pages */}}
+        <link rel="stylesheet" href="{{ "css/prose.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+      {{ end }}
+    {{ else if .IsSection }}
+      {{ $blogPath := .Site.Params.blog_section_path | default "/posts/" }}
+      {{ if or (eq .RelPermalink $blogPath) (hasPrefix .RelPermalink "/posts") }}
+        {{/* Blog listing page */}}
+        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+      {{ else }}
+        {{/* Other section pages */}}
+        <link rel="stylesheet" href="{{ "css/prose.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+      {{ end }}
+    {{ else if .Data.Plural }}
+      {{/* Taxonomy pages */}}
+      <link rel="stylesheet" href="{{ "css/taxonomy.css" | relURL }}" />
+      {{ if .Data.Term }}
+        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
+        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+      {{ end }}
+    {{ end }}
+    
+    {{/* Math rendering with KaTeX */}}
+    {{ if .Param "math" }}
+      {{ partialCached "math.html" . }}
+    {{ end }}
+    
+    {{ block "head" . }}{{ end }}
+  </head>
+  <body class="{{ block "page" . }}{{ end }}{{ if eq .Site.Params.force_theme "dark" }} dark{{ end }}{{ if .IsSection }}{{ if hasPrefix .RelPermalink "/posts" }} section-posts{{ end }}{{ end }}" id="body-element">
+    {{ if ne .Site.Params.force_theme "dark" }}{{ end }}
+
+    <!-- Back button (hidden on homepage) -->
+    {{ if not .IsHome }}
+      <nav class="back-nav">
+        <a href="javascript:history.back()" class="back-link" aria-label="Go back">
+          ← {{ .Site.Params.back_link_text | default "Back" }}
+        </a>
+      </nav>
+    {{ end }}
+
+    <!-- NOTE: Main content section -->
+    {{ block "content" . }}{{ end }}
+    
+    <!-- NOTE: Footer (hidden on homepage and 404 page) -->
+    {{ if not .IsHome }}
+      {{ if not (eq .Kind "404") }}
+        {{ partial "footer.html" . }}
+      {{ end }}
+    {{ end }}
+    
+    <!-- Back to top link - fixed position, aligned with footer icons -->
+    <a href="#" id="back-to-top" class="back-to-top-footer" aria-label="Back to top" title="Back to top">ᛒ</a>
+    
+    <!-- NOTE: Scripts -->
+    {{ block "script" . }}{{ end }}
+    <script src="{{ "js/main.js" | relURL }}"></script>
+    <script src="{{ "js/collection-filter.js" | relURL }}"></script>
+    
+    {{/* Mermaid for diagrams - auto-loaded when mermaid code blocks are present */}}
+    {{ if .Store.Get "hasMermaid" }}
+      {{ partial "mermaid.html" . }}
+    {{ end }}
+    
+    {{/* KaTeX auto-render */}}
+    {{ if .Params.math }}
+      <script>
+        // Wait for both DOM and deferred scripts to load
+        function initKaTeX() {
+          if (typeof renderMathInElement !== 'undefined') {
+            renderMathInElement(document.body, {
+              delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+              ],
+              throwOnError: false
+            });
+          } else {
+            // If not ready yet, wait for window load
+            window.addEventListener('load', initKaTeX);
+          }
+        }
+        
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initKaTeX);
+        } else {
+          // DOM already loaded, try immediately or wait for load
+          initKaTeX();
+        }
+      </script>
+    {{ end }}
+  </body>
+</html>
+

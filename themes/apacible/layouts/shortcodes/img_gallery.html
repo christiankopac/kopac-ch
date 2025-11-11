@@ -1,0 +1,27 @@
+{{/*
+  Simple Image Gallery Shortcode - Grid of images with dithered/original toggle
+  
+  Usage in Markdown:
+  {{< img_gallery >}}
+  {{< img src="assets/image1.jpg" alt="Image 1" caption="Caption 1" >}}
+  {{< img src="assets/image2.jpg" alt="Image 2" caption="Caption 2" dithered="true" >}}
+  {{< /img_gallery >}}
+  
+  Parameters for gallery:
+  - columns: Number of columns (optional, default: 3)
+  
+  Parameters for each img:
+  - src: Path to image (required)
+  - alt: Alt text (required)
+  - caption: Optional caption
+  - dithered: Use dithered version (optional, default: false)
+  - width: Max width (optional, default: 400)
+  - height: Max height (optional, default: 300)
+*/}}
+
+{{ $columns := .Get "columns" | default "3" }}
+
+<div class="img-gallery" style="--gallery-columns: {{ $columns }};">
+  {{ .Inner }}
+</div>
+

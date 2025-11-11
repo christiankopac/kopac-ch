@@ -1,0 +1,77 @@
+/* Modern layout system with responsive breakpoints and tokens */
+
+/* Breakpoints for modern screens - using CSS custom properties */
+:root {
+  --breakpoint-sm: 640px;   /* Mobile landscape */
+  --breakpoint-md: 768px;   /* Tablet */
+  --breakpoint-lg: 1024px;  /* Desktop */
+  --breakpoint-xl: 1280px;  /* Large desktop */
+  --breakpoint-2xl: 1536px; /* Extra large */
+  
+  /* Container widths for optimal readability - scale with screen size */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 900px;    /* Optimal for reading (65-75 chars per line) */
+  --container-xl: 1024px;
+  --container-2xl: 1200px;
+}
+
+/* Fluid typography - optimal scaling for readability */
+html {
+  /* Scales smoothly: 16px (mobile) → 20px (ultra-wide) */
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for mobile */
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* Content wrapper for all pages - optimal character width for readability */
+/* Use :is() to reduce repetition */
+:is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+  /* Width calculation already includes padding in the formula */
+  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  margin-inline: auto;
+  padding-block: var(--container-padding-y-sm);
+  flex: 1 0 auto; /* Allow content to grow and push footer down */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+@media (min-width: 768px) {
+  :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+    padding-block: var(--container-padding-y-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+    padding-block: var(--container-padding-y-lg);
+  }
+}
+
+/* Home page handles its own layout for vertical centering */
+/* (max-width is set responsively in home.css) */
+
+/* Back navigation should not push footer */
+.back-nav {
+  flex: 0 0 auto;
+}
+
+/* Wide container for collections/grids */
+.container-wide {
+  max-width: var(--container-xl);
+}
+
+/* Narrow container for optimal reading (prose) */
+.container-narrow {
+  max-width: 680px;
+}

@@ -1,0 +1,33 @@
+# Inception Movie Screenshots
+# Using placeholder-screenshotjpg as placeholder
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 1"
+caption = "Dream within a dream"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 2"
+caption = "The kick"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 3"
+caption = "Zero gravity fight"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 4"
+caption = "Limbo"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 5"
+caption = "The top"
+
+[[images]]
+src = "/screenshots/placeholder-screenshot.jpeg"
+alt = "Inception scene 6"
+caption = "Final scene"
+

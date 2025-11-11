@@ -1,0 +1,39 @@
+{{/* Posts section listing - minimal metadata only */}}
+{{ define "content" }}
+<section class="blog">
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+            <p>{{ . }}</p>
+        {{ end }}
+    </header>
+
+    <div class="posts">
+        {{ range .Pages }}
+            <article class="post-preview{{ if .Params.featured }} featured{{ end }}">
+                <h2>
+                    {{ if .Params.featured }}<span class="featured-marker">ᛟ</span>{{ end }}
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h2>
+                <div class="post-meta">
+                    <div class="post-meta-left">
+                    </div>
+                    <div class="post-meta-right">
+                        {{ with .Params.tags }}
+                        <div class="tags">
+                            {{ range . }}
+                                <span class="tag">{{ . }}</span>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                        {{ with .Date }}
+                            <time datetime="{{ .Format "2006-01-02" }}">{{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}</time>
+                        {{ end }}
+                    </div>
+                </div>
+            </article>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+

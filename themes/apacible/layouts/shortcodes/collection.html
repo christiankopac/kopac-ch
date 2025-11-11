@@ -1,0 +1,297 @@
+{{/*
+  Collection Shortcode - Display collections from TOML/YAML/JSON files
+  
+  Usage:
+  {{< collection file="projects.toml" style="card" filter="year" >}}
+  {{< collection file="books.toml" style="horizontal" filter="date" >}}
+  
+  Styles: card, simple-card, list, card-grid, card-grid-compact, card-horizontal, inline
+  Filter: year (enables year-based filtering), date (enables date_read filtering)
+*/}}
+
+{{ $style := .Get "style" | default "card" }}
+{{ $file := .Get "file" }}
+{{ $filter := .Get "filter" }}
+{{ $categoryFilter := .Get "category_filter" }}
+
+{{ $isCardGrid := eq $style "card-grid" }}
+{{ $isCardGridCompact := eq $style "card-grid-compact" }}
+{{ $isCardHorizontal := eq $style "card-horizontal" }}
+{{ $isHorizontal := eq $style "horizontal" }}
+{{ $isInline := eq $style "inline" }}
+{{ $isPosterGrid := eq $style "poster-grid" }}
+
+{{ $actualStyle := $style }}
+{{ if or $isCardGrid $isCardGridCompact $isCardHorizontal $isHorizontal }}
+  {{ $actualStyle = "card" }}
+{{ else if $isInline }}
+  {{ $actualStyle = "list" }}
+{{ else if $isPosterGrid }}
+  {{ $actualStyle = "poster" }}
+{{ end }}
+
+{{ $collectionData := "" }}
+{{ if $file }}
+  {{ $dataPath := replace $file (path.Ext $file) "" }}
+  {{ $dataPath = replace $dataPath "/" "." }}
+  {{ $collectionData = index .Site.Data $dataPath }}
+{{ end }}
+
+{{/* Extract unique years/dates if filter is enabled (only from items that will be displayed) */}}
+{{ $years := slice }}
+{{ $dates := slice }}
+{{ if and (eq $filter "year") $collectionData }}
+  {{ $yearsMap := dict }}
+  {{ range $collectionData.collection }}
+    {{/* Only count years from items that will actually be rendered */}}
+    {{ if and .year (not .draft) (or .title .icon) (ne .type "br") }}
+      {{ $yearsMap = merge $yearsMap (dict .year true) }}
+    {{ end }}
+  {{ end }}
+  {{ range $year, $_ := $yearsMap }}
+    {{ $years = $years | append $year }}
+  {{ end }}
+  {{ $years = sort $years "value" "desc" }}
+{{ else if and (eq $filter "date") $collectionData }}
+  {{ $datesMap := dict }}
+  {{ range $collectionData.collection }}
+    {{/* Only count dates from items that will actually be rendered */}}
+    {{ if and .date_read (not .draft) (or .title .icon) (ne .type "br") }}
+      {{/* Extract year from date_read (format: YYYY-MM) */}}
+      {{ $year := index (split .date_read "-") 0 }}
+      {{ $datesMap = merge $datesMap (dict $year true) }}
+    {{ end }}
+  {{ end }}
+  {{ range $date, $_ := $datesMap }}
+    {{ $dates = $dates | append $date }}
+  {{ end }}
+  {{ $dates = sort $dates "value" "desc" }}
+{{ end }}
+
+{{/* Extract unique categories if category filter is enabled */}}
+{{ $categories := slice }}
+{{ if $categoryFilter }}
+  {{ $categoriesMap := dict }}
+  {{ range $collectionData.collection }}
+    {{ if and .category (not .draft) (or .title .icon) (ne .type "br") }}
+      {{ $categoriesMap = merge $categoriesMap (dict .category true) }}
+    {{ end }}
+  {{ end }}
+  {{ range $category, $_ := $categoriesMap }}
+    {{ $categories = $categories | append $category }}
+  {{ end }}
+  {{ $categories = sort $categories }}
+{{ end }}
+
+{{/* Render category filter if enabled */}}
+{{ if and $categoryFilter (gt (len $categories) 1) }}
+<div class="collection-filter" data-filter-type="category">
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-category="all">All</button>
+    {{ range $categories }}
+      <button class="filter-btn" data-category="{{ . }}">{{ title . }}</button>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+
+{{/* Render year filter if enabled */}}
+{{ if and (eq $filter "year") (gt (len $years) 0) }}
+<div class="collection-filter" data-filter-type="year">
+  <label class="filter-label">Filter by year:</label>
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-year="all">All</button>
+    {{ range $years }}
+      <button class="filter-btn" data-year="{{ . }}">{{ . }}</button>
+    {{ end }}
+  </div>
+</div>
+{{ else if and (eq $filter "date") (gt (len $dates) 0) }}
+<div class="collection-filter" data-filter-type="date">
+  <label class="filter-label">Filter by year:</label>
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-date="all">All</button>
+    {{ range $dates }}
+      <button class="filter-btn" data-date="{{ . }}">{{ . }}</button>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+
+<div class="collection collection-{{ $actualStyle }}{{ if $isCardGrid }} has-images{{ end }}{{ if $isCardGridCompact }} has-images-compact{{ end }}{{ if or $isCardHorizontal $isHorizontal }} horizontal-layout{{ end }}{{ if $isInline }} inline-layout{{ end }}{{ if $isPosterGrid }} poster-grid{{ end }}"{{ if $categoryFilter }} data-filterable="category"{{ else if and (eq $filter "year") (not $isPosterGrid) }} data-filterable="year"{{ else if and (eq $filter "date") (not $isPosterGrid) }} data-filterable="date"{{ end }}>
+  {{ if and $collectionData $collectionData.collection }}
+    {{ range $collectionData.collection }}
+      {{/* Handle break/separator type */}}
+      {{ if eq .type "br" }}
+        <hr class="collection-separator">
+      {{ else if or .title .icon }}
+        {{/* Skip draft items */}}
+        {{ if not .draft }}
+      <article class="collection-item"{{ if .category }} data-category="{{ .category }}"{{ end }}{{ if .year }} data-year="{{ .year }}"{{ end }}{{ if .date_read }} data-date="{{ .date_read }}"{{ end }}{{ if .title }} data-title="{{ .title | safeHTML }}"{{ end }}{{ if .director }} data-director="{{ .director }}"{{ end }}{{ if .author }} data-author="{{ .author }}"{{ end }}{{ if .artist }} data-artist="{{ .artist }}"{{ end }}{{ if .label }} data-label="{{ .label }}"{{ end }}{{ if .rating }} data-rating="{{ .rating }}"{{ end }}{{ if .content }} data-content="{{ .content | safeHTML }}"{{ end }}{{ if .footer }} data-footer="{{ .footer | safeHTML }}"{{ end }}{{ $itemLink := .link | default (.url | default "") }}{{ if $itemLink }} data-link="{{ $itemLink }}"{{ end }}>
+        {{ if eq $actualStyle "card" }}
+          {{/* Full card with image, title, description, meta */}}
+          {{ $itemImg := .image | default (.img | default "") }}
+          {{/* Always show image container for horizontal layout */}}
+          {{ if or $itemImg (eq $style "horizontal") }}
+          <div class="item-image">
+            {{ if $itemImg }}
+            <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+            {{ end }}
+          </div>
+          {{ end }}
+          
+          <div class="item-content">
+            <h3 class="item-title">
+              {{ $itemLink := .link | default (.url | default "") }}
+              {{ if $itemLink }}
+                <a href="{{ $itemLink }}" {{ if hasPrefix $itemLink "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                  {{ .title | safeHTML }}
+                </a>
+              {{ else }}
+                {{ .title | safeHTML }}
+              {{ end }}
+              {{ with .date }}
+                <span class="item-date">{{ . }}</span>
+              {{ end }}
+              {{ with .role }}
+                <span class="item-role">{{ . }}</span>
+              {{ end }}
+            </h3>
+            
+            {{ with .subtitle }}
+            <p class="item-subtitle">{{ . | safeHTML }}</p>
+            {{ end }}
+            
+            {{ $itemDesc := .content | default (.description | default "") }}
+            {{ if $itemDesc }}
+            <p class="item-description">{{ $itemDesc | safeHTML }}</p>
+            {{ end }}
+            
+            {{ if or .tags .date .role .footer .year .director .rating }}
+            <div class="item-meta">
+              {{ with .year }}
+                <span class="item-year">{{ . }}</span>
+              {{ end }}
+              {{ with .director }}
+                <span class="item-director">{{ . }}</span>
+              {{ end }}
+              {{ with .rating }}
+                <span class="item-rating">
+                  {{- range seq . }}★{{ end -}}
+                  {{- range seq (sub 5 .) }}☆{{ end -}}
+                </span>
+              {{ end }}
+              {{ with .date }}
+                <span class="item-date">{{ . }}</span>
+              {{ end }}
+              {{ with .role }}
+                <span class="item-role">{{ . }}</span>
+              {{ end }}
+              {{ with .tags }}
+                <div class="item-tags">
+                  {{ range . }}
+                    <span class="tag">#{{ . }}</span>
+                  {{ end }}
+                </div>
+              {{ end }}
+              {{ with .footer }}
+                <span class="item-footer">{{ . | safeHTML }}</span>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+          
+        {{ else if eq $actualStyle "simple-card" }}
+          {{/* Simple card with just title and brief info */}}
+          <div class="item-content">
+            <h3 class="item-title">
+              {{ $itemLink := .link | default (.url | default "") }}
+              {{ if $itemLink }}
+                <a href="{{ $itemLink }}" {{ if hasPrefix $itemLink "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                  {{ .title | safeHTML }}
+                </a>
+              {{ else }}
+                {{ .title | safeHTML }}
+              {{ end }}
+              {{ with .date }}
+                <span class="item-date">{{ . }}</span>
+              {{ end }}
+              {{ with .role }}
+                <span class="item-role">{{ . }}</span>
+              {{ end }}
+            </h3>
+            
+            {{ with .subtitle }}
+            <p class="item-subtitle">{{ . | safeHTML }}</p>
+            {{ end }}
+            
+            {{ $itemDesc := .content | default (.description | default "") }}
+            {{ if $itemDesc }}
+            <p class="item-description">{{ $itemDesc | safeHTML }}</p>
+            {{ end }}
+          </div>
+          
+        {{ else if eq $actualStyle "poster" }}
+          {{/* Poster-only style: just the image, click shows details */}}
+          {{ $itemImg := .image | default (.img | default "") }}
+          {{ if $itemImg }}
+            <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}" title="{{ .title | safeHTML }}">
+          {{ end }}
+          
+        {{ else }}
+          {{/* List style - minimal, icons optional */}}
+          {{ $currentItem := . }}
+          {{ with .icon }}
+          {{ $iconTitle := $currentItem.title | default "" }}
+          {{ if and (not $iconTitle) (in . "skillicons.dev") }}
+            {{ $parts := split . "?i=" }}
+            {{ if gt (len $parts) 1 }}
+              {{ $iconTitle = index $parts 1 }}
+            {{ end }}
+          {{ end }}
+          {{ if not $iconTitle }}
+            {{ $iconTitle = "Icon" }}
+          {{ end }}
+          {{ $itemLink := $currentItem.link | default ($currentItem.url | default "") }}
+          {{ if $itemLink }}
+            <a href="{{ $itemLink }}" {{ if hasPrefix $itemLink "http" }}target="_blank" rel="noopener noreferrer"{{ end }} title="{{ $iconTitle }}">
+              <img class="item-icon" src="{{ . }}" alt="{{ $iconTitle }}" width="20" height="20">
+            </a>
+          {{ else }}
+            <img class="item-icon" src="{{ . }}" alt="{{ $iconTitle }}" title="{{ $iconTitle }}" width="20" height="20">
+          {{ end }}
+          {{ end }}
+          {{ with .title }}
+          <div class="item-content">
+            <h3 class="item-title">
+              {{ $itemLink := $currentItem.link | default ($currentItem.url | default "") }}
+              {{ if $itemLink }}
+                <a href="{{ $itemLink }}" {{ if hasPrefix $itemLink "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                  {{ . | safeHTML }}
+                </a>
+              {{ else }}
+                {{ . | safeHTML }}
+              {{ end }}
+              {{ with $currentItem.date }}
+                <span class="item-date">{{ . }}</span>
+              {{ end }}
+            </h3>
+            {{ with $currentItem.subtitle }}
+            <p class="item-subtitle">{{ . | safeHTML }}</p>
+            {{ end }}
+            {{ $itemDesc := $currentItem.content | default ($currentItem.description | default "") }}
+            {{ if $itemDesc }}
+            <p class="item-description">{{ $itemDesc | safeHTML }}</p>
+            {{ end }}
+          </div>
+          {{ end }}
+        {{ end }}
+      </article>
+      {{ end }}{{/* Close: if not .draft */}}
+      {{ end }}{{/* Close: if eq .type "br" / else if or .title .icon */}}
+    {{ end }}{{/* Close: range $collectionData.collection */}}
+  {{ else }}
+    <p>No collection data found.</p>
+  {{ end }}
+</div>
+

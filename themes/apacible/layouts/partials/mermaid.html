@@ -1,0 +1,125 @@
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  
+  function getMermaidTheme() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    const isDark = theme === 'dark';
+    
+    if (isDark) {
+      return {
+        theme: 'dark',
+        themeVariables: {
+          primaryColor: '#e8a89a',
+          primaryTextColor: '#f5f0e8',
+          primaryBorderColor: '#f5c8ba',
+          lineColor: '#c5b5ba',
+          secondaryColor: '#a5c9b5',
+          tertiaryColor: '#b5bdd9',
+          background: 'transparent',
+          mainBkg: '#1f1619',
+          secondBkg: '#2a1f23',
+          textColor: '#f5f0e8',
+          border1: '#3d2f35',
+          border2: '#4d3d45'
+        }
+      };
+    } else {
+      return {
+        theme: 'base',
+        themeVariables: {
+          primaryColor: '#d98a7a',
+          primaryTextColor: '#1a1a1a',
+          primaryBorderColor: '#b87a6a',
+          lineColor: '#4a524a',
+          secondaryColor: '#7aa88a',
+          tertiaryColor: '#8a9ab8',
+          background: 'transparent',
+          mainBkg: '#dfe5db',
+          secondBkg: '#d2d9cd',
+          textColor: '#1a1a1a',
+          border1: '#c8d0c2',
+          border2: '#b8c2b0'
+        }
+      };
+    }
+  }
+  
+  function initMermaid() {
+    const config = getMermaidTheme();
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: config.theme,
+      themeVariables: config.themeVariables,
+      securityLevel: 'loose'
+    });
+  }
+  
+  // Store original Mermaid code before rendering
+  function storeMermaidCode() {
+    document.querySelectorAll('.mermaid').forEach(function(el) {
+      if (!el.dataset.originalCode) {
+        el.dataset.originalCode = el.textContent.trim();
+      }
+    });
+  }
+  
+  // Re-render Mermaid diagrams with new theme
+  function rerenderMermaid() {
+    const config = getMermaidTheme();
+    mermaid.initialize({ 
+      startOnLoad: false,
+      theme: config.theme,
+      themeVariables: config.themeVariables,
+      securityLevel: 'loose'
+    });
+    
+    // Re-render all mermaid diagrams
+    document.querySelectorAll('.mermaid').forEach(function(el) {
+      const originalCode = el.dataset.originalCode || el.textContent.trim();
+      if (!originalCode) return;
+      
+      // Clear existing SVG
+      el.innerHTML = originalCode;
+      
+      // Re-render
+      const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+      mermaid.render(id, originalCode).then(function(result) {
+        el.innerHTML = result.svg;
+      }).catch(function(err) {
+        console.error('Mermaid render error:', err);
+      });
+    });
+  }
+  
+  // Store code before initial render
+  document.addEventListener('DOMContentLoaded', function() {
+    storeMermaidCode();
+    initMermaid();
+  });
+  
+  // If DOM is already loaded, store immediately
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', storeMermaidCode);
+  } else {
+    storeMermaidCode();
+    initMermaid();
+  }
+  
+  // Re-initialize on theme change
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        // Small delay to ensure theme change is complete
+        setTimeout(function() {
+          rerenderMermaid();
+        }, 100);
+      }
+    });
+  });
+  
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+</script>
+

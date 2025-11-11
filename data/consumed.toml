@@ -1,0 +1,245 @@
+# Combined collection of all consumed media (movies and books)
+# For display as tiny posters on the consumed page
+
+# MOVIES
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "/reviews/anatomy-of-a-fall"
+title = "Anatomy of a Fall"
+year = "2023"
+director = "Justine Triet"
+rating = 5
+content = "A masterful courtroom drama that dissects a marriage and keeps you guessing until the end. Winner of Palme d'Or at Cannes."
+footer = "Watched Jan 2024"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "/reviews/inception"
+title = "Inception"
+year = "2010"
+director = "Christopher Nolan"
+rating = 5
+content = "Mind-bending heist thriller that explores dreams within dreams. A technical and narrative masterpiece that rewards multiple viewings."
+footer = "Watched Jan 2024 • Rewatch"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "Interstellar"
+year = "2014"
+director = "Christopher Nolan"
+rating = 5
+content = "Epic space odyssey that combines hard science with emotional storytelling. Stunning visuals and Hans Zimmer's iconic score."
+footer = "Watched Dec 2023"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "影 (Shadow)"
+year = "2018"
+director = "Zhang Yimou"
+rating = 4
+content = "Visually stunning wuxia film with a monochromatic color palette. Intricate plot about identity and political intrigue."
+footer = "Watched Nov 2023"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "La La Land"
+year = "2016"
+director = "Damien Chazelle"
+rating = 4
+content = "Modern musical that pays homage to classic Hollywood. Beautiful cinematography and a bittersweet ending that lingers."
+footer = "Watched Oct 2023"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "Her"
+year = "2013"
+director = "Spike Jonze"
+rating = 5
+content = "Thoughtful exploration of love, loneliness, and technology. Joaquin Phoenix delivers a vulnerable, intimate performance."
+footer = "Watched Sep 2023"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "Flipped"
+year = "2010"
+director = "Rob Reiner"
+rating = 4
+content = "Sweet coming-of-age story told from two perspectives. Nostalgic and heartwarming without being overly sentimental."
+footer = "Watched Aug 2023"
+
+[[collection]]
+type = "art_simple"
+category = "movies"
+img = "/img/placeholder-poster.jpg"
+link = "https://example.com"
+title = "Léon: The Professional"
+year = "1994"
+director = "Luc Besson"
+rating = 5
+content = "Stylish action thriller with surprising emotional depth. Young Natalie Portman's breakout role alongside Jean Reno."
+footer = "Watched Jul 2023 • Rewatch"
+
+# BOOKS
+[[collection]]
+type = "art"
+category = "books"
+img = "/img/placeholder-poster.jpg"
+title = "The Old Man and the Sea"
+link = "https://example.com"
+author = "Ernest Hemingway"
+year = "1952"
+content = "A novella that tells the story of Santiago, an aging Cuban fisherman who struggles with a giant marlin far out in the Gulf Stream. The story is a tale of endurance, perseverance, and the human spirit's struggle against nature. It explores themes of courage, pride, and the relationship between man and the natural world. Winner of the Pulitzer Prize."
+rating = 5
+footer = "Read Jan 2024"
+date_read = "2024-01"
+
+[[collection]]
+type = "art"
+category = "books"
+img = "/img/placeholder-poster.jpg"
+title = "To Kill a Mockingbird"
+link = "https://example.com"
+author = "Harper Lee"
+year = "1960"
+content = "A novel set in the American South during the 1930s. It tells the story of Scout Finch, her brother Jem, and their father Atticus, a lawyer who defends a black man falsely accused of raping a white woman. The novel addresses themes of racial injustice, moral growth, and the loss of innocence. A timeless classic that remains relevant today."
+rating = 4
+footer = "Read Dec 2023"
+date_read = "2023-12"
+
+[[collection]]
+type = "art"
+category = "books"
+img = "/img/placeholder-poster.jpg"
+title = "1984"
+link = "https://example.com"
+author = "George Orwell"
+year = "1949"
+content = "A dystopian novel set in a totalitarian society ruled by the Party, which has total control over every aspect of people's lives. The story follows Winston Smith, a low-ranking member of the Party, as he becomes disillusioned with the oppressive regime and begins to rebel against it. The novel explores themes of surveillance, censorship, and the manipulation of truth. Eerily prescient."
+rating = 5
+footer = "Read Nov 2023 • Reread"
+date_read = "2023-11"
+
+[[collection]]
+type = "art"
+category = "books"
+img = "/img/placeholder-poster.jpg"
+title = "Sapiens: A Brief History of Humankind"
+link = "https://example.com"
+author = "Yuval Noah Harari"
+year = "2011"
+content = "A sweeping overview of human history from the emergence of Homo sapiens to the present day. Harari explores how biology and history have shaped our societies, religions, and economies. Thought-provoking and accessible, it challenges readers to think about what makes us human."
+rating = 4
+footer = "Read Oct 2023"
+date_read = "2023-10"
+
+[[collection]]
+type = "art"
+category = "books"
+img = "/img/placeholder-poster.jpg"
+title = "The Pragmatic Programmer"
+link = "https://example.com"
+author = "Andrew Hunt, David Thomas"
+year = "1999"
+content = "Essential reading for software developers. Filled with practical advice on how to write better code, communicate effectively, and continually improve your craft. Timeless wisdom that applies across programming languages and paradigms."
+rating = 5
+footer = "Read Sep 2023"
+date_read = "2023-09"
+
+# MUSIC
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "Random Access Memories"
+link = "https://example.com"
+artist = "Daft Punk"
+year = "2013"
+label = "Columbia Records"
+content = "A masterful blend of electronic music with live instrumentation. Featuring collaborations with legendary musicians and producers, this album redefined modern dance music with its sophisticated production and nostalgic sound."
+rating = 5
+footer = "Listened Jan 2024"
+
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "The Dark Side of the Moon"
+link = "https://example.com"
+artist = "Pink Floyd"
+year = "1973"
+label = "Harvest Records"
+content = "A progressive rock masterpiece exploring themes of conflict, greed, time, and mental health. Groundbreaking sonic experimentation and cohesive concept album structure that influenced generations of musicians."
+rating = 5
+footer = "Listened Dec 2023"
+
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "OK Computer"
+link = "https://example.com"
+artist = "Radiohead"
+year = "1997"
+label = "Parlophone"
+content = "Alternative rock album addressing modern alienation and technology anxiety. Complex arrangements, experimental production, and deeply introspective lyrics make this one of the defining albums of the 90s."
+rating = 5
+footer = "Listened Nov 2023"
+
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "Blonde"
+link = "https://example.com"
+artist = "Frank Ocean"
+year = "2016"
+label = "Boys Don't Cry"
+content = "Intimate and experimental R&B album exploring love, identity, and self-reflection. Minimalist production and Ocean's vulnerable vocals create a deeply personal listening experience."
+rating = 4
+footer = "Listened Oct 2023"
+
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "To Pimp a Butterfly"
+link = "https://example.com"
+artist = "Kendrick Lamar"
+year = "2015"
+label = "Top Dawg Entertainment"
+content = "Jazz-infused hip-hop masterpiece examining racial inequality, depression, and institutional discrimination. Complex lyricism and innovative production make this a landmark in modern hip-hop."
+rating = 5
+footer = "Listened Sep 2023"
+
+[[collection]]
+type = "art"
+category = "music"
+img = "/img/placeholder-poster.jpg"
+title = "In Rainbows"
+link = "https://example.com"
+artist = "Radiohead"
+year = "2007"
+label = "XL Recordings"
+content = "More melodic and accessible than OK Computer, this album balances experimentation with emotional immediacy. Released with a revolutionary pay-what-you-want model that changed music distribution."
+rating = 5
+footer = "Listened Aug 2023"
+

@@ -1,0 +1,12 @@
+/* Base CSS - Always loaded on every page */
+/* This includes only the essential CSS needed for all pages */
+
+@import url('/css/tokens.css');
+@import url('/css/theme.css');
+@import url('/css/layout.css');
+@import url('/css/typography.css');
+@import url('/css/navigation.css');
+@import url('/css/footer.css');
+@import url('/css/back-to-top.css');
+@import url('/css/cursor.css');
+

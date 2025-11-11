@@ -1,0 +1,13 @@
+name = "apacible"
+license = "MIT"
+licenselink = "https://github.com/christiankopac/apacible/blob/main/LICENSE"
+description = "A good-tempered, calm, pleasant Hugo theme - prioritizing accessibility and smolweb principles"
+homepage = "https://github.com/christiankopac/apacible"
+tags = ["minimal", "blog", "clean", "responsive", "simple", "accessibility", "smolweb"]
+features = ["blog", "syntax-highlighting", "responsive", "dark-mode", "image-processing", "rss"]
+min_version = "0.100.0"
+
+[author]
+  name = "Christian Kopac"
+  homepage = "https://christiankopac.com"
+

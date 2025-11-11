@@ -1,0 +1,22 @@
+{{/*
+  Quote Shortcode - Display styled quotes
+  
+  Usage:
+  {{< quote cite="Author Name" >}}
+  Quote text here
+  {{< /quote >}}
+*/}}
+
+{{ $cite := .Get "cite" | default "" }}
+
+<figure class="quote-block">
+  <blockquote class="quote-text">
+    {{ .Inner | .Page.RenderString }}
+  </blockquote>
+  {{ if $cite }}
+  <figcaption class="quote-cite">
+    {{ $cite | .Page.RenderString }}
+  </figcaption>
+  {{ end }}
+</figure>
+

@@ -1,0 +1,44 @@
+/* Heading anchor links - Modern CSS with tokens */
+
+.zola-anchor {
+  margin-inline-start: var(--space-sm);
+  font-size: 0.8em;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  color: var(--color-text-secondary, #666);
+}
+
+.zola-anchor::before {
+  content: "#";
+}
+
+@media (prefers-color-scheme: dark) {
+  .zola-anchor {
+    color: #888;
+  }
+}
+
+.zola-anchor:hover {
+  color: var(--color-link, #0066cc);
+}
+
+@media (prefers-color-scheme: dark) {
+  .zola-anchor:hover {
+    color: #66b3ff;
+  }
+}
+
+/* Use :is() to reduce repetition */
+:is(h1, h2, h3, h4, h5, h6):hover .zola-anchor {
+  opacity: var(--opacity-full);
+}
+
+/* Hide the emoji content that Zola adds */
+.zola-anchor[aria-label*="Anchor"] {
+  font-size: 0;
+}
+
+.zola-anchor[aria-label*="Anchor"]::before {
+  font-size: var(--font-size-lg);
+}

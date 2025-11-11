@@ -1,0 +1,39 @@
+{{/*
+  Callout Shortcode - Display callout boxes (note, tip, important, warning, caution)
+  
+  Usage:
+  {{< callout type="note" title="Note" >}}
+  Content here
+  {{< /callout >}}
+  
+  Types: note, tip, important, warning, caution
+*/}}
+
+{{ $type := .Get "type" | default "note" }}
+{{ $title := .Get "title" | default ($type | title) }}
+{{ $symbol := "" }}
+
+{{ if eq $type "note" }}
+  {{ $symbol = "✱" }}
+{{ else if eq $type "tip" }}
+  {{ $symbol = "✦" }}
+{{ else if eq $type "important" }}
+  {{ $symbol = "✸" }}
+{{ else if eq $type "warning" }}
+  {{ $symbol = "▲" }}
+{{ else if eq $type "caution" }}
+  {{ $symbol = "⚠" }}
+{{ else }}
+  {{ $symbol = "•" }}
+{{ end }}
+
+<div class="callout callout-{{ $type }}">
+  <div class="callout-header">
+    <span class="callout-icon">{{ $symbol }}</span>
+    <span class="callout-title">{{ $title }}</span>
+  </div>
+  <div class="callout-content">
+    {{ .Inner | .Page.RenderString }}
+  </div>
+</div>
+

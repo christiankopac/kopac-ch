@@ -1,0 +1,226 @@
+/* Footer styles - Minimal and gentle - Always at bottom */
+
+.site-footer {
+  flex-shrink: 0;
+  margin-top: auto; /* Push to bottom */
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-footer {
+    border-top-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-footer {
+    max-width: 900px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding-bottom: 1.75rem;
+  }
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-content {
+    max-width: 900px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    font-size: 0.75rem;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-right {
+  gap: 1.25rem;
+  position: relative;
+}
+
+#theme-toggle,
+.footer-content a {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  color: inherit;
+  padding: 0;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  position: relative;
+}
+
+#theme-toggle:hover,
+.footer-content a:hover {
+  opacity: 1;
+}
+
+#theme-toggle svg,
+.footer-content a svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.5;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  #theme-toggle svg,
+  .footer-content a svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.footer-content span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* CC License image styling */
+.cc-license {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cc-license img {
+  height: 20px;
+  width: auto;
+  display: block;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .cc-license img {
+    height: 18px;
+  }
+}
+
+.cc-license:hover img {
+  opacity: 1;
+}
+
+/* Theme toggle icon transitions */
+#theme-toggle {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+}
+
+@media (max-width: 600px) {
+  #theme-toggle {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+  }
+}
+
+#theme-toggle .theme-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 600px) {
+  #theme-toggle .theme-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Sun icon - visible in light theme */
+#theme-toggle .theme-icon-sun {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+/* Moon icon - visible in dark theme */
+#theme-toggle .theme-icon-moon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-90deg) scale(0.8);
+}
+
+/* Dark theme: show moon, hide sun */
+[data-theme="dark"] #theme-toggle .theme-icon-sun {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+}
+
+[data-theme="dark"] #theme-toggle .theme-icon-moon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+

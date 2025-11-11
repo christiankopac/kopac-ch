@@ -1,0 +1,32 @@
+[[collection]]
+type = "entry"
+link = "https://johnresig.com/blog/write-code-every-day"
+title = "Write Code Every Day"
+subtitle = "John Resig"
+
+[[collection]]
+type = "entry"
+link = "https://overreacted.io/the-elements-of-ui-engineering"
+title = "The Elements of UI Engineering"
+subtitle = "Dan Abramov"
+
+[[collection]]
+type = "entry"
+title = "Teach Yourself Programming in Ten Years"
+link = "https://norvig.com/21-days.html"
+subtitle = "Peter Norvig"
+
+#[[collection]]
+#type = 'br'
+
+[[collection]]
+type = "entry"
+link = "https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding"
+title = "Reflections on a decade of coding"
+subtitle = "Jamie Brandon"
+
+[[collection]]
+type = "entry"
+link = "https://www.ee.torontomu.ca/~elf/hack"
+title = "Hacker's Wisdom"
+subtitle = "~elf/hack"
