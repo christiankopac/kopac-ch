@@ -1,0 +1,72 @@
+# Hugo build output
+public/
+resources/
+.hugo_build.lock
+
+# Hugo cache
+hugo_cache/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+.classpath
+*.swp
+*.swo
+*.swn
+*~
+.vim/
+.netrwhist
+
+# Node modules (if using npm/node for any tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build tools
+.cache/
+dist/
+
+# Hugo server PID file
+.hugo-server-pid
+
+# Static asset builds (if using preprocessing)
+assets/**/*.css.map
+assets/**/*.js.map
+
+# Backup files
+*.bak
+*.backup
+
