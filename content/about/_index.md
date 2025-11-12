@@ -30,30 +30,33 @@ The site embraces the **smolweb** philosophy—prioritizing accessibility, minim
 
 This theme uses Elder Futhark runes as semantic symbols throughout the interface. Each rune is chosen for its traditional meaning:
 
-**Post & Review Metadata:**
 - **ᛉ Algiz** (Protection, Time) — Marks dates in posts, directors in movie reviews
 - **ᛋ Sowilo** (Sun, Energy) — Indicates word count in posts, year in movie reviews
 - **ᛏ Tiwaz** (Victory, Honor) — Shows reading time in posts, ratings in movie reviews
 - **ᛞ Dagaz** (Day, Breakthrough) — Denotes tags and topics
 - **ᚠ Fehu** (Wealth, Abundance) — Marks categories and collections
-
-**Content Admonitions:**
 - **ᛁ Isaz** (Ice, Stillness) — Used for informational notes and calm observations
 - **ᛏ Tiwaz** (Victory, Honor) — Marks tips and helpful guidance
 - **ᚨ Ansuz** (Communication, Wisdom) — Highlights important information
 - **ᚹ Wunjo** (Joy/Warning) — Indicates warnings and cautions
 - **ᚢ Uruz** (Strength, Primal Force) — Signals critical cautions and outdated content
-
-**Navigation:**
 - **ᚱ Raido** (Journey, Movement) — Represents the table of contents (navigation through text)
 - **ᛟ Odal** (Heritage, Home) — Marks featured content
 
 These symbols provide visual hierarchy while respecting smolweb constraints (no emoji, minimal Unicode overhead).
 
+## Projects
+
+Personal and professional projects
+
+{{< collection file="projects.toml" style="card" >}}
+
+## Skills
+
+Technologies and tools I'm familiar with.
+
+{{< collection file="skills.toml" style="inline" >}}
+
 ## Get In Touch
 
 Feel free to reach out via the links in the header, or check out my work on GitHub.
-
----
-
-*This site is built with Hugo and the apacible theme, prioritizing simplicity, accessibility, and performance.*

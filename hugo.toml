@@ -15,6 +15,7 @@ theme = "apacible"
 # === Build ===
 [build]
   writeStats = false
+  enableGitInfo = true
 
 # === Markup Configuration ===
 [markup]
@@ -118,16 +119,16 @@ theme = "apacible"
   is_external = false
 
 [[params.sections]]
-  name = "collections"
-  path = "/collections"
-  is_external = false
-
-[[params.sections]]
-  name = "consumed"
-  path = "/consumed"
+  name = "picks"
+  path = "/picks"
   is_external = false
 
 [[params.sections]]
   name = "about"
   path = "/about"
+  is_external = false
+
+[[params.sections]]
+  name = "now"
+  path = "/now"
   is_external = false

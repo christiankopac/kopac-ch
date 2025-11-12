@@ -3,8 +3,6 @@ title = "Example: All Shortcodes"
 date = 2024-12-15
 description = "Comprehensive example showing all available shortcodes"
 math = true
-
-
 tags = ["apacible","shortcodes", "documentation"]
 categories = ["Examples"]
 +++

@@ -1,0 +1,19 @@
+{{/*
+  LastMod Shortcode - Display the last modified date of the current page
+  
+  Usage:
+  {{< lastmod >}}
+  or with custom format:
+  {{< lastmod format="January 2, 2006" >}}
+*/}}
+
+{{ $format := .Get "format" | default (.Site.Params.date_format | default "January 2006") }}
+{{ $lastmod := .Page.Lastmod }}
+{{ if not $lastmod.IsZero }}
+  {{ $lastmod.Format $format }}
+{{ else if .Page.GitInfo }}
+  {{ .Page.GitInfo.Lastmod.Format $format }}
+{{ else }}
+  {{ .Page.Date.Format $format }}
+{{ end }}
+
