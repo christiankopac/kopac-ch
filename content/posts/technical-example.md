@@ -3,7 +3,7 @@ title = "Example: Math and Code Snippets"
 date = 2024-11-04
 description = "A comprehensive guide with various code examples"
 
-[taxonomies]
+
 tags = ["apacible", "example", "latex", "code"]
 +++
 

@@ -4,7 +4,7 @@ date = 2025-01-10
 description = "Implementing SSR for better performance and SEO"
 featured = true
 
-[taxonomies]
+
 tags = ["react", "ssr", "next.js"]
 categories = ["Development"]
 +++

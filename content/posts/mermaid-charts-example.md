@@ -3,7 +3,7 @@ title = "Example: Mermaid Charts"
 date = 2024-06-03
 description = "Example post showing Mermaid diagrams"
 
-[taxonomies]
+
 tags = ["apacible", "example", "chart", "mermaid"]
 +++
 

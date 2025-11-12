@@ -1,6 +1,6 @@
 {{/* Single taxonomy term (e.g., posts with tag "golang") */}}
 {{ define "content" }}
-<section class="taxonomy-single">
+<section class="blog">
     <header>
         <h1>{{ .Title }}</h1>
         {{ with .Description }}
@@ -19,21 +19,29 @@
                     <div class="post-meta-left">
                     </div>
                     <div class="post-meta-right">
-                        {{ with .Params.tags }}
-                        <div class="tags">
-                            {{ range . }}
-                                <span class="tag">{{ . }}</span>
+                        {{ if $.Site.Params.show_tags_in_list }}
+                            {{ with .Params.tags }}
+                            <div class="tags">
+                                {{ range . }}
+                                    <span class="tag">{{ . }}</span>
+                                {{ end }}
+                            </div>
                             {{ end }}
-                        </div>
+                        {{ end }}
+                        {{ if $.Site.Params.show_categories_in_list }}
+                            {{ with .Params.categories }}
+                            <div class="categories">
+                                {{ range . }}
+                                    <span class="category">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
                         {{ end }}
                         {{ with .Date }}
                             <time datetime="{{ .Format "2006-01-02" }}">{{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}</time>
                         {{ end }}
                     </div>
                 </div>
-                {{ with .Summary }}
-                    <p>{{ . }}</p>
-                {{ end }}
             </article>
         {{ end }}
     </div>

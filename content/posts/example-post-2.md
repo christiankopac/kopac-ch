@@ -4,7 +4,7 @@ date = 2024-12-20
 description = "Essential tips for optimizing website performance"
 featured = true
 
-[taxonomies]
+
 tags = ["performance", "optimization", "web"]
 categories = ["Development"]
 +++

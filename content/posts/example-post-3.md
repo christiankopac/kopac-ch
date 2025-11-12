@@ -3,7 +3,7 @@ title = "CSS Grid vs Flexbox: When to Use Each"
 date = 2024-11-28
 description = "A practical guide to choosing between CSS Grid and Flexbox"
 
-[taxonomies]
+
 tags = ["css", "layout", "design"]
 categories = ["Design"]
 +++

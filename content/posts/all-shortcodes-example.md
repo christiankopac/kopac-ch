@@ -4,7 +4,7 @@ date = 2024-12-15
 description = "Comprehensive example showing all available shortcodes"
 math = true
 
-[taxonomies]
+
 tags = ["apacible","shortcodes", "documentation"]
 categories = ["Examples"]
 +++

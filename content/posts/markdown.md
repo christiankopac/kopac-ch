@@ -4,7 +4,7 @@ date = 2025-11-04
 updated = 2025-11-04
 featured = true
 
-[taxonomies]
+
 tags = ["apacible", "example","markdown"]
 lang = "en"
 toc = true

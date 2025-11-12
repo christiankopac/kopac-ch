@@ -8,9 +8,39 @@
         {{ end }}
     </header>
 
-    <div class="posts">
+    {{/* Extract unique categories for filtering */}}
+    {{ $categories := slice }}
+    {{ $categoriesMap := dict }}
+    {{ range .Pages }}
+        {{ range .Params.categories }}
+            {{ $categoriesMap = merge $categoriesMap (dict . true) }}
+        {{ end }}
+    {{ end }}
+    {{ range $category, $_ := $categoriesMap }}
+        {{ $categories = $categories | append $category }}
+    {{ end }}
+    {{ $categories = sort $categories }}
+
+    {{/* Render category filter if there are multiple categories */}}
+    {{ if gt (len $categories) 1 }}
+    <div class="collection-filter" data-filter-type="category">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-category="all">All</button>
+            {{ range $categories }}
+                <button class="filter-btn" data-category="{{ . | urlize }}">{{ . }}</button>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <div class="posts"{{ if gt (len $categories) 1 }} data-filterable="category"{{ end }}>
         {{ range .Pages }}
-            <article class="post-preview{{ if .Params.featured }} featured{{ end }}">
+            {{ $postCategories := .Params.categories }}
+            {{ $categorySlug := "" }}
+            {{ if $postCategories }}
+                {{ $categorySlug = index $postCategories 0 | urlize }}
+            {{ end }}
+            <article class="post-preview{{ if .Params.featured }} featured{{ end }} collection-item"{{ if $categorySlug }} data-category="{{ $categorySlug }}"{{ end }}>
                 <h2>
                     {{ if .Params.featured }}<span class="featured-marker">ᛟ</span>{{ end }}
                     <a href="{{ .Permalink }}">{{ .Title }}</a>
@@ -19,12 +49,23 @@
                     <div class="post-meta-left">
                     </div>
                     <div class="post-meta-right">
-                        {{ with .Params.tags }}
-                        <div class="tags">
-                            {{ range . }}
-                                <span class="tag">{{ . }}</span>
+                        {{ if $.Site.Params.show_tags_in_list }}
+                            {{ with .Params.tags }}
+                            <div class="tags">
+                                {{ range . }}
+                                    <span class="tag">{{ . }}</span>
+                                {{ end }}
+                            </div>
                             {{ end }}
-                        </div>
+                        {{ end }}
+                        {{ if $.Site.Params.show_categories_in_list }}
+                            {{ with .Params.categories }}
+                            <div class="categories">
+                                {{ range . }}
+                                    <span class="category">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
                         {{ end }}
                         {{ with .Date }}
                             <time datetime="{{ .Format "2006-01-02" }}">{{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}</time>

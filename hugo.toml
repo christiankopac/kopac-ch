@@ -85,6 +85,12 @@ theme = "apacible"
   show_word_count = true
   show_reading_time = true
   
+  # Taxonomy display in post lists and single posts
+  show_tags_in_list = false  # Show tags in post list pages
+  show_categories_in_list = false  # Show categories in post list pages
+  show_tags_in_post = true  # Show tags in single post header
+  show_categories_in_post = true  # Show categories in single post header
+  
   # Date format (Go format)
   date_format = "Jan 2, 2006"
   

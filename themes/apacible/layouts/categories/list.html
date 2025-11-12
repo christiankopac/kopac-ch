@@ -1,7 +1,8 @@
+{{/* Single category term (e.g., posts with category "design") */}}
 {{ define "content" }}
 <section class="blog">
     <header>
-        <h1>{{ .Title }}</h1>
+        <h1>Category: {{ .Title }}</h1>
         {{ with .Description }}
             <p>{{ . }}</p>
         {{ end }}

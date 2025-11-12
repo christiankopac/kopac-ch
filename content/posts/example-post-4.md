@@ -4,7 +4,7 @@ date = 2025-01-05
 description = "Exploring the latest JavaScript features"
 featured = true
 
-[taxonomies]
+
 tags = ["javascript", "es2024", "programming"]
 categories = ["Development"]
 +++

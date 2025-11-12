@@ -3,7 +3,7 @@ title = "Minimalist Design Principles"
 date = 2024-07-20
 description = "Less is more: embracing minimalism in web design"
 
-[taxonomies]
+
 tags = ["design", "minimalism", "ui"]
 categories = ["Design"]
 +++

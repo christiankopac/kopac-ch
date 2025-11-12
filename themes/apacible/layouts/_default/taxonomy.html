@@ -1,6 +1,6 @@
 {{/* Taxonomy list (e.g., all tags, all categories) */}}
 {{ define "content" }}
-<section class="taxonomy">
+<section class="blog">
     <header>
         <h1>{{ .Title }}</h1>
         {{ with .Description }}
@@ -8,14 +8,19 @@
         {{ end }}
     </header>
 
-    <div class="taxonomy-list">
-        {{ range .Pages }}
-            <div class="taxonomy-item">
+    <div class="posts">
+        {{ range .Data.Terms.Alphabetical }}
+            <article class="post-preview">
                 <h2>
-                    <a href="{{ .Permalink }}">{{ .Title }}</a>
-                    <span class="count">({{ len .Pages }})</span>
+                    <a href="{{ .Page.Permalink }}">{{ .Page.Title }} <span class="tag-count">({{ .Count }})</span></a>
                 </h2>
-            </div>
+                <div class="post-meta">
+                    <div class="post-meta-left">
+                    </div>
+                    <div class="post-meta-right">
+                    </div>
+                </div>
+            </article>
         {{ end }}
     </div>
 </section>

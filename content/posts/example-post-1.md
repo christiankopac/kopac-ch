@@ -3,7 +3,7 @@ title = "Getting Started with Hugo"
 date = 2024-12-15
 description = "A comprehensive guide to getting started with Hugo static site generator"
 
-[taxonomies]
+
 tags = ["hugo", "web development", "tutorial"]
 categories = ["Development"]
 +++

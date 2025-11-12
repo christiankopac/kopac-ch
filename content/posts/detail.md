@@ -2,7 +2,7 @@
 title = "Example: Detail"
 date = 2025-11-04
 
-[taxonomies]
+
 tags = ["apacible", "example", "detail"]
 +++
 

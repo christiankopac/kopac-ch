@@ -1,54 +1,101 @@
-// Back to top link functionality
+// Back to top button functionality
 (function() {
-  const backToTopLink = document.getElementById('back-to-top');
-  if (!backToTopLink) return;
+  const backToTopButton = document.getElementById('back-to-top');
+  const inlineBackToTop = document.querySelector('.back-to-top-link');
   
   const SCROLL_THRESHOLD = 300;
   
-  // Scroll to top function
+  // Scroll to top function - always scrolls to absolute top
   function scrollToTop(e) {
-    if (e) e.preventDefault();
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Smooth scroll to top
     window.scrollTo({
       top: 0,
+      left: 0,
       behavior: 'smooth'
     });
   }
   
-  // Toggle visibility based on scroll position
+  // Toggle visibility based on scroll position (fixed button only)
   function toggleBackToTop() {
-    backToTopLink.classList.toggle('visible', window.pageYOffset > SCROLL_THRESHOLD);
+    if (!backToTopButton) return;
+    const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+    backToTopButton.classList.toggle('visible', scrolled > SCROLL_THRESHOLD);
   }
   
-  backToTopLink.addEventListener('click', scrollToTop);
-  window.addEventListener('scroll', toggleBackToTop, { passive: true });
-  toggleBackToTop();
+  // Add event listeners for fixed button
+  if (backToTopButton) {
+    backToTopButton.addEventListener('click', scrollToTop);
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    toggleBackToTop();
+  }
+  
+  // Add event listener for inline link
+  if (inlineBackToTop) {
+    inlineBackToTop.addEventListener('click', scrollToTop);
+  }
 })();
 
 // Theme toggle functionality
 (function() {
-  const themeToggle = document.getElementById('theme-toggle');
-  if (!themeToggle) return;
+  const themeToggles = document.querySelectorAll('[id="theme-toggle"]');
+  if (!themeToggles.length) return;
   
   const htmlElement = document.documentElement;
   const THEME_KEY = 'theme';
   const DEFAULT_THEME = 'light';
   
-  // Apply theme
+  // Apply theme to all elements
   function applyTheme(theme) {
     htmlElement.setAttribute('data-theme', theme);
     document.body.setAttribute('data-theme', theme);
-    themeToggle.setAttribute('data-theme', theme);
+    // Update all theme toggle buttons if they exist
+    themeToggles.forEach(function(toggle) {
+      if (toggle) {
+        toggle.setAttribute('data-theme', theme);
+      }
+    });
   }
   
-  // Initialize theme
-  let currentTheme = localStorage.getItem(THEME_KEY) || DEFAULT_THEME;
+  // Initialize theme from localStorage with error handling
+  let currentTheme;
+  try {
+    currentTheme = localStorage.getItem(THEME_KEY) || DEFAULT_THEME;
+  } catch (e) {
+    console.error('Failed to read theme preference:', e);
+    currentTheme = DEFAULT_THEME;
+  }
   applyTheme(currentTheme);
   
-  // Toggle theme
-  themeToggle.addEventListener('click', function() {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    localStorage.setItem(THEME_KEY, currentTheme);
-    applyTheme(currentTheme);
+  // Add click event to all theme toggle buttons
+  themeToggles.forEach(function(themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      // Save to localStorage with error handling
+      try {
+        localStorage.setItem(THEME_KEY, currentTheme);
+      } catch (e) {
+        console.error('Failed to save theme preference:', e);
+      }
+      
+      applyTheme(currentTheme);
+    });
+  });
+  
+  // Re-sync theme when page is restored from bfcache (back/forward navigation)
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      // Page was restored from bfcache, re-read theme from localStorage
+      try {
+        currentTheme = localStorage.getItem(THEME_KEY) || DEFAULT_THEME;
+        applyTheme(currentTheme);
+      } catch (e) {
+        console.error('Failed to sync theme on pageshow:', e);
+      }
+    }
   });
 })();
 
@@ -356,25 +403,101 @@ function toggleOriginal(element) {
   });
 })();
 
-// Table of Contents - Active section highlighting
+// Table of Contents - Substack-style with line indicators
 (function() {
-  const tocLinks = document.querySelectorAll('.toc-link');
+  const tocElement = document.querySelector('.toc');
+  if (!tocElement) return;
+  
+  const tocLinks = document.querySelectorAll('.toc-content a');
   if (tocLinks.length === 0) return;
   
-  const headings = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id]'));
+  const headings = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'));
   
-  function updateActiveTOCLink() {
+  // Create lines container and generate lines based on TOC structure
+  function initializeTOCLines() {
+    // Check if we're on large screen
+    if (window.innerWidth < 940) return;
+    
+    // Remove existing lines if any
+    const existingLines = tocElement.querySelector('.toc-lines');
+    if (existingLines) existingLines.remove();
+    
+    // Create lines container
+    const linesContainer = document.createElement('div');
+    linesContainer.className = 'toc-lines';
+    
+    // Generate a line for each TOC link
+    tocLinks.forEach(function(link) {
+      const href = link.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      
+      const targetId = href.substring(1);
+      const targetHeading = document.getElementById(targetId);
+      if (!targetHeading) return;
+      
+      // Determine heading level
+      const tagName = targetHeading.tagName.toLowerCase();
+      const level = tagName.charAt(1); // Extract number from h1, h2, etc.
+      
+      // Create line element
+      const line = document.createElement('div');
+      line.className = 'toc-line';
+      line.setAttribute('data-level', Math.min(level, 3)); // Cap at level 3
+      line.setAttribute('data-target', targetId);
+      
+      linesContainer.appendChild(line);
+    });
+    
+    // Add click handler to lines container to toggle TOC
+    linesContainer.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleTOC();
+    });
+    
+    // Insert lines before toc-content
+    const tocContent = tocElement.querySelector('.toc-content');
+    if (tocContent) {
+      tocElement.insertBefore(linesContainer, tocContent);
+    }
+  }
+  
+  // Toggle TOC expanded/collapsed state
+  function toggleTOC() {
+    tocElement.classList.toggle('toc-expanded');
+  }
+  
+  // Close TOC when clicking outside
+  function closeTOC() {
+    tocElement.classList.remove('toc-expanded');
+  }
+  
+  // Smooth scroll to heading with animation
+  function scrollToHeading(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    
+    const offset = 80;
+    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+  }
+  
+  // Update active line and link highlighting
+  function updateActiveTOC() {
     let current = '';
     
     // Find the heading currently in view
     headings.forEach(function(heading) {
       const rect = heading.getBoundingClientRect();
-      if (rect.top <= 100) { // 100px offset from top
+      if (rect.top <= 100) {
         current = heading.id;
       }
     });
     
-    // Update active state
+    // Update active state on links
     tocLinks.forEach(function(link) {
       const href = link.getAttribute('href');
       const id = href ? href.substring(1) : '';
@@ -385,14 +508,29 @@ function toggleOriginal(element) {
         link.classList.remove('active');
       }
     });
+    
+    // Update active state on lines
+    const lines = document.querySelectorAll('.toc-line');
+    lines.forEach(function(line) {
+      const targetId = line.getAttribute('data-target');
+      
+      if (targetId === current) {
+        line.classList.add('active');
+      } else {
+        line.classList.remove('active');
+      }
+    });
   }
+  
+  // Initialize lines
+  initializeTOCLines();
   
   // Update on scroll (throttled with requestAnimationFrame)
   let ticking = false;
   window.addEventListener('scroll', function() {
     if (!ticking) {
       requestAnimationFrame(function() {
-        updateActiveTOCLink();
+        updateActiveTOC();
         ticking = false;
       });
       ticking = true;
@@ -400,27 +538,46 @@ function toggleOriginal(element) {
   }, { passive: true });
   
   // Update on page load
-  updateActiveTOCLink();
+  updateActiveTOC();
   
-  // Smooth scroll for TOC links
+  // Reinitialize on resize (in case screen size changes)
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      initializeTOCLines();
+      updateActiveTOC();
+    }, 250);
+  });
+  
+  // Smooth scroll for TOC links in the expanded card
   tocLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
       if (href && href.startsWith('#')) {
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          const offset = 80; // Account for sticky header if any
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-        }
+        const targetId = href.substring(1);
+        e.preventDefault();
+        scrollToHeading(targetId);
+        // Close TOC after navigation
+        closeTOC();
       }
     });
   });
+  
+  // Close TOC when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!tocElement.contains(e.target) && tocElement.classList.contains('toc-expanded')) {
+      closeTOC();
+    }
+  });
+  
+  // Prevent clicks inside TOC card from closing it
+  const tocContent = tocElement.querySelector('.toc-content');
+  if (tocContent) {
+    tocContent.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
 })();
 
 // Prefetch recent post links on hover for faster navigation

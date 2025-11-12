@@ -4,7 +4,7 @@ date = 2024-11-10
 description = "Demonstration of dithered image processing with toggle functionality"
 featured = true
 
-[taxonomies]
+
 tags = ["apacible", "images", "dithering", "example"]
 categories = ["Examples"]
 +++

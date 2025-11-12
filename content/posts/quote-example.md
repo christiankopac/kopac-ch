@@ -3,7 +3,7 @@ title = "Example: Quotes"
 date = 2024-08-16
 description = "Example post showing styled quotes"
 
-[taxonomies]
+
 tags = ["apacible", "example", "quote"]
 +++
 

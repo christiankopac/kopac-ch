@@ -2,8 +2,6 @@
 title = "Responsive Typography Techniques"
 date = 2024-09-30
 description = "Modern approaches to fluid typography"
-
-[taxonomies]
 tags = ["typography", "css", "responsive"]
 categories = ["Design"]
 +++

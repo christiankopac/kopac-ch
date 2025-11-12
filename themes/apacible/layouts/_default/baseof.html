@@ -7,9 +7,15 @@
     <!-- Set theme immediately to prevent flash -->
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        document.documentElement.style.colorScheme = theme;
+        try {
+          const theme = localStorage.getItem('theme') || 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          // Fallback to light theme if localStorage fails
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.style.colorScheme = 'light';
+        }
       })();
     </script>
     {{ block "desc" . }}
@@ -130,7 +136,11 @@
     {{ end }}
     
     <!-- Back to top link - fixed position, aligned with footer icons -->
-    <a href="#" id="back-to-top" class="back-to-top-footer" aria-label="Back to top" title="Back to top">ᛒ</a>
+    <button id="back-to-top" class="back-to-top-footer" aria-label="Back to top" title="Back to top">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M10 4L10 16M10 4L4 10M10 4L16 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
     
     <!-- NOTE: Scripts -->
     {{ block "script" . }}{{ end }}

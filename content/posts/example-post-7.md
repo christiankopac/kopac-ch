@@ -3,7 +3,7 @@ title = "The Future of Web Components"
 date = 2024-08-15
 description = "Web Components are revolutionizing front-end development"
 toc = false
-[taxonomies]
+
 tags = ["web components", "html", "javascript"]
 categories = ["Development"]
 +++

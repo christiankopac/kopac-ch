@@ -3,7 +3,7 @@ title = "Progressive Web Apps in 2025"
 date = 2025-01-08
 description = "Building modern PWAs with the latest technologies"
 
-[taxonomies]
+
 tags = ["pwa", "web apps", "mobile"]
 categories = ["Development"]
 +++

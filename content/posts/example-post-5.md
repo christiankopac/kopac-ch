@@ -3,7 +3,7 @@ title = "Building Accessible Websites"
 date = 2024-10-12
 description = "Best practices for web accessibility"
 
-[taxonomies]
+
 tags = ["accessibility", "a11y", "web standards"]
 categories = ["Development"]
 +++

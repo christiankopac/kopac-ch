@@ -5,7 +5,7 @@ description = "Example post showing outdated content alert"
 outdate_alert = true
 outdate_alert_days = 90
 
-[taxonomies]
+
 tags = ["apacible", "example", "alert"]
 +++
 

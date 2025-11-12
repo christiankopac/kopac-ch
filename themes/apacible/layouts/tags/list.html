@@ -1,7 +1,8 @@
+{{/* Single tag term (e.g., posts with tag "css") */}}
 {{ define "content" }}
 <section class="blog">
     <header>
-        <h1>{{ .Title }}</h1>
+        <h1>Tag: {{ .Title }}</h1>
         {{ with .Description }}
             <p>{{ . }}</p>
         {{ end }}

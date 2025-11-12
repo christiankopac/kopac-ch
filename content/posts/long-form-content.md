@@ -3,7 +3,7 @@ title = "Example: Long Form Content"
 date = 2024-11-03
 description = "An example of longer-form writing with multiple sections"
 toc = false
-[taxonomies]
+
 tags = ["apacible", "example"]
 +++
 

@@ -270,28 +270,54 @@
 
 /* Mermaid Container - Seamless integration */
 .mermaid-container {
-  margin: 2.5rem 0;
-  padding: 1.5rem 0;
-  background: transparent;
+  margin: var(--space-xl) 0;
+  padding: 0;
+  background: transparent !important;
   border-radius: 0;
   overflow-x: auto;
+  width: 100%;
 }
 
 .mermaid-container .mermaid {
-  margin: 0;
+  margin: 0 auto;
+  padding: var(--space-md) 0;
   text-align: center;
-  background: transparent;
+  background: transparent !important;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Make SVG background transparent */
+/* Make SVG background transparent and properly sized */
 .mermaid-container .mermaid svg {
   background: transparent !important;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Ensure text is readable */
+/* Ensure text is readable and properly sized */
 .mermaid-container .mermaid text {
   fill: var(--color-text) !important;
-  font-family: inherit;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+/* Override any inline styles for SVG groups - aggressive override */
+.mermaid-container .mermaid svg g,
+.mermaid-container .mermaid svg g[id^="mermaid-"],
+.mermaid-container .mermaid svg > g {
+  fill: var(--color-text) !important;
+  font-family: var(--font-family) !important;
+}
+
+/* Override hard-coded fill colors */
+.mermaid-container .mermaid svg [fill="#1a1a1a"],
+.mermaid-container .mermaid svg [fill="#333333"],
+.mermaid-container .mermaid svg [fill="#000000"],
+.mermaid-container .mermaid svg [fill="black"] {
+  fill: var(--color-text) !important;
 }
 
 /* Improve contrast for labels and text */
@@ -307,14 +333,16 @@
 .mermaid-container .mermaid .node circle,
 .mermaid-container .mermaid .node ellipse,
 .mermaid-container .mermaid .node polygon {
-  fill: var(--color-bg) !important;
+  fill: var(--color-bg-secondary) !important;
   stroke: var(--color-border) !important;
+  stroke-width: 1.5px;
 }
 
 /* Sequence diagram improvements - blend with background */
 .mermaid-container .mermaid .actor {
-  fill: var(--color-bg) !important;
-  stroke: var(--color-accent) !important;
+  fill: var(--color-bg-secondary) !important;
+  stroke: var(--color-border) !important;
+  stroke-width: 1.5px;
 }
 
 .mermaid-container .mermaid .messageLine0,
@@ -346,9 +374,24 @@
   opacity: 0.3;
 }
 
-/* Make all backgrounds transparent or match page, but allow colored elements */
-.mermaid-container .mermaid g rect[fill]:not(.quadrant-point):not([class*="quadrant"]):not([class*="pie"]),
+/* Make all backgrounds match page background, but allow colored elements */
+.mermaid-container .mermaid g rect[fill]:not(.quadrant-point):not([class*="quadrant"]):not([class*="pie"]):not(.er):not([class*="entity"]),
 .mermaid-container .mermaid g polygon[fill]:not([class*="quadrant"]):not([class*="pie"]) {
+  fill: var(--color-bg) !important;
+}
+
+/* Fix white backgrounds in mermaid diagrams */
+.mermaid-container .mermaid rect[style*="fill: rgb(255, 255, 255)"],
+.mermaid-container .mermaid rect[style*="fill:rgb(255, 255, 255)"],
+.mermaid-container .mermaid rect[fill="#ffffff"],
+.mermaid-container .mermaid rect[fill="white"] {
+  fill: var(--color-bg) !important;
+}
+
+.mermaid-container .mermaid polygon[style*="fill: rgb(255, 255, 255)"],
+.mermaid-container .mermaid polygon[style*="fill:rgb(255, 255, 255)"],
+.mermaid-container .mermaid polygon[fill="#ffffff"],
+.mermaid-container .mermaid polygon[fill="white"] {
   fill: var(--color-bg) !important;
 }
 
@@ -405,6 +448,12 @@
 .mermaid-container .mermaid .taskText2,
 .mermaid-container .mermaid .taskText3 {
   fill: var(--color-text) !important;
+}
+
+/* Force all background rectangles to match page background */
+.mermaid-container .mermaid svg > rect,
+.mermaid-container .mermaid svg > g > rect:first-child {
+  fill: var(--color-bg) !important;
 }
 
 @media (max-width: 640px) {

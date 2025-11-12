@@ -5,22 +5,36 @@
     const theme = document.documentElement.getAttribute('data-theme') || 'light';
     const isDark = theme === 'dark';
     
+    // Get CSS variables from computed styles
+    const styles = getComputedStyle(document.documentElement);
+    const bgColor = styles.getPropertyValue('--color-bg').trim();
+    const bgSecondary = styles.getPropertyValue('--color-bg-secondary').trim();
+    const textColor = styles.getPropertyValue('--color-text').trim();
+    const borderColor = styles.getPropertyValue('--color-border').trim();
+    
     if (isDark) {
       return {
         theme: 'dark',
         themeVariables: {
           primaryColor: '#e8a89a',
-          primaryTextColor: '#f5f0e8',
+          primaryTextColor: textColor,
           primaryBorderColor: '#f5c8ba',
           lineColor: '#c5b5ba',
           secondaryColor: '#a5c9b5',
           tertiaryColor: '#b5bdd9',
-          background: 'transparent',
-          mainBkg: '#1f1619',
-          secondBkg: '#2a1f23',
-          textColor: '#f5f0e8',
-          border1: '#3d2f35',
-          border2: '#4d3d45'
+          background: bgColor,
+          mainBkg: bgColor,
+          secondBkg: bgColor,
+          textColor: textColor,
+          border1: borderColor,
+          border2: borderColor,
+          nodeBorder: borderColor,
+          clusterBkg: bgSecondary,
+          clusterBorder: borderColor,
+          defaultLinkColor: textColor,
+          titleColor: textColor,
+          edgeLabelBackground: bgColor,
+          nodeTextColor: textColor
         }
       };
     } else {
@@ -28,17 +42,24 @@
         theme: 'base',
         themeVariables: {
           primaryColor: '#d98a7a',
-          primaryTextColor: '#1a1a1a',
+          primaryTextColor: textColor,
           primaryBorderColor: '#b87a6a',
           lineColor: '#4a524a',
           secondaryColor: '#7aa88a',
           tertiaryColor: '#8a9ab8',
-          background: 'transparent',
-          mainBkg: '#dfe5db',
-          secondBkg: '#d2d9cd',
-          textColor: '#1a1a1a',
-          border1: '#c8d0c2',
-          border2: '#b8c2b0'
+          background: bgColor,
+          mainBkg: bgColor,
+          secondBkg: bgColor,
+          textColor: textColor,
+          border1: borderColor,
+          border2: borderColor,
+          nodeBorder: borderColor,
+          clusterBkg: bgSecondary,
+          clusterBorder: borderColor,
+          defaultLinkColor: textColor,
+          titleColor: textColor,
+          edgeLabelBackground: bgColor,
+          nodeTextColor: textColor
         }
       };
     }
@@ -50,7 +71,23 @@
       startOnLoad: true, 
       theme: config.theme,
       themeVariables: config.themeVariables,
-      securityLevel: 'loose'
+      securityLevel: 'loose',
+      fontFamily: 'inherit',
+      fontSize: 18,
+      htmlLabels: true,
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      },
+      sequence: {
+        useMaxWidth: true,
+        diagramMarginX: 50,
+        diagramMarginY: 10,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35
+      }
     });
   }
   
@@ -70,7 +107,23 @@
       startOnLoad: false,
       theme: config.theme,
       themeVariables: config.themeVariables,
-      securityLevel: 'loose'
+      securityLevel: 'loose',
+      fontFamily: 'inherit',
+      fontSize: 18,
+      htmlLabels: true,
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      },
+      sequence: {
+        useMaxWidth: true,
+        diagramMarginX: 50,
+        diagramMarginY: 10,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35
+      }
     });
     
     // Re-render all mermaid diagrams
