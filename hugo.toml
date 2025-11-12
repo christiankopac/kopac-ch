@@ -119,11 +119,6 @@ theme = "apacible"
   is_external = false
 
 [[params.sections]]
-  name = "picks"
-  path = "/picks"
-  is_external = false
-
-[[params.sections]]
   name = "about"
   path = "/about"
   is_external = false
@@ -131,4 +126,9 @@ theme = "apacible"
 [[params.sections]]
   name = "now"
   path = "/now"
+  is_external = false
+
+[[params.sections]]
+  name = "picks"
+  path = "/picks"
   is_external = false

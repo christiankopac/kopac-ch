@@ -9,6 +9,16 @@
 
 {{ $title := .Get "title" | default "Note" }}
 {{ $icon := cond (.Site.Params.use_runes | default true) "ᛁ" "i" }}
+{{ $content := .Inner | .Page.RenderString }}
+{{/* Merge adjacent paragraphs that contain inline shortcodes for better inline rendering */}}
+{{/* Handle paragraph ending with "Last updated:" followed by date span and period (most common case) */}}
+{{ $content = $content | replaceRE `Last updated:</p>.*?<span class="lastmod-date">([^<]+)</span>\.` `Last updated: <span class="lastmod-date">$1</span>.</p>` }}
+{{/* Handle "Last updated: [date]." pattern with separate paragraphs */}}
+{{ $content = $content | replaceRE `<p>([^<]*Last updated:)</p>\s*<p><span class="lastmod-date">([^<]+)</span></p>\s*<p>\.</p>` `<p>$1 <span class="lastmod-date">$2</span>.</p>` }}
+{{/* Handle general case: text followed by date shortcode */}}
+{{ $content = $content | replaceRE `<p>([^<]+)</p>\s*<p><span class="lastmod-date">([^<]+)</span></p>` `<p>$1 <span class="lastmod-date">$2</span></p>` }}
+{{/* Handle standalone date shortcode followed by period */}}
+{{ $content = $content | replaceRE `<p><span class="lastmod-date">([^<]+)</span></p>\s*<p>\.</p>` `<span class="lastmod-date">$1</span>.` }}
 
 <div class="callout callout-note">
   <div class="callout-header">
@@ -16,7 +26,7 @@
     <span class="callout-title">{{ $title }}</span>
   </div>
   <div class="callout-content">
-    {{ .Inner | .Page.RenderString }}
+    {{ $content | safeHTML }}
   </div>
 </div>
 

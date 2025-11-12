@@ -6,8 +6,10 @@ outputs = ["HTML"]
 
 # What I’m Doing Now
 
-{{< note title="NOW?" >}}
-_This is a "now" page, inspired by [nownownow.com](https://nownownow.com/about). Last updated: {{< lastmod format="January 2006" >}}._
+{{< note title="What is this about?" >}}
+This is a _**now**_ page, inspired by [nownownow.com](https://nownownow.com/about).
+
+Last updated: {{< lastmod format="January 2006" >}}.
 {{< /note >}}
 
 ## Location
