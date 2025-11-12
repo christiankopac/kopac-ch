@@ -1,11 +1,10 @@
 +++
-title = "Example: Markdown"
+title = "Apacible Theme: Markdown"
 date = 2025-11-04
 updated = 2025-11-04
 featured = true
-
-
-tags = ["apacible", "example","markdown"]
+categories = ["Markdown"]
+tags = ["example","markdown"]
 lang = "en"
 toc = true
 +++

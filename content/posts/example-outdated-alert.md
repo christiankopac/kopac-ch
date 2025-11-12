@@ -1,11 +1,10 @@
 +++
-title = "Example: Outdated Alert"
+title = "Apacible Theme: Outdated Alert"
 date = 2022-08-21
 description = "Example post showing outdated content alert"
 outdate_alert = true
 outdate_alert_days = 90
-
-
+categories = ["Apacible"]
 tags = ["apacible", "example", "alert"]
 +++
 

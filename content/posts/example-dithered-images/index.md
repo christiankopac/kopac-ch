@@ -1,12 +1,12 @@
 +++
-title = "Example: Dithered Images"
+title = "Apacible Theme: Dithered Images"
 date = 2024-11-10
 description = "Demonstration of dithered image processing with toggle functionality"
 featured = true
 
 
 tags = ["apacible", "images", "dithering", "example"]
-categories = ["Examples"]
+categories = ["Apacible"]
 +++
 
 This page demonstrates the dithered image functionality. Images are shown in their dithered form by default, which reduces file size while maintaining a unique aesthetic. Click "**→ show original**" link below each image to toggle between dithered and original versions.

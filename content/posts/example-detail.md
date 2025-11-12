@@ -1,9 +1,8 @@
 +++
-title = "Example: Detail"
+title = "Apacible Theme: Detail"
 date = 2025-11-04
-
-
-tags = ["apacible", "example", "detail"]
+tags = ["example", "detail"]
+categories = ["Apacible"]
 +++
 
 {{< detail title="Lorem ipsum dolor sit, amet consectetur adipisicing elit." >}}

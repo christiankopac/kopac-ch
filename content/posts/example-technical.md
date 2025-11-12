@@ -1,9 +1,8 @@
 +++
-title = "Example: Math and Code Snippets"
+title = "Apacible Theme: Math and Code Snippets"
 date = 2024-11-04
 description = "A comprehensive guide with various code examples"
-
-
+categories = ["Apacible"]
 tags = ["apacible", "example", "latex", "code"]
 +++
 

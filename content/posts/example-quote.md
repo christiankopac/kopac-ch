@@ -1,9 +1,8 @@
 +++
-title = "Example: Quotes"
+title = "Apacible Theme: Quotes"
 date = 2024-08-16
 description = "Example post showing styled quotes"
-
-
+categories = ["Apacible"]
 tags = ["apacible", "example", "quote"]
 +++
 

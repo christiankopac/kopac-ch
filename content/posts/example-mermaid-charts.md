@@ -1,10 +1,9 @@
 +++
-title = "Example: Mermaid Charts"
+title = "Apacible Theme: Mermaid Charts"
 date = 2024-06-03
 description = "Example post showing Mermaid diagrams"
-
-
-tags = ["apacible", "example", "chart", "mermaid"]
+categories = ["Apacible"]
+tags = ["example","mermaid"]
 +++
 
 *Powered by [Mermaid](https://mermaid.js.org)*

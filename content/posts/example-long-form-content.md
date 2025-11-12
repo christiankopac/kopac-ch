@@ -1,10 +1,10 @@
 +++
-title = "Example: Long Form Content"
+title = "Apacible Theme: Long Form Content"
 date = 2024-11-03
 description = "An example of longer-form writing with multiple sections"
-toc = false
-
-tags = ["apacible", "example"]
+toc = true
+tags = ["example"]
+categories = ["Apacible"]
 +++
 
 Long-form content serves an important purpose in the digital age. While short, snappy content has its place, deeper exploration of topics requires space to breathe and develop ideas fully.
