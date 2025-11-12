@@ -7,21 +7,20 @@
   {{< lastmod format="January 2, 2006" >}}
 */}}
 
-{{ $format := .Get "format" | default (.Site.Params.date_format | default "January 2006") }}
-{{ $page := .Page }}
-{{ if not $page }}
-  {{ $page = .Parent }}
-{{ end }}
-{{ $lastmod := $page.Lastmod }}
-{{ $date := "" }}
-{{ if not $lastmod.IsZero }}
-  {{ $date = $lastmod.Format $format }}
-{{ else if $page.GitInfo }}
-  {{ $date = $page.GitInfo.Lastmod.Format $format }}
-{{ else if not $page.Date.IsZero }}
-  {{ $date = $page.Date.Format $format }}
-{{ else }}
-  {{ $date = time.Now.Format $format }}
-{{ end }}
+{{- $format := .Get "format" | default (.Site.Params.date_format | default "January 2006") -}}
+{{- $page := .Page -}}
+{{- if not $page -}}
+  {{- $page = .Parent -}}
+{{- end -}}
+{{- $lastmod := $page.Lastmod -}}
+{{- $date := "" -}}
+{{- if not $lastmod.IsZero -}}
+  {{- $date = $lastmod.Format $format -}}
+{{- else if $page.GitInfo -}}
+  {{- $date = $page.GitInfo.Lastmod.Format $format -}}
+{{- else if not $page.Date.IsZero -}}
+  {{- $date = $page.Date.Format $format -}}
+{{- else -}}
+  {{- $date = time.Now.Format $format -}}
+{{- end -}}
 <span class="lastmod-date">{{ $date }}</span>
-

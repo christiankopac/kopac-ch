@@ -3,7 +3,7 @@ title = "Home"
 
 [params]
 name = "Christian Kopač"
-bio = "Welcome to my digital home"
+bio = "Builder, maker, perpetual learner"
 avatar = ""  # Leave empty to use default avatar with dithered effect
 
 # Social links
@@ -17,13 +17,19 @@ name = "Email"
 url = "mailto:hello@christiankopac.com"
 icon = "email"
 
+[[params.links]]
+name = "Bluesky"
+url = "https://bsky.app/profile/christiankopac.com"
+icon = "bluesky"
+
 # Recent posts section
-recent = false
+recent = true
 recent_max = 5
-recent_more_text = "more »"
+recent_more_text = "all posts →"
 
 date_format = "Jan 2, 2006"
 +++
 
-Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+I write about code, design, and the craft of building things that work. Sometimes I share what I'm learning, sometimes what I've figured out, and sometimes just what's on my mind.
+
+This is my corner of the internet—a place for thinking out loud and sharing the journey.

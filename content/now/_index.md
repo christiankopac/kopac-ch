@@ -4,13 +4,11 @@ description = "What I'm focused on right now"
 outputs = ["HTML"]
 +++
 
-# What I’m Doing Now
-
-{{< note title="What is this about?" >}}
+{{< detail title="Why now?" >}}
 This is a _**now**_ page, inspired by [nownownow.com](https://nownownow.com/about).
 
-Last updated: {{< lastmod format="January 2006" >}}.
-{{< /note >}}
+Last updated: _{{< lastmod format="January 2006" >}}_.
+{{< /detail >}}
 
 ## Location
 
@@ -37,7 +35,3 @@ Instead of a list of past work, a now page gives a snapshot of my current priori
 ---
 
 *Want to say hi? Reach out through the site’s contact links or check out my code on [GitHub](https://github.com/christiankopac).*
-
----
-
-*Site proudly built with Hugo & apacible, embracing simplicity, accessibility, and small file sizes.*
