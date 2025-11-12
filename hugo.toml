@@ -1,13 +1,11 @@
-# apacible hugo theme
+# Apacible theme
 #
 # > good-tempered, calm, pleasant
 #
-# - docs: https://github.com/christiankopac/apacible/blob/latest/USAGE.md
-# - check for updates: https://github.com/christiankopac/apacible/releases
 #==============================================================================
 
 # === Base ===
-baseURL = "http://localhost:1313/"
+baseURL = "http://christiankopac.com/"
 title = "CK"
 languageCode = "en"
 theme = "apacible"
@@ -101,7 +99,7 @@ theme = "apacible"
   footer_license = "cc-by-nc-nd"
   
   # Copyright year and holder (used for "copyright" type or as fallback)
-  copyright_holder = "Your Name"
+  copyright_holder = "Christian Kopač"
   copyright_year = "2025"
   
   # === 404 pages ===
