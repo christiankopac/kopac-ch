@@ -85,5 +85,29 @@
       </button>
     </div>
   </div>
+
+  {{/* Newsletter subscription form */}}
+  {{ if .Site.Params.newsletter_enabled }}
+  <div class="footer-newsletter">
+    <form method="post" action="http://newsletter.getgloria.synology.me/subscription/form" class="listmonk-form">
+      <div class="newsletter-content">
+        <h3>Subscribe</h3>
+        <input type="hidden" name="nonce" />
+
+        <div class="newsletter-inputs">
+          <input type="email" name="email" required placeholder="E-mail" aria-label="Email address" />
+          <input type="text" name="name" placeholder="Name (optional)" aria-label="Name" />
+        </div>
+
+        <div class="newsletter-checkbox">
+          <input id="newsletter-list-2b55f" type="checkbox" name="l" checked value="2b55fc5a-eaa4-471f-8c04-0a1e323dcbb1" />
+          <label for="newsletter-list-2b55f">kopac-ch</label>
+        </div>
+
+        <button type="submit">Subscribe</button>
+      </div>
+    </form>
+  </div>
+  {{ end }}
 </footer>
 
