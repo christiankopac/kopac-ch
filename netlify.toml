@@ -3,9 +3,8 @@
   publish = "public"
 
 [build.environment]
-  # Hugo version - Netlify will use the latest stable if not specified
-  # Uncomment and set if you need a specific version:
-  # HUGO_VERSION = "0.131.0"
+  # Hugo version - Netlify will install this version automatically
+  HUGO_VERSION = "0.152.2"
 
 # Redirect rules (if needed)
 # [[redirects]]
