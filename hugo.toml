@@ -144,7 +144,10 @@ theme = "apacible"
   # Copyright year and holder (used for "copyright" type or as fallback)
   copyright_holder = "Christian Kopač"
   copyright_year = "2025"
-  
+
+  # === Newsletter ===
+  newsletter_enabled = true
+
   # === 404 pages ===
   not_found_text = "404 Not Found"
   not_found_message = "The page you're looking for doesn't exist."
