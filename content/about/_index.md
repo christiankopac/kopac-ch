@@ -1,7 +1,7 @@
 +++
 title = "About"
 description = "About Christian Kopač"
-outputs = ["HTML"]
+outputs = ["HTML", "Gemini"]
 +++
 
 ## About Me
@@ -44,18 +44,6 @@ This theme uses Elder Futhark runes as semantic symbols throughout the interface
 - **ᛟ Odal** (Heritage, Home) — Marks featured content
 
 These symbols provide visual hierarchy while respecting smolweb constraints (no emoji, minimal Unicode overhead).
-
-## Projects
-
-Personal and professional projects
-
-{{< collection file="projects.toml" style="card" >}}
-
-## Skills
-
-Technologies and tools I'm familiar with.
-
-{{< collection file="skills.toml" style="inline" >}}
 
 ## Get In Touch
 

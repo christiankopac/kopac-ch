@@ -79,8 +79,8 @@
 
 /* Callouts */
 .callout {
-  margin: 2rem 0;
-  padding: 0rem 1.5rem; /* 1.25rem and 1.5rem are the same as the padding in the detail-content */ 
+  margin: 1.5rem 0;
+  padding: 0. em 1.25rem; 
   border-left: 3px solid;
   border-radius: 4px;
 }
@@ -88,7 +88,7 @@
 .callout-header {
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -118,9 +118,10 @@
 }
 
 .callout-content {
+  padding-left: 1.5rem;
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: var(--color-text);
+  /* Color is set by specific callout type */
 }
 
 .callout-content p {
@@ -128,83 +129,67 @@
 }
 
 .callout-content p:not(:last-child) {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Note - least important, subtle background */
+/* Note - least important, minimal style */
 .callout.callout-note {
-  background: var(--color-bg-secondary);
+  background: transparent;
   border-left-color: var(--color-accent-tertiary);
 }
 
 .callout.callout-note .callout-icon,
-.callout.callout-note .callout-title {
+.callout.callout-note .callout-title,
+.callout.callout-note .callout-content {
   color: var(--color-accent-tertiary);
 }
 
 /* Tip - slightly more important */
 .callout.callout-tip {
-  background: rgba(106, 148, 116, 0.08);
+  background: transparent;
   border-left-color: var(--color-accent-secondary);
 }
 
 .callout.callout-tip .callout-icon,
-.callout.callout-tip .callout-title {
+.callout.callout-tip .callout-title,
+.callout.callout-tip .callout-content {
   color: var(--color-accent-secondary);
 }
 
 /* Important - more important, more visible */
 .callout.callout-important {
-  background: rgba(199, 91, 74, 0.12);
+  background: transparent;
   border-left-color: var(--color-accent);
 }
 
 .callout.callout-important .callout-icon,
-.callout.callout-important .callout-title {
+.callout.callout-important .callout-title,
+.callout.callout-important .callout-content {
   color: var(--color-accent);
 }
 
 /* Warning - high importance, very visible */
 .callout.callout-warning {
-  background: rgba(212, 165, 116, 0.15);
+  background: transparent;
   border-left-color: #d4a574;
 }
 
 .callout.callout-warning .callout-icon,
-.callout.callout-warning .callout-title {
+.callout.callout-warning .callout-title,
+.callout.callout-warning .callout-content {
   color: #d4a574;
 }
 
 /* Caution - highest importance, most visible */
 .callout.callout-caution {
-  background: rgba(199, 91, 74, 0.18);
+  background: transparent;
   border-left-color: #c75b4a;
 }
 
 .callout.callout-caution .callout-icon,
-.callout.callout-caution .callout-title {
+.callout.callout-caution .callout-title,
+.callout.callout-caution .callout-content {
   color: #c75b4a;
-}
-
-/* Dark theme adjustments */
-[data-theme="dark"] .callout.callout-note {
-  background: rgba(176, 184, 224, 0.08);
-}
-
-[data-theme="dark"] .callout.callout-tip {
-  background: rgba(160, 200, 176, 0.1);
-}
-
-[data-theme="dark"] .callout.callout-important {
-  background: rgba(240, 160, 144, 0.12);
-}
-
-[data-theme="dark"] .callout.callout-warning {
-  background: rgba(212, 165, 116, 0.15);
-}
-
-[data-theme="dark"] .callout.callout-caution {
-  background: rgba(199, 91, 74, 0.2);
 }
 
 /* Quote Block - Beautiful and minimal */
@@ -220,8 +205,8 @@
   font-size: 1.25rem;
   line-height: 1.7;
   font-style: italic;
-  color: var(--color-text);
-  background: var(--color-bg-secondary);
+  color: var(--color-accent);
+  background: transparent;
   border-left: 4px solid var(--color-accent);
   border-radius: 4px;
   position: relative;
@@ -235,7 +220,7 @@
   font-size: 4rem;
   line-height: 1;
   color: var(--color-accent);
-  opacity: 0.2;
+  opacity: 0.15;
   font-family: Georgia, serif;
 }
 
@@ -253,9 +238,9 @@
   margin-top: 1rem;
   padding-left: 2.5rem;
   font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  color: var(--color-accent);
   font-style: normal;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .quote-cite::before {
@@ -285,28 +270,54 @@
 
 /* Mermaid Container - Seamless integration */
 .mermaid-container {
-  margin: 2.5rem 0;
-  padding: 1.5rem 0;
-  background: transparent;
+  margin: var(--space-xl) 0;
+  padding: 0;
+  background: transparent !important;
   border-radius: 0;
   overflow-x: auto;
+  width: 100%;
 }
 
 .mermaid-container .mermaid {
-  margin: 0;
+  margin: 0 auto;
+  padding: var(--space-md) 0;
   text-align: center;
-  background: transparent;
+  background: transparent !important;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Make SVG background transparent */
+/* Make SVG background transparent and properly sized */
 .mermaid-container .mermaid svg {
   background: transparent !important;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Ensure text is readable */
+/* Ensure text is readable and properly sized */
 .mermaid-container .mermaid text {
   fill: var(--color-text) !important;
-  font-family: inherit;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+/* Override any inline styles for SVG groups - aggressive override */
+.mermaid-container .mermaid svg g,
+.mermaid-container .mermaid svg g[id^="mermaid-"],
+.mermaid-container .mermaid svg > g {
+  fill: var(--color-text) !important;
+  font-family: var(--font-family) !important;
+}
+
+/* Override hard-coded fill colors */
+.mermaid-container .mermaid svg [fill="#1a1a1a"],
+.mermaid-container .mermaid svg [fill="#333333"],
+.mermaid-container .mermaid svg [fill="#000000"],
+.mermaid-container .mermaid svg [fill="black"] {
+  fill: var(--color-text) !important;
 }
 
 /* Improve contrast for labels and text */
@@ -322,14 +333,16 @@
 .mermaid-container .mermaid .node circle,
 .mermaid-container .mermaid .node ellipse,
 .mermaid-container .mermaid .node polygon {
-  fill: var(--color-bg) !important;
+  fill: var(--color-bg-secondary) !important;
   stroke: var(--color-border) !important;
+  stroke-width: 1.5px;
 }
 
 /* Sequence diagram improvements - blend with background */
 .mermaid-container .mermaid .actor {
-  fill: var(--color-bg) !important;
-  stroke: var(--color-accent) !important;
+  fill: var(--color-bg-secondary) !important;
+  stroke: var(--color-border) !important;
+  stroke-width: 1.5px;
 }
 
 .mermaid-container .mermaid .messageLine0,
@@ -361,9 +374,24 @@
   opacity: 0.3;
 }
 
-/* Make all backgrounds transparent or match page, but allow colored elements */
-.mermaid-container .mermaid g rect[fill]:not(.quadrant-point):not([class*="quadrant"]):not([class*="pie"]),
+/* Make all backgrounds match page background, but allow colored elements */
+.mermaid-container .mermaid g rect[fill]:not(.quadrant-point):not([class*="quadrant"]):not([class*="pie"]):not(.er):not([class*="entity"]),
 .mermaid-container .mermaid g polygon[fill]:not([class*="quadrant"]):not([class*="pie"]) {
+  fill: var(--color-bg) !important;
+}
+
+/* Fix white backgrounds in mermaid diagrams */
+.mermaid-container .mermaid rect[style*="fill: rgb(255, 255, 255)"],
+.mermaid-container .mermaid rect[style*="fill:rgb(255, 255, 255)"],
+.mermaid-container .mermaid rect[fill="#ffffff"],
+.mermaid-container .mermaid rect[fill="white"] {
+  fill: var(--color-bg) !important;
+}
+
+.mermaid-container .mermaid polygon[style*="fill: rgb(255, 255, 255)"],
+.mermaid-container .mermaid polygon[style*="fill:rgb(255, 255, 255)"],
+.mermaid-container .mermaid polygon[fill="#ffffff"],
+.mermaid-container .mermaid polygon[fill="white"] {
   fill: var(--color-bg) !important;
 }
 
@@ -422,6 +450,12 @@
   fill: var(--color-text) !important;
 }
 
+/* Force all background rectangles to match page background */
+.mermaid-container .mermaid svg > rect,
+.mermaid-container .mermaid svg > g > rect:first-child {
+  fill: var(--color-bg) !important;
+}
+
 @media (max-width: 640px) {
   .mermaid-container {
     margin: 2rem 0;
@@ -434,8 +468,23 @@
   margin: 2rem 0;
   padding: 1.25rem 1.5rem;
   background: var(--color-bg-secondary);
-  border-left: 4px solid var(--color-accent);
+  border-left: 4px solid #d4a574;
   border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.outdate-alert-icon {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: #d4a574;
+  line-height: 1;
+  margin-top: 0.125rem;
+}
+
+.outdate-alert-content {
+  flex: 1;
 }
 
 .outdate-alert strong {
@@ -470,71 +519,4 @@
   text-align: left;
   white-space: pre-wrap;
 }
-
-/* Gallery - Grid of images */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(var(--gallery-columns, 3), 1fr);
-  gap: 1.5rem;
-  margin: 3rem 0;
-}
-
-.gallery-item {
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow: hidden;
-  border-radius: 8px;
-  background: var(--color-bg-secondary);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: zoom-in;
-}
-
-.gallery-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="dark"] .gallery-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.gallery-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  cursor: zoom-in;
-  mix-blend-mode: multiply;
-  transition: mix-blend-mode 0.3s ease;
-}
-
-.gallery-image:hover {
-  mix-blend-mode: normal;
-}
-
-.gallery-item figcaption {
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--color-text-secondary);
-  text-align: center;
-}
-
-/* Responsive gallery layout */
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
 

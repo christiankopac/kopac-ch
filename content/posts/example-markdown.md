@@ -5,7 +5,6 @@ updated = 2025-11-04
 featured = true
 categories = ["Markdown"]
 tags = ["example","markdown"]
-lang = "en"
 toc = true
 +++
 

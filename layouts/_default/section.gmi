@@ -1,0 +1,26 @@
+{{- $title := .Title | default .Site.Title -}}
+# {{ $title }}
+
+{{- with .Description }}
+{{ . | plainify }}
+
+{{- end -}}
+{{- $body := partial "gemini/content.gmi" . -}}
+{{- if $body -}}
+{{ $body }}
+
+{{- end -}}
+{{- if .Pages }}
+## Pages
+{{- range .Pages }}
+  {{- $page := . -}}
+  {{- $link := $page.RelPermalink -}}
+  {{- with $page.OutputFormats.Get "Gemini" }}
+    {{- $link = .RelPermalink -}}
+  {{- end }}
+=> {{ $link }} {{ $page.Title }}
+{{- with $page.Params.description }}    {{ . | plainify }}{{ end }}
+
+{{- end -}}
+{{- end -}}
+=> {{ .Permalink }} Web version

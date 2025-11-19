@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  {{- $eligible := where .Site.RegularPages "Section" "in" (slice "posts" "picks") -}}
+  {{- $pages := first 20 ($eligible.ByLastmod.Reverse) -}}
+  {{- $self := .OutputFormats.Get "Atom" -}}
+  {{- $html := .OutputFormats.Get "HTML" -}}
+  <title>{{ .Site.Title }}</title>
+  <id>{{ with $html }}{{ .Permalink }}{{ else }}{{ .Permalink }}{{ end }}</id>
+  <updated>{{ with index $pages 0 }}{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ now.UTC.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}</updated>
+  {{- with $self }}
+  <link rel="self" type="application/atom+xml" href="{{ .Permalink }}" />
+  {{- end }}
+  {{- with $html }}
+  <link rel="alternate" type="text/html" href="{{ .Permalink }}" />
+  {{- end }}
+  {{- with .Site.Params.description }}
+  <subtitle>{{ . | plainify }}</subtitle>
+  {{- end }}
+  <generator uri="https://gohugo.io/" version="{{ hugo.Version }}">Hugo</generator>
+  {{- range $pages }}
+  <entry>
+    <title>{{ .Title }}</title>
+    <link rel="alternate" type="text/html" href="{{ .Permalink }}" />
+    <id>{{ .Permalink }}</id>
+    <updated>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+    {{- with .Date }}
+    <published>{{ .Format "2006-01-02T15:04:05Z07:00" }}</published>
+    {{- end }}
+    <author>
+      <name>{{ with .Params.author }}{{ . }}{{ else }}{{ $.Site.Title }}{{ end }}</name>
+    </author>
+    {{- with .Params.description }}
+    <summary>{{ . | plainify }}</summary>
+    {{- else }}{{ with .Summary }}
+    <summary>{{ . | plainify }}</summary>
+    {{- end }}{{ end }}
+    <content type="html"><![CDATA[{{ .Content | safeHTML }}]]></content>
+  </entry>
+  {{- end }}
+</feed>

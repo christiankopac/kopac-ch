@@ -1,0 +1,24 @@
+{{- $title := .Title | default .Site.Title -}}
+# {{ $title }}
+
+{{- with .Description }}
+{{ . | plainify }}
+
+{{- end -}}
+{{- range .Pages }}
+{{- $page := . -}}
+{{- $link := $page.RelPermalink -}}
+{{- with $page.OutputFormats.Get "Gemini" }}
+  {{- $link = .RelPermalink -}}
+{{- end }}
+=> {{ $link }} {{ $page.Title }}
+{{ with $page.Date }}
+    {{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}
+{{ end }}
+{{- with $page.Params.description }}{{ . | plainify }}
+{{- else }}{{ with $page.Summary }}{{ . | plainify }}{{ end }}
+{{- end }}
+
+{{- end -}}
+
+=> {{ .Permalink }} Web version

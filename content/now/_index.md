@@ -1,7 +1,7 @@
 +++
 title = "Now"
 description = "What I'm focused on right now"
-outputs = ["HTML"]
+outputs = ["HTML", "Gemini"]
 +++
 
 {{< detail title="Why now?" >}}

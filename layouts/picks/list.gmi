@@ -1,0 +1,98 @@
+{{- $pageTitle := .Title | default .Site.Title -}}
+# {{ $pageTitle }}
+
+{{- with .Description }}
+{{ printf "%s\n\n" (. | plainify) }}
+{{- end }}
+{{- $items := .Site.Data.consumed.collection | default (slice) -}}
+{{- $groups := dict -}}
+{{- range $items }}
+  {{- if not .draft }}
+    {{- $category := lower (.category | default "other") -}}
+    {{- $existing := index $groups $category | default (slice) -}}
+    {{- $groups = merge $groups (dict $category ($existing | append .)) -}}
+  {{- end }}
+{{- end }}
+{{- $keys := slice -}}
+{{- range $k, $_ := $groups }}
+  {{- $keys = $keys | append $k -}}
+{{- end }}
+{{- $preferredOrder := slice "books" "movies" "music" -}}
+{{- $orderedKeys := slice -}}
+{{- range $preferredOrder }}
+  {{- if index $groups . }}
+    {{- $orderedKeys = $orderedKeys | append . -}}
+  {{- end }}
+{{- end }}
+{{- range sort $keys }}
+  {{- if not (in $orderedKeys .) }}
+    {{- $orderedKeys = $orderedKeys | append . -}}
+  {{- end }}
+{{- end }}
+{{- range $orderedKeys }}
+  {{- $entries := index $groups . -}}
+  {{- $categoryTitle := cond (ne . "other") (. | title) "Selections" -}}
+
+## {{ $categoryTitle | humanize }}
+
+{{ range $entries }}
+{{- $categoryLabel := lower (.category | default "") -}}
+{{- $title := .title | default "Untitled" -}}
+{{- $heading := $title -}}
+{{- if eq $categoryLabel "music" }}
+  {{- with .artist }}
+    {{- $heading = printf "%s (%s)" $title . -}}
+  {{- end }}
+{{- end }}
+{{- printf "### %s\n" $heading -}}
+{{- $details := slice -}}
+{{- with .year }}
+  {{- $details = $details | append (printf "Year: %s" .) -}}
+{{- end }}
+{{- if eq $categoryLabel "books" }}
+  {{- with .author }}
+    {{- $details = $details | append (printf "Author: %s" .) -}}
+  {{- end }}
+{{- else if eq $categoryLabel "movies" }}
+  {{- with .director }}
+    {{- $details = $details | append (printf "Director: %s" .) -}}
+  {{- end }}
+{{- else if eq $categoryLabel "music" }}
+  {{- with .artist }}
+    {{- $details = $details | append (printf "Artist: %s" .) -}}
+  {{- end }}
+  {{- with .label }}
+    {{- $details = $details | append (printf "Label: %s" .) -}}
+  {{- end }}
+{{- else }}
+  {{- with .author }}
+    {{- $details = $details | append (printf "Author: %s" .) -}}
+  {{- end }}
+  {{- with .director }}
+    {{- $details = $details | append (printf "Director: %s" .) -}}
+  {{- end }}
+  {{- with .artist }}
+    {{- $details = $details | append (printf "Artist: %s" .) -}}
+  {{- end }}
+{{- end }}
+{{- with .rating }}
+  {{- $details = $details | append (printf "Rating: %v/5" .) -}}
+{{- end }}
+{{- with .footer }}
+  {{- $details = $details | append (. | plainify) -}}
+{{- end }}
+{{- with .content }}
+  {{- $summary := strings.TrimSpace (. | plainify) -}}
+  {{- if ne $summary "" }}
+    {{- $details = $details | append (printf "Summary: %s" $summary) -}}
+  {{- end }}
+{{- end }}
+{{- range $details }}
+* {{ . }}
+{{- end }}
+{{ printf "\n" }}
+{{- end }}
+
+{{- end }}
+=> {{ .Permalink }} Web version
+

@@ -1,0 +1,26 @@
+{{- $scratch := newScratch -}}
+{{- if .RawContent -}}
+  {{- $scratch.Set "content" .RawContent -}}
+{{- else if .Plain -}}
+  {{- $scratch.Set "content" .Plain -}}
+{{- else if .Content -}}
+  {{- $scratch.Set "content" (.Content | plainify) -}}
+{{- else -}}
+  {{- $scratch.Set "content" "" -}}
+{{- end -}}
+{{- $scratch.Set "content" (replaceRE `(?s)\{\{%.*?%\}\}` "" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `(?s)\{\{<.*?>\}\}` "" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `\r\n` "\n" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `(?m)^>+\s*` "" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `!\[([^\]]+)\]\(([^)]+)\)` "=> $2 $1" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `\[([^\]]+)\]\(([^)]+)\)` `$1 ($2)` ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replace ($scratch.Get "content") "**" "") -}}
+{{- $scratch.Set "content" (replace ($scratch.Get "content") "__" "") -}}
+{{- $scratch.Set "content" (replaceRE `(?m)^\s*-{3,}\s*$` "" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `(?m)^\s*[-\*\+]\s*` "* " ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `(?m)[ \t]+=>` "=>" ($scratch.Get "content")) -}}
+{{- $scratch.Set "content" (replaceRE `(?m)(.)=>` "$1\n=>" ($scratch.Get "content")) -}}
+{{- $content := strings.TrimSpace ($scratch.Get "content") -}}
+{{- if $content }}
+{{- printf "%s\n" $content -}}  
+{{- end -}}

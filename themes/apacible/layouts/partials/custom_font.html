@@ -1,3 +1,20 @@
 {{/* Optional: Add custom fonts here */}}
-{{/* Example: <link rel="preconnect" href="https://fonts.googleapis.com"> */}}
+{{/*
+  Font Loading Best Practices:
 
+  1. Preconnect to font CDNs for faster DNS resolution:
+     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  2. Preload critical fonts (only fonts used above the fold):
+     <link rel="preload" href="/fonts/YourFont.woff2" as="font" type="font/woff2" crossorigin>
+
+  3. Use font-display in @font-face CSS:
+     - swap: Show fallback immediately, swap when font loads (best for most cases)
+     - optional: Only show font if it loads quickly, otherwise use fallback
+     - fallback: Brief block period, swap if loads in time
+
+  4. Self-host fonts when possible for better performance and privacy
+
+  Current theme uses system fonts (no external font loading needed) for optimal performance.
+*/}}

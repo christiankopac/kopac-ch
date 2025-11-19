@@ -1,0 +1,13 @@
+{{- $title := .Title | default "Terms" -}}
+# {{ $title }}
+
+{{- range .Data.Terms.Alphabetical }}
+  {{- $termPage := .Page -}}
+  {{- $link := $termPage.RelPermalink -}}
+  {{- with $termPage.OutputFormats.Get "Gemini" }}
+    {{- $link = .RelPermalink -}}
+  {{- end }}
+=> {{ $link }} {{ $termPage.Title }} ({{ .Count }})
+{{- end -}}
+
+=> {{ .Permalink }} Web version

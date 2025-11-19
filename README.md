@@ -26,6 +26,24 @@ Process images with dithering effect:
 ./scripts/dither_images.sh assets --recursive --overwrite
 ```
 
+### Gemini Output
+
+The site now emits Gemini-compatible `.gmi` files alongside the HTML build:
+
+```bash
+# Build both HTML and Gemini outputs
+hugo
+
+# Inspect generated Gemini files
+find public -name '*.gmi'
+```
+
+You can publish the contents of `public/` as-is to a Gemini capsule (the build mirrors the same permalink structure, with `index.gmi` files for each page).
+
+### Atom Feed
+
+The primary Atom feed is published at `https://christiankopac.com/atom.xml`. It aggregates updates from the `posts` and `picks` sections. Each section also exposes its own feed (for example, `https://christiankopac.com/posts/atom.xml`).
+
 ## Theme
 
 This site uses the [apacible](themes/apacible/) Hugo theme, which focuses on:

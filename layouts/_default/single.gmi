@@ -1,0 +1,20 @@
+{{- $title := .Title | default "Untitled" -}}
+# {{ $title }}
+
+{{- with .Date }}
+Published {{ .Format "2006-01-02" }}{{ with $.Lastmod }}{{ if ne . $.Date }} · Updated {{ .Format "2006-01-02" }}{{ end }}{{ end }}
+
+{{- end -}}
+{{- with .Description }}
+{{ printf "%s\n\n" (. | plainify) }}
+{{- end -}}
+{{ partial "gemini/content.gmi" . }}
+
+{{- with .Params.tags }}
+## Tags
+{{- range . }}
+* {{ . }}
+{{- end }}
+
+{{- end -}}
+=> {{ .Permalink }} Web version

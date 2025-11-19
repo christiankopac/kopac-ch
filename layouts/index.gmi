@@ -1,0 +1,37 @@
+{{- $title := .Params.name | default .Site.Title -}}
+# {{ $title }}
+
+{{- with .Site.Params.description }}
+{{ . | plainify }}
+
+{{- end -}}
+{{- with .Params.bio }}
+{{ . | plainify }}
+
+{{- end -}}
+{{- if .Content }}
+{{ partial "gemini/content.gmi" . }}
+
+{{- end -}}
+{{- with .Site.Params.sections }}
+## Explore
+{{ range . }}
+  {{- if .is_external -}}
+{{ printf "=> %s %s\n" .path .name -}}
+  {{- else -}}
+    {{- $page := $.Site.GetPage .path -}}
+    {{- if $page -}}
+      {{- $link := $page.RelPermalink -}}
+      {{- with $page.OutputFormats.Get "Gemini" -}}
+        {{- $link = .RelPermalink -}}
+      {{- end -}}
+{{ printf "=> %s %s\n" $link .name -}}
+    {{- else -}}
+{{ printf "=> %s %s\n" .path .name -}}
+    {{- end -}}
+  {{- end -}}
+{{- end }}
+{{- printf "\n" -}}
+{{- end -}}
+
+=> {{ .Permalink }} Web version

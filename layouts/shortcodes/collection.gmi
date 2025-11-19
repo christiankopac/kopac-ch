@@ -1,0 +1,68 @@
+{{- $file := .Get "file" -}}
+{{- $items := slice -}}
+{{- if $file -}}
+  {{- $dataPath := replace (replace $file (path.Ext $file) "") "/" "." -}}
+  {{- with index .Site.Data $dataPath -}}
+    {{- if .collection -}}
+      {{- $items = .collection -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $items) .Inner -}}
+  {{- $items = .Inner -}}
+{{- end -}}
+{{- if not $items }}
+No entries available.
+{{- else -}}
+  {{- $groups := dict -}}
+  {{- range $items -}}
+    {{- if not .draft -}}
+      {{- $category := lower (.category | default "") -}}
+      {{- $existing := index $groups $category -}}
+      {{- if not $existing -}}
+        {{- $existing = slice -}}
+      {{- end -}}
+      {{- $existing = $existing | append . -}}
+      {{- $groups = merge $groups (dict $category $existing) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $keys := slice -}}
+  {{- range $k, $_ := $groups -}}
+    {{- $keys = $keys | append $k -}}
+  {{- end -}}
+  {{- $keys = sort $keys -}}
+  {{- range $keys -}}
+    {{- $category := . -}}
+    {{- $entries := index $groups $category -}}
+    {{- range $entries -}}
+      {{- $name := .title -}}
+      {{- if not $name -}}
+        {{- with .icon -}}
+          {{- $parts := split . "?i=" -}}
+          {{- if eq (len $parts) 2 -}}
+            {{- $name = replace (index $parts 1) "," ", " -}}
+          {{- else -}}
+            {{- $name = . -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $summary := .content | default (.description | default "") -}}
+      {{- $link := .link | default (.url | default "") -}}
+      {{- $categoryLabel := cond (ne $category "") (printf "(%s) " (lower $category)) "" -}}
+* {{ $categoryLabel }}{{ $name | default "Untitled" }}{{ if $summary }} — {{ $summary | plainify }}{{ end }}
+      {{- if $link }}
+=> {{ $link }} {{ $name | default $link }}
+      {{- end }}
+      {{- with .tags -}}
+        {{- $tagLine := slice -}}
+        {{- range . -}}
+          {{- $tagLine = $tagLine | append (printf "#%s" .) -}}
+        {{- end -}}
+        {{- if gt (len $tagLine) 0 -}}
+{{ delimit $tagLine " " }}
+        {{- end -}}
+      {{- end -}}
+
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

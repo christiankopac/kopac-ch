@@ -15,6 +15,31 @@ theme = "apacible"
   writeStats = false
   enableGitInfo = true
 
+# === Minification ===
+[minify]
+  minifyOutput = true
+
+[minify.tdewolff.html]
+  keepWhitespace = false
+  keepEndTags = true
+  keepDefaultAttrVals = true
+  keepDocumentTags = true
+
+[minify.tdewolff.css]
+  keepCSS2 = false
+  precision = 2
+
+[minify.tdewolff.js]
+  keepVarNames = false
+  precision = 2
+
+[minify.tdewolff.json]
+  precision = 2
+  keepNumbers = false
+
+[minify.tdewolff.svg]
+  precision = 2
+
 # === Markup Configuration ===
 [markup]
   defaultMarkdownHandler = "goldmark"
@@ -54,16 +79,34 @@ theme = "apacible"
   category = "categories"
 
 # === Outputs ===
+[mediaTypes]
+  [mediaTypes."text/gemini"]
+    suffixes = ["gmi"]
+  [mediaTypes."application/atom+xml"]
+    suffixes = ["xml"]
+
 [outputs]
-  home = ["HTML"]
-  section = ["HTML"]
-  taxonomy = ["HTML"]
-  term = ["HTML"]
+  home = ["HTML", "Gemini", "Atom"]
+  section = ["HTML", "Gemini"]
+  taxonomy = ["HTML", "Gemini"]
+  term = ["HTML", "Gemini"]
+  page = ["HTML", "Gemini"]
 
 [outputFormats]
-  [outputFormats.RSS]
-    mediaType = "application/rss+xml"
+  [outputFormats.Atom]
+    mediaType = "application/atom+xml"
     baseName = "atom"
+    isPlainText = true
+    isHTML = false
+    rel = "alternate"
+    permalinkable = true
+  [outputFormats.Gemini]
+    mediaType = "text/gemini"
+    baseName = "index"
+    isPlainText = true
+    isHTML = false
+    rel = "alternate"
+    permalinkable = true
 
 # === Privacy ===
 [privacy]
@@ -107,7 +150,7 @@ theme = "apacible"
   not_found_message = "The page you're looking for doesn't exist."
   not_found_recover_text = "⇽ back to home"
   
-  # === RSS ===
+  # === Atom ===
   generate_feeds = true
 
 # Sections for navigation

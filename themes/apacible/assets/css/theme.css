@@ -1,4 +1,5 @@
 /* Theme System - Earthy & Playful */
+@import url('/css/tokens.css');
 
 :root,
 [data-theme="light"] {
@@ -73,7 +74,42 @@
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: var(--transition-theme);
+}
+
+/* ============================================
+   FOCUS INDICATORS - Keyboard Navigation
+   ============================================ */
+
+/* Remove default outline for mouse/touch interactions */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Modern focus indicator for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+  transition: outline-offset var(--transition-fast);
+}
+
+/* Enhanced focus for interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Focus within for complex components */
+.post:focus-within .post-title,
+.collection-item:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* Update all color references to use CSS variables */

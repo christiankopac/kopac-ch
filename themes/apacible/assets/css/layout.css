@@ -1,4 +1,4 @@
-/* Modern layout system with responsive breakpoints */
+/* Modern layout system with responsive breakpoints and tokens */
 
 /* Breakpoints for modern screens - using CSS custom properties */
 :root {
@@ -8,33 +8,26 @@
   --breakpoint-xl: 1280px;  /* Large desktop */
   --breakpoint-2xl: 1536px; /* Extra large */
   
-  /* Container widths for optimal readability */
+  /* Container widths for optimal readability - scale with screen size */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 900px;    /* Optimal for reading (65-75 chars per line) */
   --container-xl: 1024px;
+  --container-2xl: 1200px;
 }
 
-/* Base layout */
+/* Fluid typography - optimal scaling for readability */
 html {
-  font-size: 15px;
+  /* Scales smoothly: 16px (mobile) → 20px (ultra-wide) */
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
 }
 
-@media (min-width: 640px) {
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
   html {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 17px;
-  }
-}
-
-@media (min-width: 1024px) {
-  html {
-    font-size: 18px;
+    scroll-behavior: auto;
   }
 }
 
@@ -50,52 +43,56 @@ body {
   overflow: auto;
 }
 
-/* Content wrapper for all pages - consistent spacing and centering */
-/* Only apply to top-level containers, not nested articles */
-main,
-.prose,
-.blog,
-.post,
-.taxonomy,
-.taxonomy-single {
-  width: 100%;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+/* Skip link for accessibility - hidden until focused */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: top var(--transition-base), opacity var(--transition-base);
+}
+
+.skip-link:focus {
+  top: var(--space-sm);
+  opacity: 1;
+  pointer-events: auto;
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Content wrapper for all pages - optimal character width for readability */
+/* Use :is() to reduce repetition */
+:is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+  /* Width calculation already includes padding in the formula */
+  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  margin-inline: auto;
+  padding-block: var(--container-padding-y-sm);
   flex: 1 0 auto; /* Allow content to grow and push footer down */
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 @media (min-width: 768px) {
-  main,
-  .prose,
-  .blog,
-  .post,
-  .taxonomy,
-  .taxonomy-single {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+  :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+    padding-block: var(--container-padding-y-md);
   }
 }
 
 @media (min-width: 1024px) {
-  main,
-  .prose,
-  .blog,
-  .post,
-  .taxonomy,
-  .taxonomy-single {
-    max-width: 900px;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
+  :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+    padding-block: var(--container-padding-y-lg);
   }
 }
 
@@ -109,11 +106,10 @@ main,
 
 /* Wide container for collections/grids */
 .container-wide {
-  max-width: 1024px;
+  max-width: var(--container-xl);
 }
 
 /* Narrow container for optimal reading (prose) */
 .container-narrow {
   max-width: 680px;
 }
-

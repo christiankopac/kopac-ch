@@ -1,15 +1,13 @@
-// Back to top button functionality
+// Back to top button functionality with Intersection Observer
 (function() {
   const backToTopButton = document.getElementById('back-to-top');
   const inlineBackToTop = document.querySelector('.back-to-top-link');
-  
-  const SCROLL_THRESHOLD = 300;
-  
+
   // Scroll to top function - always scrolls to absolute top
   function scrollToTop(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Smooth scroll to top
     window.scrollTo({
       top: 0,
@@ -17,21 +15,34 @@
       behavior: 'smooth'
     });
   }
-  
-  // Toggle visibility based on scroll position (fixed button only)
-  function toggleBackToTop() {
-    if (!backToTopButton) return;
-    const scrolled = window.pageYOffset || document.documentElement.scrollTop;
-    backToTopButton.classList.toggle('visible', scrolled > SCROLL_THRESHOLD);
-  }
-  
-  // Add event listeners for fixed button
+
+  // Add event listeners
   if (backToTopButton) {
     backToTopButton.addEventListener('click', scrollToTop);
-    window.addEventListener('scroll', toggleBackToTop, { passive: true });
-    toggleBackToTop();
+
+    // Use Intersection Observer instead of scroll events for better performance
+    // Create a sentinel element at the top of the page
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '300px';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '1px';
+    sentinel.style.pointerEvents = 'none';
+    document.body.prepend(sentinel);
+
+    const observer = new IntersectionObserver(
+      function(entries) {
+        entries.forEach(function(entry) {
+          // Show button when sentinel is out of view (scrolled past 300px)
+          backToTopButton.classList.toggle('visible', !entry.isIntersecting);
+        });
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
   }
-  
+
   // Add event listener for inline link
   if (inlineBackToTop) {
     inlineBackToTop.addEventListener('click', scrollToTop);

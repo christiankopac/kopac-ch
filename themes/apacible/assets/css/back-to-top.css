@@ -1,63 +1,107 @@
-.back-to-top-footer {
-  position: fixed;
-  bottom: calc(2.5rem); /* 2-3px higher (increase bottom = move up) */
-  right: 55px; /* 55px from right edge */
+/* Back to top button - Modern CSS with tokens */
+
+/* Inline back to top - visible only on small screens */
+.back-to-top-inline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-start: var(--space-md);
+  margin-block-end: var(--space-lg);
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.back-to-top-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.2rem; /* Always 1.2rem */
-  line-height: 1;
+  gap: var(--space-xs);
   color: var(--color-text-secondary);
   text-decoration: none;
-  transition: opacity 0.2s ease;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 1000;
-  cursor: pointer;
-  font-weight: 300;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  opacity: var(--opacity-subtle);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 4px;
 }
 
-.back-to-top-footer.visible {
-  opacity: 0.5;
-  visibility: visible;
+.back-to-top-link:hover {
+  opacity: var(--opacity-full);
+  transform: translateY(-2px);
 }
 
-.back-to-top-footer:hover {
-  opacity: 1;
+.back-to-top-link svg {
+  width: 16px;
+  height: 16px;
 }
 
-/* On desktop (1024px+): position relative to theme switcher */
-@media (min-width: 1024px) {
-  .back-to-top-footer {
-    right: calc((100% - 900px) / 2 + 3rem - 64px);
+/* Hide inline back to top on large screens with TOC */
+@media (min-width: 940px) {
+  .back-to-top-inline {
+    display: none;
   }
 }
 
-/* Move higher on screens under 1024px to avoid overlap */
-@media (max-width: 1023px) {
-  .back-to-top-footer {
-    bottom: calc(2.5rem + 2rem); /* Add 2rem to move it higher */
-  }
+/* Fixed back to top button - aligned with TOC */
+.back-to-top-footer {
+  display: none;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 940px) {
   .back-to-top-footer {
-    bottom: calc(1.75rem + 2rem); /* Add 2rem to move it higher on mobile too */
-    right: 37px; /* 37px from right edge on mobile */
+    position: fixed;
+    /* Simple positioning - 50px from edges */
+    bottom: 50px;
+    right: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: opacity var(--transition-base), transform var(--transition-base);
+    opacity: 0;
+    visibility: hidden;
+    z-index: var(--z-fixed);
+    cursor: pointer;
+  }
+  
+  .back-to-top-footer svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  
+  .back-to-top-footer.visible {
+    opacity: var(--opacity-muted);
+    visibility: visible;
+  }
+  
+  .back-to-top-footer:hover {
+    opacity: var(--opacity-full);
+    transform: translateY(-2px);
+  }
+  
+  .back-to-top-footer:active {
+    transform: translateY(0);
   }
 }
 
 /* Keep the old fixed button styles for backward compatibility (if used elsewhere) */
 #back-to-top:not(.back-to-top-footer) {
   position: fixed;
-  bottom: 5.5rem;
-  right: 1.5rem;
+  inset-block-end: 5.5rem;
+  inset-inline-end: var(--space-lg);
   width: 2.5rem;
   height: 2.5rem;
   background: transparent;
   color: var(--color-text-secondary);
   text-decoration: none;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-base-sm);
   line-height: 1;
   display: flex;
   align-items: center;
@@ -65,13 +109,13 @@
   vertical-align: middle;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 1000;
-  border: 1px solid var(--color-text-secondary);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  z-index: var(--z-fixed);
+  border: var(--border-width-thin) solid var(--color-text-secondary);
   border-radius: 0;
   padding: 0;
   cursor: pointer;
-  font-weight: 300;
+  font-weight: var(--font-weight-light);
   transform: rotate(45deg);
   box-sizing: border-box;
 }
@@ -87,17 +131,16 @@
 }
 
 #back-to-top:not(.back-to-top-footer).visible {
-  opacity: 0.5;
+  opacity: var(--opacity-muted);
   visibility: visible;
 }
 
 #back-to-top:not(.back-to-top-footer):hover {
-  opacity: 1;
+  opacity: var(--opacity-full);
   transform: rotate(45deg) scale(1.1);
 }
 
 #back-to-top:not(.back-to-top-footer):active {
-  opacity: 1;
+  opacity: var(--opacity-full);
   transform: rotate(45deg) scale(0.95);
 }
-

@@ -1,11 +1,11 @@
-/* Heading anchor links */
+/* Heading anchor links - Modern CSS with tokens */
 
 .zola-anchor {
-  margin-left: 0.5rem;
+  margin-inline-start: var(--space-sm);
   font-size: 0.8em;
   text-decoration: none;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
   color: var(--color-text-secondary, #666);
 }
 
@@ -29,13 +29,9 @@
   }
 }
 
-h1:hover .zola-anchor,
-h2:hover .zola-anchor,
-h3:hover .zola-anchor,
-h4:hover .zola-anchor,
-h5:hover .zola-anchor,
-h6:hover .zola-anchor {
-  opacity: 1;
+/* Use :is() to reduce repetition */
+:is(h1, h2, h3, h4, h5, h6):hover .zola-anchor {
+  opacity: var(--opacity-full);
 }
 
 /* Hide the emoji content that Zola adds */
@@ -44,6 +40,5 @@ h6:hover .zola-anchor {
 }
 
 .zola-anchor[aria-label*="Anchor"]::before {
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
 }
-

@@ -35,20 +35,35 @@
     {{ partialCached "custom_font.html" . }}
     <!-- NOTE: Optional: add custom css -->
     {{ partialCached "custom_css.html" . }}
-    
-    {{/* Base CSS - always needed */}}
-    <link rel="stylesheet" href="{{ "css/base.css" | relURL }}" />
+
+    {{/* Base CSS - always needed - bundled with Hugo pipes */}}
+    {{ $baseFiles := slice "css/tokens.css" "css/theme.css" "css/layout.css" "css/typography.css" "css/navigation.css" "css/footer.css" "css/back-to-top.css" "css/cursor.css" }}
+    {{ $baseCSS := slice }}
+    {{ range $baseFiles }}
+      {{ $css := resources.Get . }}
+      {{ if $css }}
+        {{ $baseCSS = $baseCSS | append $css }}
+      {{ end }}
+    {{ end }}
+    {{ $baseBundled := $baseCSS | resources.Concat "css/base-bundle.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $baseBundled.Permalink }}" integrity="{{ $baseBundled.Data.Integrity }}" crossorigin="anonymous">
     
     {{/* Template-specific CSS */}}
     {{ if .IsHome }}
       {{/* Home page */}}
-      <link rel="stylesheet" href="{{ "css/home.css" | relURL }}" />
+      {{ $homeFiles := slice "css/home.css" }}
       {{ if .Content }}
-        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
+        {{ $homeFiles = $homeFiles | append "css/syntax.css" "css/shortcodes.css" "css/responsive-images.css" "css/anchors.css" }}
       {{ end }}
+      {{ $homeCSS := slice }}
+      {{ range $homeFiles }}
+        {{ $css := resources.Get . }}
+        {{ if $css }}
+          {{ $homeCSS = $homeCSS | append $css }}
+        {{ end }}
+      {{ end }}
+      {{ $homeBundled := $homeCSS | resources.Concat "css/home-bundle.css" | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ $homeBundled.Permalink }}" integrity="{{ $homeBundled.Data.Integrity }}" crossorigin="anonymous">
     {{ else if .IsPage }}
       {{/* Check if this is a post page */}}
       {{ $isPost := false }}
@@ -63,47 +78,71 @@
       
       {{ if $isPost }}
         {{/* Post page */}}
-        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+        {{ $postFiles := slice "css/blog.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
+        {{ $postCSS := slice }}
+        {{ range $postFiles }}
+          {{ $css := resources.Get . }}
+          {{ if $css }}
+            {{ $postCSS = $postCSS | append $css }}
+          {{ end }}
+        {{ end }}
+        {{ $postBundled := $postCSS | resources.Concat "css/post-bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $postBundled.Permalink }}" integrity="{{ $postBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ else }}
         {{/* Prose/other pages */}}
-        <link rel="stylesheet" href="{{ "css/prose.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+        {{ $proseFiles := slice "css/prose.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
+        {{ $proseCSS := slice }}
+        {{ range $proseFiles }}
+          {{ $css := resources.Get . }}
+          {{ if $css }}
+            {{ $proseCSS = $proseCSS | append $css }}
+          {{ end }}
+        {{ end }}
+        {{ $proseBundled := $proseCSS | resources.Concat "css/prose-bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $proseBundled.Permalink }}" integrity="{{ $proseBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ end }}
     {{ else if .IsSection }}
       {{ $blogPath := .Site.Params.blog_section_path | default "/posts/" }}
       {{ if or (eq .RelPermalink $blogPath) (hasPrefix .RelPermalink "/posts") }}
         {{/* Blog listing page */}}
-        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
+        {{ $blogListFiles := slice "css/blog.css" "css/collection.css" }}
+        {{ $blogListCSS := slice }}
+        {{ range $blogListFiles }}
+          {{ $css := resources.Get . }}
+          {{ if $css }}
+            {{ $blogListCSS = $blogListCSS | append $css }}
+          {{ end }}
+        {{ end }}
+        {{ $blogListBundled := $blogListCSS | resources.Concat "css/blog-list-bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $blogListBundled.Permalink }}" integrity="{{ $blogListBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ else }}
         {{/* Other section pages */}}
-        <link rel="stylesheet" href="{{ "css/prose.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+        {{ $sectionFiles := slice "css/prose.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
+        {{ $sectionCSS := slice }}
+        {{ range $sectionFiles }}
+          {{ $css := resources.Get . }}
+          {{ if $css }}
+            {{ $sectionCSS = $sectionCSS | append $css }}
+          {{ end }}
+        {{ end }}
+        {{ $sectionBundled := $sectionCSS | resources.Concat "css/section-bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $sectionBundled.Permalink }}" integrity="{{ $sectionBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ end }}
     {{ else if .Data.Plural }}
       {{/* Taxonomy pages */}}
-      <link rel="stylesheet" href="{{ "css/taxonomy.css" | relURL }}" />
+      {{ $taxonomyFiles := slice "css/taxonomy.css" }}
       {{ if .Data.Term }}
-        <link rel="stylesheet" href="{{ "css/blog.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/collection.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/anchors.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/shortcodes.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/responsive-images.css" | relURL }}" />
-        <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}" />
+        {{ $taxonomyFiles = $taxonomyFiles | append "css/blog.css" "css/collection.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
       {{ end }}
+      {{ $taxonomyCSS := slice }}
+      {{ range $taxonomyFiles }}
+        {{ $css := resources.Get . }}
+        {{ if $css }}
+          {{ $taxonomyCSS = $taxonomyCSS | append $css }}
+        {{ end }}
+      {{ end }}
+      {{ $taxonomyBundled := $taxonomyCSS | resources.Concat "css/taxonomy-bundle.css" | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ $taxonomyBundled.Permalink }}" integrity="{{ $taxonomyBundled.Data.Integrity }}" crossorigin="anonymous">
     {{ end }}
     
     {{/* Math rendering with KaTeX */}}
@@ -116,6 +155,9 @@
   <body class="{{ block "page" . }}{{ end }}{{ if eq .Site.Params.force_theme "dark" }} dark{{ end }}{{ if .IsSection }}{{ if hasPrefix .RelPermalink "/posts" }} section-posts{{ end }}{{ end }}" id="body-element">
     {{ if ne .Site.Params.force_theme "dark" }}{{ end }}
 
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Back button (hidden on homepage) -->
     {{ if not .IsHome }}
       <nav class="back-nav">
@@ -126,7 +168,9 @@
     {{ end }}
 
     <!-- NOTE: Main content section -->
-    {{ block "content" . }}{{ end }}
+    <div id="main-content" tabindex="-1">
+      {{ block "content" . }}{{ end }}
+    </div>
     
     <!-- NOTE: Footer (hidden on homepage and 404 page) -->
     {{ if not .IsHome }}
@@ -144,8 +188,15 @@
     
     <!-- NOTE: Scripts -->
     {{ block "script" . }}{{ end }}
-    <script src="{{ "js/main.js" | relURL }}"></script>
-    <script src="{{ "js/collection-filter.js" | relURL }}"></script>
+    {{/* Main JS - always loaded */}}
+    {{ $mainJS := resources.Get "js/main.js" | minify | fingerprint }}
+    <script src="{{ $mainJS.Permalink }}" integrity="{{ $mainJS.Data.Integrity }}" crossorigin="anonymous" defer></script>
+
+    {{/* Collection filter JS - only load on pages with collections */}}
+    {{ if or .Params.collections (and .IsSection (or (in .RelPermalink "/posts") (in .RelPermalink "/picks"))) (.Data.Term) }}
+      {{ $collectionJS := resources.Get "js/collection-filter.js" | minify | fingerprint }}
+      <script src="{{ $collectionJS.Permalink }}" integrity="{{ $collectionJS.Data.Integrity }}" crossorigin="anonymous" defer></script>
+    {{ end }}
     
     {{/* Mermaid for diagrams - auto-loaded when mermaid code blocks are present */}}
     {{ if .Store.Get "hasMermaid" }}
