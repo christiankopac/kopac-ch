@@ -1,4 +1,32 @@
 <footer class="site-footer">
+  {{/* Newsletter subscription form */}}
+  {{ if .Site.Params.newsletter_enabled }}
+  <div class="footer-newsletter">
+    <form name="contact" netlify data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p style="display: none;">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+      <div class="newsletter-content newsletter-form">
+        <span class="newsletter-label">Subscribe to my <span>irregular</span> newsletter:</span>
+        <input type="text" name="name" placeholder="Name" aria-label="Name" />
+        <input type="email" name="email" required placeholder="Email" aria-label="Email address" />
+        <div class="newsletter-error" hidden role="alert">
+          <span>Please enter a valid email address</span>
+        </div>
+        <label class="newsletter-consent-label">
+          <input type="checkbox" name="consent" required />
+          <span>Consent</span>
+        </label>
+        <button type="submit">Send</button>
+      </div>
+    </form>
+    <div class="newsletter-success" hidden>
+      <p>Thanks for subscribing! I promise I won't send any spam.</p>
+    </div>
+  </div>
+  {{ end }}
+
   <div class="footer-content">
     {{/* Left: License/Copyright */}}
     <div class="footer-left">
@@ -85,29 +113,5 @@
       </button>
     </div>
   </div>
-
-  {{/* Newsletter subscription form */}}
-  {{ if .Site.Params.newsletter_enabled }}
-  <div class="footer-newsletter">
-    <form method="post" action="http://newsletter.getgloria.synology.me/subscription/form" class="listmonk-form">
-      <div class="newsletter-content">
-        <h3>Subscribe</h3>
-        <input type="hidden" name="nonce" />
-
-        <div class="newsletter-inputs">
-          <input type="email" name="email" required placeholder="E-mail" aria-label="Email address" />
-          <input type="text" name="name" placeholder="Name (optional)" aria-label="Name" />
-        </div>
-
-        <div class="newsletter-checkbox">
-          <input id="newsletter-list-2b55f" type="checkbox" name="l" checked value="2b55fc5a-eaa4-471f-8c04-0a1e323dcbb1" />
-          <label for="newsletter-list-2b55f">kopac-ch</label>
-        </div>
-
-        <button type="submit">Subscribe</button>
-      </div>
-    </form>
-  </div>
-  {{ end }}
 </footer>
 

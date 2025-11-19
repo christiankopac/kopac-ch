@@ -631,3 +631,115 @@ function toggleOriginal(element) {
   });
 })();
 
+// Newsletter form validation and success message
+(function() {
+  const newsletterForm = document.querySelector('form[name="contact"]');
+  if (!newsletterForm) return;
+  
+  const formContent = newsletterForm.querySelector('.newsletter-form');
+  const successMessage = document.querySelector('.newsletter-success');
+  const errorMessage = newsletterForm.querySelector('.newsletter-error');
+  const emailInput = newsletterForm.querySelector('input[type="email"]');
+  
+  if (!formContent || !successMessage || !errorMessage || !emailInput) return;
+  
+  // Email validation regex pattern
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  // Validate email function
+  function validateEmail(email) {
+    if (!email || email.trim() === '') {
+      return false;
+    }
+    return emailRegex.test(email.trim());
+  }
+  
+  // Show error message
+  function showError() {
+    errorMessage.removeAttribute('hidden');
+    emailInput.setAttribute('aria-invalid', 'true');
+    emailInput.focus();
+  }
+  
+  // Hide error message
+  function hideError() {
+    errorMessage.setAttribute('hidden', '');
+    emailInput.removeAttribute('aria-invalid');
+  }
+  
+  // Clear error when user starts typing (but don't validate until submit)
+  emailInput.addEventListener('input', function() {
+    hideError();
+    // Reset error message text
+    const errorSpan = errorMessage.querySelector('span');
+    if (errorSpan && errorSpan.textContent !== 'Please enter a valid email address') {
+      errorSpan.textContent = 'Please enter a valid email address';
+    }
+  });
+  
+  // Validate and submit form
+  newsletterForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = emailInput.value.trim();
+    
+    // Validate email before submission
+    if (!validateEmail(email)) {
+      showError();
+      return false;
+    }
+    
+    // Hide error if email is valid
+    hideError();
+    
+    // Disable submit button to prevent double submission
+    const submitButton = newsletterForm.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    
+    // Submit form to Netlify
+    const formData = new FormData(newsletterForm);
+    
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    })
+    .then(function(response) {
+      if (response.ok) {
+        // Success - hide form and show success message
+        formContent.setAttribute('hidden', '');
+        successMessage.removeAttribute('hidden');
+        
+        // Scroll success message into view if needed
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Reset form
+        newsletterForm.reset();
+      } else {
+        // Error - show error message
+        showError();
+        errorMessage.querySelector('span').textContent = 'Something went wrong. Please try again.';
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      }
+    })
+    .catch(function(error) {
+      console.error('Form submission error:', error);
+      showError();
+      errorMessage.querySelector('span').textContent = 'Something went wrong. Please try again.';
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonText;
+    });
+    
+    return false;
+  });
+  
+  // Also handle Netlify's built-in success handling via URL hash
+  if (window.location.hash === '#success') {
+    formContent.setAttribute('hidden', '');
+    successMessage.removeAttribute('hidden');
+  }
+})();
+
