@@ -457,7 +457,6 @@
   color: var(--color-text-secondary);
   margin-bottom: 0;
   font-weight: var(--font-weight-normal);
-  opacity: var(--opacity-subtle);
   line-height: var(--line-height-relaxed);
 }
 
@@ -819,9 +818,8 @@
   font-weight: var(--font-weight-normal);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-widest);
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   margin-bottom: 0.5rem;
-  opacity: var(--opacity-muted);
 }
 
 @media (max-width: 939px) {
@@ -830,12 +828,11 @@
     align-items: center;
     font-size: 0.625rem;
     margin-bottom: 0;
-    opacity: var(--opacity-prominent);
     padding: var(--space-md) 0;
     background: transparent;
     border: none;
     border-radius: 0;
-    transition: opacity var(--transition-base);
+    transition: color var(--transition-base);
   }
   
   .post .toc .toc-toggle:checked ~ .toc-toggle-label .toc-title {
@@ -1399,8 +1396,17 @@
 
 /* Hide comment form when comments are disabled (reactions only mode) */
 .post .giscus-container.giscus-comments-disabled {
-  /* Hide the comment input form - Giscus loads in iframe, so we use a workaround */
-  /* The iframe content itself needs to handle this, but we can minimize the container */
+  /* Since we can't style iframe content due to CORS, we use a combination of approaches */
+  /* The JavaScript will try to hide elements, but we also minimize the visible area */
+  position: relative;
+}
+
+/* Use CSS to hide the comment input area by clipping the iframe */
+/* This is a workaround since we can't access iframe content due to CORS */
+.post .giscus-container.giscus-comments-disabled iframe {
+  /* Reduce max-height to hide comment form area - adjust as needed */
+  max-height: 200px;
+  overflow: hidden;
 }
 
 /* Since Giscus loads in an iframe, we need to use JavaScript to hide the comment form */

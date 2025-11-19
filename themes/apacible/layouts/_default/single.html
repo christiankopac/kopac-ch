@@ -100,7 +100,9 @@
     {{ $giscusEnabled := and .Site.Params.giscus_enabled .Site.Params.giscus_repo .Site.Params.giscus_repo_id .Site.Params.giscus_category .Site.Params.giscus_category_id }}
     {{ $pageGiscus := .Params.giscus }}
     {{ $commentsEnabled := .Site.Params.giscus_comments_enabled | default true }}
-    {{ if and $giscusEnabled (ne $pageGiscus false) }}
+    {{ $reactionsEnabled := .Site.Params.giscus_reactions_enabled | default true }}
+    {{/* Only load Giscus if it's enabled and either comments or reactions are enabled */}}
+    {{ if and $giscusEnabled (ne $pageGiscus false) (or $commentsEnabled $reactionsEnabled) }}
     {{ $themeURL := .Site.Params.giscus_theme_url }}
     {{ if and $themeURL (not (hasPrefix $themeURL "http")) }}
         {{/* If relative URL, make it absolute using baseURL */}}

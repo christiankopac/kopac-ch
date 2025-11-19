@@ -28,16 +28,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary); 
   text-decoration: none;
-  transition: color var(--transition-fast), opacity var(--transition-fast);
+  transition: color var(--transition-fast);
   font-family: var(--font-system-ui);
   font-weight: var(--font-weight-normal);
-  opacity: var(--opacity-subtle);
 }
 
 .back-link:hover {
   color: var(--color-text);
-  opacity: var(--opacity-full);
 }

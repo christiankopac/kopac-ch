@@ -152,7 +152,7 @@ theme = "apacible"
   # Enable Giscus comments on single posts
   # Get your configuration from https://giscus.app/
   # You can disable comments on specific posts by adding "giscus: false" to the post frontmatter
-  giscus_enabled = true  # Set to true to enable Giscus comments
+  giscus_enabled = false  # Set to true to enable Giscus comments
   giscus_repo = "christiankopac/kopac-ch"  # Format: "owner/repo" (e.g., "username/repo")
   giscus_repo_id = "R_kgDOQYzBrw"  # Repository ID from Giscus setup
   giscus_category = "Announcements"  # Discussion category name
