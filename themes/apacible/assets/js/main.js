@@ -633,7 +633,7 @@ function toggleOriginal(element) {
 
 // Newsletter form validation and success message
 (function() {
-  const newsletterForm = document.querySelector('form[name="contact"]');
+  const newsletterForm = document.querySelector('form[name="newsletter"]');
   if (!newsletterForm) return;
   
   const formContent = newsletterForm.querySelector('.newsletter-form');
