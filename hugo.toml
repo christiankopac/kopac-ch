@@ -5,7 +5,7 @@
 #==============================================================================
 
 # === Base ===
-baseURL = "http://christiankopac.com/"
+baseURL = "https://kopac.ch/"
 title = "CK"
 languageCode = "en"
 theme = "apacible"

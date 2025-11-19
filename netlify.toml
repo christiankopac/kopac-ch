@@ -1,7 +1,7 @@
 [build]
-  command = "hugo"
+  # Use Netlify's URL environment variable for baseURL, fallback to production URL
+  command = "hugo --baseURL ${URL:-https://kopac.ch/}"
   publish = "public"
-
 [build.environment]
   # Hugo version - Netlify will install this version automatically
   HUGO_VERSION = "0.152.2"
