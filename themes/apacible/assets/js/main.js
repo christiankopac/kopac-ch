@@ -743,3 +743,62 @@ function toggleOriginal(element) {
   }
 })();
 
+// Giscus: Hide comment form when comments are disabled (reactions only mode)
+(function() {
+  const giscusContainer = document.querySelector('.giscus-container.giscus-comments-disabled');
+  if (!giscusContainer) return;
+
+  // Function to hide comment form in Giscus iframe
+  function hideGiscusCommentForm() {
+    const giscusFrame = giscusContainer.querySelector('iframe');
+    if (!giscusFrame) return;
+
+    try {
+      // Try to access iframe content (may fail due to CORS)
+      const iframeDoc = giscusFrame.contentDocument || giscusFrame.contentWindow.document;
+      
+      // Hide comment form elements
+      const commentForm = iframeDoc.querySelector('form[data-target="giscus.comment-form"]');
+      const commentTextarea = iframeDoc.querySelector('textarea[data-target="giscus.comment"]');
+      const commentSubmit = iframeDoc.querySelector('button[data-target="giscus.submit"]');
+      
+      if (commentForm) commentForm.style.display = 'none';
+      if (commentTextarea) commentTextarea.style.display = 'none';
+      if (commentSubmit) commentSubmit.style.display = 'none';
+      
+      // Also hide the "Sign in to comment" section
+      const signInSection = iframeDoc.querySelector('[data-target="giscus.sign-in"]');
+      if (signInSection) signInSection.style.display = 'none';
+    } catch (e) {
+      // CORS error - use CSS injection via postMessage if Giscus supports it
+      // Or use a style tag approach
+      console.log('Cannot access Giscus iframe content (CORS restriction)');
+      
+      // Alternative: Inject CSS that targets Giscus elements
+      // This won't work for cross-origin iframes, but we can try
+      const style = document.createElement('style');
+      style.textContent = `
+        .giscus-container.giscus-comments-disabled iframe {
+          /* We can't style iframe content due to CORS, but we can minimize height */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // Wait for Giscus to load
+  const observer = new MutationObserver(function(mutations) {
+    const giscusFrame = giscusContainer.querySelector('iframe');
+    if (giscusFrame) {
+      giscusFrame.addEventListener('load', hideGiscusCommentForm);
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(giscusContainer, { childList: true, subtree: true });
+
+  // Also try immediately in case Giscus is already loaded
+  setTimeout(hideGiscusCommentForm, 1000);
+  setTimeout(hideGiscusCommentForm, 3000);
+})();
+

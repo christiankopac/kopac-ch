@@ -96,6 +96,36 @@
     </footer>
     {{ end }}
     
+    {{/* Giscus Comments */}}
+    {{ $giscusEnabled := and .Site.Params.giscus_enabled .Site.Params.giscus_repo .Site.Params.giscus_repo_id .Site.Params.giscus_category .Site.Params.giscus_category_id }}
+    {{ $pageGiscus := .Params.giscus }}
+    {{ $commentsEnabled := .Site.Params.giscus_comments_enabled | default true }}
+    {{ if and $giscusEnabled (ne $pageGiscus false) }}
+    {{ $themeURL := .Site.Params.giscus_theme_url }}
+    {{ if and $themeURL (not (hasPrefix $themeURL "http")) }}
+        {{/* If relative URL, make it absolute using baseURL */}}
+        {{ $themeURL = printf "%s%s" (strings.TrimSuffix "/" .Site.BaseURL) (strings.TrimPrefix "/" $themeURL) }}
+    {{ end }}
+    {{ $theme := cond $themeURL $themeURL (.Site.Params.giscus_theme | default "preferred_color_scheme") }}
+    <div class="giscus-container{{ if not $commentsEnabled }} giscus-comments-disabled{{ end }}">
+        <script src="https://giscus.app/client.js"
+                data-repo="{{ .Site.Params.giscus_repo }}"
+                data-repo-id="{{ .Site.Params.giscus_repo_id }}"
+                data-category="{{ .Site.Params.giscus_category }}"
+                data-category-id="{{ .Site.Params.giscus_category_id }}"
+                data-mapping="{{ .Site.Params.giscus_mapping | default "pathname" }}"
+                data-strict="0"
+                data-reactions-enabled="{{ if .Site.Params.giscus_reactions_enabled }}1{{ else }}0{{ end }}"
+                data-emit-metadata="{{ if .Site.Params.giscus_emit_metadata }}1{{ else }}0{{ end }}"
+                data-input-position="{{ .Site.Params.giscus_input_position | default "bottom" }}"
+                data-theme="{{ $theme }}"
+                data-lang="{{ .Site.Params.giscus_lang | default "en" }}"
+                crossorigin="anonymous"
+                async>
+        </script>
+    </div>
+    {{ end }}
+    
     <!-- Inline back to top - only visible on small screens -->
     <div class="back-to-top-inline">
         <a href="#main-content" class="back-to-top-link" aria-label="Back to top">

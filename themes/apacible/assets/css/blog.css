@@ -1373,3 +1373,35 @@
 .post .post-footer .post-footer-content .post-footer-label.category a {
   font-style: italic;
 }
+
+/* Giscus Comments Styling */
+.post .giscus-container {
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .post .giscus-container {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+  }
+}
+
+/* Ensure Giscus iframe is properly contained */
+.post .giscus-container iframe {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  min-height: 400px;
+}
+
+/* Hide comment form when comments are disabled (reactions only mode) */
+.post .giscus-container.giscus-comments-disabled {
+  /* Hide the comment input form - Giscus loads in iframe, so we use a workaround */
+  /* The iframe content itself needs to handle this, but we can minimize the container */
+}
+
+/* Since Giscus loads in an iframe, we need to use JavaScript to hide the comment form */
+/* This will be handled by the theme's JavaScript */
