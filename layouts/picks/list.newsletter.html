@@ -1,0 +1,37 @@
+{{- /* 
+  Layout for generating the "Monthly Picks" newsletter HTML.
+  This layout filters the 'consumed.toml' data for items read/watched in the current month.
+*/ -}}
+{{- $currentMonth := now.Format "2006-01" -}}
+{{- $picks := where site.Data.consumed.collection "date_read" "like" $currentMonth -}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Picks - {{ now.Format "January 2006" }}</title>
+</head>
+<body>
+    <!-- COPY FROM HERE -->
+    <div class="content">
+        {{- if $picks -}}
+            {{- range $picks -}}
+            <div class="pick-item" style="margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #c8d0c2;">
+                <h2 class="pick-title" style="font-size: 18px; font-weight: 600; margin: 0 0 8px 0; letter-spacing: -0.01em;">
+                    <a href="{{ .link | default "#" }}" style="color: #1a1a1a; text-decoration: none;">{{ .title }}</a>
+                </h2>
+                <p class="pick-desc" style="font-size: 15px; color: #4a524a; margin: 0; line-height: 1.6;">
+                    {{ .content }}
+                </p>
+                {{- if .link -}}
+                <a href="{{ .link }}" class="pick-link" style="display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 500; color: #c75b4a; text-decoration: none;">Check it out →</a>
+                {{- end -}}
+            </div>
+            {{- end -}}
+        {{- else -}}
+            <p>No picks found for {{ now.Format "January 2006" }}.</p>
+        {{- end -}}
+    </div>
+    <!-- END COPY -->
+</body>
+</html>

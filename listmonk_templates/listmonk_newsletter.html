@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter</title>
+    <style>
+        /* Base Reset */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #dfe5db;
+            color: #1a1a1a;
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+        }
+        table {
+            border-spacing: 0;
+            width: 100%;
+        }
+        td {
+            padding: 0;
+        }
+        img {
+            border: 0;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Container - Flat, no background/shadow */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 20px; /* Add side padding for mobile */
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 0 20px 0;
+            text-align: center;
+            /* No background color, just spacing */
+            border-bottom: 1px solid #c8d0c2; /* Subtle border matching theme */
+        }
+        .logo {
+            font-family: 'Charter', serif;
+            font-weight: bold;
+            font-size: 28px;
+            color: #1a1a1a;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        .date {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #4a524a;
+            font-family: system-ui, sans-serif;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 0;
+            font-family: 'Charter', serif;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+        
+        h1, h2, h3 {
+            font-family: system-ui, sans-serif;
+            color: #1a1a1a;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+        h1 { font-size: 28px; margin-top: 0; }
+        h2 { font-size: 24px; }
+        h3 { font-size: 20px; }
+
+        p {
+            margin-bottom: 1.5em;
+        }
+
+        a {
+            color: #c75b4a;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+        }
+        a:hover {
+            color: #8a3d2e;
+        }
+
+        blockquote {
+            margin: 24px 0;
+            padding-left: 20px;
+            border-left: 3px solid #c75b4a;
+            font-style: italic;
+            color: #4a524a;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 32px 0;
+            text-align: center;
+            font-size: 13px;
+            color: #7a827a;
+            border-top: 1px solid #c8d0c2;
+            font-family: system-ui, sans-serif;
+        }
+        .footer a {
+            color: #4a524a;
+            text-decoration: underline;
+        }
+        .unsubscribe {
+            margin-top: 16px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <table role="presentation" width="100%">
+        <tr>
+            <td style="padding: 20px 0;">
+                <div class="container">
+                    <!-- Header -->
+                    <div class="header">
+                        <a href="https://kopac.ch/" class="logo">CK</a>
+                        <div class="date">{{ Date "January 2006" }}</div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="content">
+                        <!-- Listmonk Content Placeholder -->
+                        {{ template "content" . }}
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer">
+                        <p>&copy; 2025 Christian Kopač</p>
+                        <p>
+                            <a href="https://kopac.ch/">Visit Website</a> • 
+                            <a href="{{ UnsubscribeURL }}" class="unsubscribe">Unsubscribe</a>
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
