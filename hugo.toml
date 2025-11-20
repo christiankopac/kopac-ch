@@ -13,7 +13,6 @@ theme = "apacible"
 # === Build ===
 [build]
   writeStats = false
-  enableGitInfo = true
 
 # === Minification ===
 [minify]
@@ -85,28 +84,31 @@ theme = "apacible"
   [mediaTypes."application/atom+xml"]
     suffixes = ["xml"]
 
+    permalinkable = true
+  [outputFormats.Newsletter]
+    mediaType = "text/html"
+    baseName = "newsletter"
+    isPlainText = false
+    isHTML = true
+
+[outputFormats.Atom]
+  mediaType = "application/atom+xml"
+  baseName = "atom"
+  isPlainText = false
+  isHTML = true
+
+[outputFormats.Gemini]
+  mediaType = "text/gemini"
+  baseName = "index"
+  isPlainText = true
+  isHTML = false
+
 [outputs]
   home = ["HTML", "Gemini", "Atom"]
-  section = ["HTML", "Gemini"]
+  section = ["HTML", "Gemini", "Newsletter"]
   taxonomy = ["HTML", "Gemini"]
   term = ["HTML", "Gemini"]
   page = ["HTML", "Gemini"]
-
-[outputFormats]
-  [outputFormats.Atom]
-    mediaType = "application/atom+xml"
-    baseName = "atom"
-    isPlainText = true
-    isHTML = false
-    rel = "alternate"
-    permalinkable = true
-  [outputFormats.Gemini]
-    mediaType = "text/gemini"
-    baseName = "index"
-    isPlainText = true
-    isHTML = false
-    rel = "alternate"
-    permalinkable = true
 
 # === Privacy ===
 [privacy]

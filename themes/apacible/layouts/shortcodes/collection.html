@@ -127,7 +127,7 @@
       {{ else if or .title .icon }}
         {{/* Skip draft items */}}
         {{ if not .draft }}
-      <article class="collection-item"{{ if .category }} data-category="{{ .category }}"{{ end }}{{ if .year }} data-year="{{ .year }}"{{ end }}{{ if .date_read }} data-date="{{ .date_read }}"{{ end }}{{ if .title }} data-title="{{ .title | safeHTML }}"{{ end }}{{ if .director }} data-director="{{ .director }}"{{ end }}{{ if .author }} data-author="{{ .author }}"{{ end }}{{ if .artist }} data-artist="{{ .artist }}"{{ end }}{{ if .label }} data-label="{{ .label }}"{{ end }}{{ if .rating }} data-rating="{{ .rating }}"{{ end }}{{ if .content }} data-content="{{ .content | safeHTML }}"{{ end }}{{ if .footer }} data-footer="{{ .footer | safeHTML }}"{{ end }}{{ $itemLink := .link | default (.url | default "") }}{{ if $itemLink }} data-link="{{ $itemLink }}"{{ end }}>
+      <article class="collection-item"{{ if .category }} data-category="{{ .category }}"{{ end }}{{ if .year }} data-year="{{ .year }}"{{ end }}{{ if .date_read }} data-date="{{ .date_read }}"{{ end }}{{ if .title }} data-title="{{ .title | safeHTML }}"{{ end }}{{ if .director }} data-director="{{ .director }}"{{ end }}{{ if .author }} data-author="{{ .author }}"{{ end }}{{ if .artist }} data-artist="{{ .artist }}"{{ end }}{{ if .label }} data-label="{{ .label }}"{{ end }}{{ if .publisher }} data-publisher="{{ .publisher }}"{{ end }}{{ if .rating }} data-rating="{{ .rating }}"{{ end }}{{ if .review }} data-review="{{ .review | safeHTML }}"{{ end }}{{ if .content }} data-content="{{ .content | safeHTML }}"{{ end }}{{ if .footer }} data-footer="{{ .footer | safeHTML }}"{{ end }}{{ if .tmdb }} data-tmdb="{{ .tmdb }}"{{ end }}{{ if .discogs }} data-discogs="{{ .discogs }}"{{ end }}{{ if .discogsArtist }} data-discogs-artist="{{ .discogsArtist }}"{{ end }}{{ if .discogsLabel }} data-discogs-label="{{ .discogsLabel }}"{{ end }}{{ if .genre }} data-genre="{{ .genre }}"{{ end }}{{ if .style }} data-style="{{ .style }}"{{ end }}{{ if .openlibrary }} data-openlibrary="{{ .openlibrary }}"{{ end }}{{ if .songs }} data-songs="{{ .songs | jsonify }}"{{ end }}{{ $itemLink := .link | default (.url | default "") }}{{ if $itemLink }} data-link="{{ $itemLink }}"{{ end }}>
         {{ if eq $actualStyle "card" }}
           {{/* Full card with image, title, description, meta */}}
           {{ $itemImg := .image | default (.img | default "") }}
@@ -176,9 +176,14 @@
                 <span class="item-director">{{ . }}</span>
               {{ end }}
               {{ with .rating }}
+                {{ $rating := float . }}
+                {{ $fullStars := int (math.Floor $rating) }}
+                {{ $hasHalf := ge (mod $rating 1.0) 0.5 }}
+                {{ $emptyStars := sub 5 (add $fullStars (cond $hasHalf 1 0)) }}
                 <span class="item-rating">
-                  {{- range seq . }}★{{ end -}}
-                  {{- range seq (sub 5 .) }}☆{{ end -}}
+                  {{- range seq $fullStars }}★{{ end -}}
+                  {{- if $hasHalf }}⯨{{ end -}}
+                  {{- range seq $emptyStars }}☆{{ end -}}
                 </span>
               {{ end }}
               {{ with .date }}
@@ -232,10 +237,17 @@
           </div>
           
         {{ else if eq $actualStyle "poster" }}
-          {{/* Poster-only style: just the image, click shows details */}}
+          {{/* Poster-only style: just the image, click navigates to single page */}}
           {{ $itemImg := .image | default (.img | default "") }}
           {{ if $itemImg }}
-            <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}" title="{{ .title | safeHTML }}">
+            {{ $itemLink := .link | default (.url | default "") }}
+            {{ if and $itemLink (not (hasPrefix $itemLink "http")) }}
+              <a href="{{ $itemLink }}">
+                <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+              </a>
+            {{ else }}
+              <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+            {{ end }}
           {{ end }}
           
         {{ else }}

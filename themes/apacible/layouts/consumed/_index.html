@@ -1,0 +1,16 @@
+{{/* Consumed section index page - displays all consumed media with filters */}}
+{{ define "content" }}
+<section class="consumed-section">
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+            <p class="section-description">{{ . }}</p>
+        {{ end }}
+    </header>
+    
+    <div class="consumed-content">
+        {{ .Content }}
+    </div>
+</section>
+{{ end }}
+

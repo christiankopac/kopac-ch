@@ -1,0 +1,42 @@
+{{ define "content" }}
+<article class="prose">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}
+      <p>{{ . }}</p>
+    {{ end }}
+  </header>
+
+  <div class="posts">
+    {{ $playlists := where .Site.RegularPages "Section" "playlists" }}
+    {{ $playlists = $playlists.ByDate.Reverse }}
+
+    {{ if gt (len $playlists) 0 }}
+      {{ range $playlists }}
+        <article class="post-preview">
+          {{ $playlistTitle := .Title }}
+          <h2>
+            <a href="{{ .RelPermalink }}">{{ $playlistTitle }}</a>
+          </h2>
+          <div class="post-meta">
+            <div class="post-meta-left">
+            </div>
+            <div class="post-meta-right">
+              {{ with .Date }}
+                {{ $dateFormatted := .Format "January 2006" }}
+                {{ if ne $dateFormatted $playlistTitle }}
+                <time datetime="{{ .Format "2006-01-02" }}">
+                    {{ $dateFormatted }}
+                </time>
+                {{ end }}
+              {{ end }}
+            </div>
+          </div>
+        </article>
+      {{ end }}
+    {{ else }}
+      <p>No playlists yet.</p>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

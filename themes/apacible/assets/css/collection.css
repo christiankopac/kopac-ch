@@ -1,8 +1,16 @@
 /* Collection styles - minimal and clean with tokens */
 
 /* Collection Filter Styles - Minimal */
-.collection-filter {
+.collection-filters {
   margin-block: 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.collection-filter {
+  margin-block: 0;
   display: flex;
   justify-content: center;
 }
@@ -102,32 +110,47 @@
 .spoiler-toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 0.5rem;
   padding: 0;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-secondary, #6b7280);
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: color var(--transition-base);
+  transition: color 0.2s ease;
   font-family: inherit;
   text-decoration: none;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  position: relative;
 }
 
 .spoiler-toggle:hover {
-  color: var(--color-text);
+  color: var(--color-text, #374151);
+}
+
+.spoiler-toggle.active {
+  color: var(--color-text, #374151);
 }
 
 .spoiler-toggle::before {
   content: '▸';
-  font-size: 0.9em;
+  font-size: 0.6875rem;
   transition: transform var(--transition-base);
   display: inline-block;
+  line-height: 1;
+  opacity: 0.5;
+  margin-right: 0.125rem;
+}
+
+.spoiler-toggle:hover::before {
+  opacity: 0.8;
 }
 
 .spoiler-toggle.active::before {
   transform: rotate(90deg);
+  opacity: 0.8;
 }
 
 .spoiler-content {
@@ -179,12 +202,20 @@
   margin-block-end: 0;
 }
 
-/* Poster grid style - tiny posters in a compact grid */
+/* Poster grid style - refined minimal grid */
 .collection-poster.poster-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: var(--space-sm);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.5rem;
   margin-block-end: var(--space-2xl);
+}
+
+/* Picks page - same styling as consumed page, but only one row */
+.collection.picks-grid.collection-poster.poster-grid {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.5rem;
+  margin-block-end: var(--space-2xl);
+  justify-content: center;
 }
 
 .collection-poster.poster-grid .collection-item {
@@ -192,22 +223,30 @@
   width: 100%;
   aspect-ratio: 2/3;
   overflow: hidden;
-  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition: opacity var(--transition-base);
   cursor: pointer;
-  /* CSS containment for better rendering performance */
-  contain: layout style paint;
 }
 
 .collection-poster.poster-grid .collection-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.75;
 }
 
 .collection-poster.poster-grid .collection-item.selected {
   opacity: 1;
-  box-shadow: 0 0 0 2px var(--color-text);
+  outline: 2px solid var(--color-text);
+  outline-offset: -2px;
+}
+
+/* Five-star pick indicator - timeless border highlight */
+.collection-poster.poster-grid .collection-item.five-star-pick {
+  position: relative;
+  border: 2px solid var(--color-text);
+}
+
+.collection-poster.poster-grid .collection-item.five-star-pick:hover {
+  opacity: 0.75;
 }
 
 .collection-poster.poster-grid .collection-item img {
@@ -223,163 +262,80 @@
   height: 100%;
 }
 
-/* Poster detail overlay - minimal inline display */
-.poster-detail-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-xl);
-  cursor: pointer;
+/* Poster hover tooltips - minimal info display */
+.poster-grid .collection-item {
+  position: relative;
 }
 
-.poster-detail-overlay.active {
-  display: flex;
-}
-
-.poster-detail-content {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  max-width: 500px;
+.poster-grid .collection-item a {
+  display: block;
   width: 100%;
-  padding: var(--space-2xl);
-  cursor: default;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.poster-detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-lg);
-}
-
-.poster-detail-header h3 {
-  margin: 0;
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-tight);
-}
-
-.poster-detail-header h3 a {
-  color: var(--color-text);
+  height: 100%;
   text-decoration: none;
-  transition: opacity var(--transition-base);
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-xs);
 }
 
-.poster-detail-header h3 a:hover {
-  opacity: 0.7;
-}
-
-.poster-detail-header h3 a::after {
-  content: '→';
-  font-size: 0.85em;
-  opacity: 0.5;
-  transition: transform var(--transition-base);
-}
-
-.poster-detail-header h3 a:hover::after {
-  transform: translateX(3px);
-  opacity: 1;
-}
-
-.poster-detail-close {
-  background: transparent;
-  border: none;
-  font-size: var(--font-size-xl);
-  line-height: 1;
-  cursor: pointer;
-  color: var(--color-text-secondary);
+/* Music songs list on single pages */
+.music-songs {
+  list-style: none;
   padding: 0;
-  transition: color var(--transition-base);
-}
-
-.poster-detail-close:hover {
-  color: var(--color-text);
-}
-
-.poster-detail-meta {
+  margin: var(--space-lg) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.poster-detail-meta-row {
-  display: flex;
   gap: var(--space-sm);
 }
 
-.poster-detail-meta-label {
-  font-weight: var(--font-weight-medium);
-  min-width: 60px;
+.music-songs li {
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.poster-detail-rating {
-  color: var(--color-text);
-  letter-spacing: 0.05em;
+.music-songs li:last-child {
+  border-bottom: none;
 }
 
-.poster-detail-description {
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-loose);
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.poster-detail-footer {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  opacity: 0.7;
-}
-
-.poster-detail-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-size-sm);
+.music-songs a {
   color: var(--color-text);
   text-decoration: none;
   transition: opacity var(--transition-base);
 }
 
-.poster-detail-link:hover {
+.music-songs a:hover {
   opacity: 0.7;
+  text-decoration: underline;
 }
 
-@media (max-width: 600px) {
-  .poster-detail-overlay {
-    padding: var(--space-base);
-  }
-  
-  .poster-detail-content {
-    padding: var(--space-xl);
-    max-height: 80vh;
-    overflow-y: auto;
-  }
+.movie-review,
+.music-review {
+  margin-bottom: var(--space-xl);
 }
+
 
 @media (min-width: 640px) {
   .collection-poster.poster-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: var(--space-md);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.75rem;
+  }
+  
+  /* Picks page - same as consumed page */
+  .collection.picks-grid.collection-poster.poster-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .collection-poster.poster-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2rem;
+  }
+  
+  /* Picks page - same styling as consumed page, exactly 6 items in one row, centered */
+  .collection.picks-grid.collection-poster.poster-grid {
+    grid-template-columns: repeat(6, minmax(160px, 1fr));
+    gap: 2rem;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -1112,6 +1068,193 @@
 .collection-list .collection-item:not(:has(img.item-icon)) .item-subtitle::before {
   content: '·';
   margin: 0 var(--space-xs);
+}
+
+/* Trailer and song embed styles */
+.movie-trailer,
+.music-songs-embeds {
+  margin: var(--space-2xl) 0;
+}
+
+.trailer-embed,
+.song-embed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  margin: var(--space-lg) 0;
+}
+
+.trailer-embed iframe,
+.song-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Bandcamp specific - fixed height, not responsive aspect ratio */
+.bandcamp-embed {
+  position: relative;
+  min-height: 120px;
+  box-sizing: border-box;
+}
+
+/* Standard and slim embeds - float left, text wraps around on the right */
+.post .content .bandcamp-embed-standard,
+.post .content .bandcamp-embed-slim {
+  float: left;
+  width: 520px;
+  max-width: 520px;
+  margin: 0 var(--space-xl) var(--space-lg) 0;
+  clear: left;
+}
+
+.bandcamp-embed iframe {
+  position: relative;
+  border: none;
+  display: block;
+  max-width: 100%;
+}
+
+.bandcamp-embed-standard iframe {
+  width: 520px;
+  height: 120px;
+  max-width: 100%;
+}
+
+.bandcamp-embed-slim iframe {
+  width: 520px;
+  height: 42px;
+  max-width: 100%;
+}
+
+/* Artwork and album embeds - float for text wrapping */
+.bandcamp-embed-artwork,
+.bandcamp-embed-album {
+  width: auto;
+}
+
+.bandcamp-embed-artwork iframe {
+  width: 350px;
+  height: 350px;
+}
+
+.bandcamp-embed-album iframe {
+  width: 350px;
+  height: 654px;
+}
+
+/* Float support for text wrapping - like images in text */
+.post .content .bandcamp-embed-float-left {
+  float: left;
+  clear: none;
+  margin: 0 var(--space-xl) var(--space-base) 0;
+}
+
+.post .content .bandcamp-embed-float-right {
+  float: right;
+  clear: none;
+  margin: 0 0 var(--space-base) var(--space-xl);
+}
+
+/* Artwork and album float support */
+.bandcamp-embed-artwork.bandcamp-embed-float-left,
+.bandcamp-embed-album.bandcamp-embed-float-left {
+  float: left;
+  width: auto;
+  margin: 0 var(--space-xl) var(--space-base) 0;
+  clear: none;
+}
+
+.bandcamp-embed-artwork.bandcamp-embed-float-right,
+.bandcamp-embed-album.bandcamp-embed-float-right {
+  float: right;
+  width: auto;
+  margin: 0 0 var(--space-base) var(--space-xl);
+  clear: none;
+}
+
+/* When explicitly floating, allow override of default left float */
+.post .content .bandcamp-embed-standard.bandcamp-embed-float-right,
+.post .content .bandcamp-embed-slim.bandcamp-embed-float-right {
+  float: right;
+  margin-left: var(--space-xl);
+  margin-right: 0;
+  clear: none;
+}
+
+/* Allow disabling float explicitly */
+.post .content .bandcamp-embed-standard.bandcamp-embed-float-none,
+.post .content .bandcamp-embed-slim.bandcamp-embed-float-none {
+  float: none;
+  max-width: 520px;
+  width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive: disable float on small screens, make standard/slim full width */
+@media (max-width: 640px) {
+  .bandcamp-embed-standard,
+  .bandcamp-embed-slim {
+    float: none;
+    max-width: 100%;
+    margin: var(--space-lg) 0;
+  }
+  
+  .bandcamp-embed-float-left,
+  .bandcamp-embed-float-right {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-lg) 0;
+  }
+  
+  .bandcamp-embed-artwork iframe,
+  .bandcamp-embed-album iframe {
+    width: 100%;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.song-title {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.song-link {
+  margin: var(--space-md) 0;
+}
+
+.song-title-only {
+  margin: var(--space-md) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Movie and music descriptions */
+.movie-description,
+.music-description,
+.book-description {
+  margin: var(--space-xl) 0;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-loose);
+}
+
+.movie-review,
+.music-review,
+.book-review {
+  margin: var(--space-xl) 0;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-loose);
 }
 
 /* Add separator between simple bookmark items */

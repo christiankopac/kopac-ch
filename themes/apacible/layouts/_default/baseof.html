@@ -89,17 +89,44 @@
         {{ $postBundled := $postCSS | resources.Concat "css/post-bundle.css" | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $postBundled.Permalink }}" integrity="{{ $postBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ else }}
-        {{/* Prose/other pages */}}
-        {{ $proseFiles := slice "css/prose.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
-        {{ $proseCSS := slice }}
-        {{ range $proseFiles }}
-          {{ $css := resources.Get . }}
-          {{ if $css }}
-            {{ $proseCSS = $proseCSS | append $css }}
+        {{/* Check if this is a consumed single page */}}
+        {{ if hasPrefix .RelPermalink "/consumed/" }}
+          {{/* Consumed single page */}}
+          {{ $consumedFiles := slice "css/prose.css" "css/consumed-single.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
+          {{ $consumedCSS := slice }}
+          {{ range $consumedFiles }}
+            {{ $css := resources.Get . }}
+            {{ if $css }}
+              {{ $consumedCSS = $consumedCSS | append $css }}
+            {{ end }}
           {{ end }}
+          {{ $consumedBundled := $consumedCSS | resources.Concat "css/consumed-bundle.css" | minify | fingerprint }}
+          <link rel="stylesheet" href="{{ $consumedBundled.Permalink }}" integrity="{{ $consumedBundled.Data.Integrity }}" crossorigin="anonymous">
+        {{ else if hasPrefix .RelPermalink "/playlists/" }}
+          {{/* Playlist single page */}}
+          {{ $playlistFiles := slice "css/prose.css" "css/playlist.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
+          {{ $playlistCSS := slice }}
+          {{ range $playlistFiles }}
+            {{ $css := resources.Get . }}
+            {{ if $css }}
+              {{ $playlistCSS = $playlistCSS | append $css }}
+            {{ end }}
+          {{ end }}
+          {{ $playlistBundled := $playlistCSS | resources.Concat "css/playlist-bundle.css" | minify | fingerprint }}
+          <link rel="stylesheet" href="{{ $playlistBundled.Permalink }}" integrity="{{ $playlistBundled.Data.Integrity }}" crossorigin="anonymous">
+        {{ else }}
+          {{/* Prose/other pages */}}
+          {{ $proseFiles := slice "css/prose.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
+          {{ $proseCSS := slice }}
+          {{ range $proseFiles }}
+            {{ $css := resources.Get . }}
+            {{ if $css }}
+              {{ $proseCSS = $proseCSS | append $css }}
+            {{ end }}
+          {{ end }}
+          {{ $proseBundled := $proseCSS | resources.Concat "css/prose-bundle.css" | minify | fingerprint }}
+          <link rel="stylesheet" href="{{ $proseBundled.Permalink }}" integrity="{{ $proseBundled.Data.Integrity }}" crossorigin="anonymous">
         {{ end }}
-        {{ $proseBundled := $proseCSS | resources.Concat "css/prose-bundle.css" | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $proseBundled.Permalink }}" integrity="{{ $proseBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ end }}
     {{ else if .IsSection }}
       {{ $blogPath := .Site.Params.blog_section_path | default "/posts/" }}
@@ -115,6 +142,18 @@
         {{ end }}
         {{ $blogListBundled := $blogListCSS | resources.Concat "css/blog-list-bundle.css" | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $blogListBundled.Permalink }}" integrity="{{ $blogListBundled.Data.Integrity }}" crossorigin="anonymous">
+      {{ else if hasPrefix .RelPermalink "/playlists/" }}
+        {{/* Playlist section page */}}
+        {{ $playlistFiles := slice "css/prose.css" "css/playlist.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
+        {{ $playlistCSS := slice }}
+        {{ range $playlistFiles }}
+          {{ $css := resources.Get . }}
+          {{ if $css }}
+            {{ $playlistCSS = $playlistCSS | append $css }}
+          {{ end }}
+        {{ end }}
+        {{ $playlistBundled := $playlistCSS | resources.Concat "css/playlist-bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $playlistBundled.Permalink }}" integrity="{{ $playlistBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ else }}
         {{/* Other section pages */}}
         {{ $sectionFiles := slice "css/prose.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/collection.css" "css/syntax.css" }}
@@ -143,6 +182,18 @@
       {{ end }}
       {{ $taxonomyBundled := $taxonomyCSS | resources.Concat "css/taxonomy-bundle.css" | minify | fingerprint }}
       <link rel="stylesheet" href="{{ $taxonomyBundled.Permalink }}" integrity="{{ $taxonomyBundled.Data.Integrity }}" crossorigin="anonymous">
+    {{ else if eq .Kind "404" }}
+      {{/* 404 error page */}}
+      {{ $errorFiles := slice "css/prose.css" }}
+      {{ $errorCSS := slice }}
+      {{ range $errorFiles }}
+        {{ $css := resources.Get . }}
+        {{ if $css }}
+          {{ $errorCSS = $errorCSS | append $css }}
+        {{ end }}
+      {{ end }}
+      {{ $errorBundled := $errorCSS | resources.Concat "css/error-bundle.css" | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ $errorBundled.Permalink }}" integrity="{{ $errorBundled.Data.Integrity }}" crossorigin="anonymous">
     {{ end }}
     
     {{/* Math rendering with KaTeX */}}
@@ -192,8 +243,37 @@
     {{ $mainJS := resources.Get "js/main.js" | minify | fingerprint }}
     <script src="{{ $mainJS.Permalink }}" integrity="{{ $mainJS.Data.Integrity }}" crossorigin="anonymous" defer></script>
 
-    {{/* Collection filter JS - only load on pages with collections */}}
-    {{ if or .Params.collections (and .IsSection (or (in .RelPermalink "/posts") (in .RelPermalink "/picks"))) (.Data.Term) }}
+    {{/* Alpine.js - minimal reactive framework for interactivity (filters, toggles, etc.) */}}
+    {{/* Load Alpine.js on pages that might need interactivity */}}
+    {{ $loadAlpine := false }}
+    {{ if .Params.collections }}
+      {{ $loadAlpine = true }}
+    {{ else if and .IsSection (or (in .RelPermalink "/posts") (in .RelPermalink "/picks") (in .RelPermalink "/consumed")) }}
+      {{ $loadAlpine = true }}
+    {{ else if .Data.Term }}
+      {{ $loadAlpine = true }}
+    {{ else if or (hasPrefix .RelPermalink "/reviews/") (hasPrefix .RelPermalink "/consumed/") }}
+      {{ $loadAlpine = true }}
+    {{ else if .Content }}
+      {{/* Load on any page with content (might have shortcodes with interactivity) */}}
+      {{ $loadAlpine = true }}
+    {{ end }}
+    {{ if $loadAlpine }}
+      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{ end }}
+    
+    {{/* Collection filter JS - only load on pages with collections or reviews (for spoiler galleries) */}}
+    {{ $loadCollectionJS := false }}
+    {{ if .Params.collections }}
+      {{ $loadCollectionJS = true }}
+    {{ else if and .IsSection (or (in .RelPermalink "/posts") (in .RelPermalink "/picks") (in .RelPermalink "/consumed")) }}
+      {{ $loadCollectionJS = true }}
+    {{ else if .Data.Term }}
+      {{ $loadCollectionJS = true }}
+    {{ else if or (hasPrefix .RelPermalink "/reviews/") (hasPrefix .RelPermalink "/consumed/") }}
+      {{ $loadCollectionJS = true }}
+    {{ end }}
+    {{ if $loadCollectionJS }}
       {{ $collectionJS := resources.Get "js/collection-filter.js" | minify | fingerprint }}
       <script src="{{ $collectionJS.Permalink }}" integrity="{{ $collectionJS.Data.Integrity }}" crossorigin="anonymous" defer></script>
     {{ end }}

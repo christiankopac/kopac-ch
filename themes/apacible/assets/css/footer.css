@@ -5,8 +5,8 @@
   margin-block-start: auto; /* Push to bottom */
   padding-block: var(--space-lg) var(--space-sm);
   box-sizing: border-box;
-  /* Width calculation already includes padding */
-  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  /* Wider footer to match main content */
+  width: min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2);
   margin-inline: auto;
   border-top: 1px solid var(--color-border);
 }
@@ -41,10 +41,11 @@ body.section-posts .site-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-size-base-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  font-weight: var(--font-weight-light);
-  opacity: var(--opacity-muted);
+  font-weight: var(--font-weight-normal);
+  opacity: 0.5;
+  letter-spacing: 0.01em;
 }
 
 /* Mobile: Keep single row with compact spacing */
@@ -61,7 +62,7 @@ body.section-posts .site-footer {
 
 @media (max-width: 600px) {
   .footer-content {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
   }
 }
 
@@ -98,7 +99,9 @@ body.section-posts .site-footer {
   font-size: inherit;
   color: inherit;
   padding: 0;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
   transition: opacity var(--transition-base);
   font-family: inherit;
   display: inline-flex;
@@ -111,6 +114,11 @@ body.section-posts .site-footer {
 
 :is(#theme-toggle, .footer-content a):hover {
   opacity: var(--opacity-full);
+}
+
+/* Theme toggle button shouldn't have underline */
+#theme-toggle {
+  text-decoration: none;
 }
 
 :is(#theme-toggle, .footer-content a) svg {
@@ -273,6 +281,14 @@ body.section-posts .site-footer {
   flex: 0 1 auto;
 }
 
+@media (min-width: 1024px) {
+  .newsletter-content input[type="text"],
+  .newsletter-content input[type="email"] {
+    min-width: 180px;
+    max-width: 240px;
+  }
+}
+
 /* Group inputs together - smaller gap between them */
 .newsletter-content input[type="text"] {
   margin-inline-end: calc(var(--space-xs) * 0.5);
@@ -423,50 +439,45 @@ body.section-posts .site-footer {
 
 @media (max-width: 600px) {
   .newsletter-content {
+    flex-direction: column;
+    align-items: stretch;
     gap: var(--space-sm);
-    justify-content: flex-start;
   }
 
   .newsletter-label {
     font-size: var(--font-size-xs);
-    flex: 0 0 auto;
-    margin-inline-end: var(--space-xs);
     width: 100%;
-    margin-block-end: calc(var(--space-xs) * 0.5);
+    margin: 0 0 calc(var(--space-xs) * 0.5) 0;
+    text-align: center;
   }
 
   .newsletter-content input[type="text"],
   .newsletter-content input[type="email"] {
-    min-width: 120px;
-    max-width: 160px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
     font-size: var(--font-size-xs);
     padding: calc(var(--space-xs) * 0.75) var(--space-sm);
-    flex: 1 1 auto;
-    margin-inline-end: var(--space-xs);
-  }
-
-  .newsletter-content input[type="email"] {
-    margin-inline-end: 0;
+    margin: 0;
   }
 
   .newsletter-consent-label {
-    flex: 0 0 auto;
-    margin-inline-end: var(--space-xs);
     width: 100%;
-    margin-block-start: calc(var(--space-xs) * 0.5);
+    justify-content: center;
+    margin: 0;
+    white-space: normal;
   }
 
   .newsletter-content button {
+    width: 100%;
     font-size: var(--font-size-xs);
-    padding: calc(var(--space-xs) * 0.75) var(--space-md);
-    flex: 0 0 auto;
-    margin-block-start: calc(var(--space-xs) * 0.5);
+    padding: calc(var(--space-xs) * 0.875) var(--space-md);
+    margin: 0;
   }
 
   .newsletter-error {
     width: 100%;
-    margin-block-start: calc(var(--space-xs) * 0.5);
-    margin-block-end: calc(var(--space-xs) * 0.5);
+    margin: calc(var(--space-xs) * 0.5) 0;
   }
 
   .newsletter-success {

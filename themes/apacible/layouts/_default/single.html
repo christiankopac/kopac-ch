@@ -1,21 +1,267 @@
 {{ define "content" }}
+{{/* Get metadata from organized data files for reviews, music, and consumed pages */}}
+{{ $mediaData := dict }}
+{{ if in .File.Path "reviews/" }}
+    {{/* Movie review page */}}
+    {{ $reviewSlug := .File.ContentBaseName }}
+    {{ $reviewLink := printf "/reviews/%s" $reviewSlug }}
+    {{ range .Site.Data.movies.movies.collection }}
+        {{ if eq .link $reviewLink }}
+            {{ $mediaData = . }}
+        {{ end }}
+    {{ end }}
+{{ else if in .File.Path "music/" }}
+    {{/* Music single page */}}
+    {{ $musicSlug := .File.ContentBaseName }}
+    {{ $musicLink := printf "/music/%s" $musicSlug }}
+    {{ $musicData := .Site.Data.music.music.collection | default slice }}
+    {{ if not $musicData }}
+        {{ $musicData = .Site.Data.music.collection | default slice }}
+    {{ end }}
+    {{ range $musicData }}
+        {{ if eq .link $musicLink }}
+            {{ $mediaData = . }}
+        {{ end }}
+    {{ end }}
+{{ else if in .File.Path "consumed/" }}
+    {{/* Consumed page - use page params directly */}}
+    {{ $mediaData = dict 
+        "title" (.Params.title | default .Title)
+        "year" (.Params.year | default "")
+        "director" (.Params.director | default "")
+        "author" (.Params.author | default "")
+        "artist" (.Params.artist | default "")
+        "publisher" (.Params.publisher | default "")
+        "label" (.Params.label | default "")
+        "rating" (.Params.rating | default 0)
+        "img" (.Params.img | default (.Params.image | default ""))
+        "tmdb" (.Params.tmdb | default "")
+        "discogs" (.Params.discogs | default "")
+        "discogsArtist" (.Params.discogsArtist | default "")
+        "discogsLabel" (.Params.discogsLabel | default "")
+        "openlibrary" (.Params.openlibrary | default "")
+        "content" (.Params.content | default "")
+        "review" (.Params.review | default "")
+        "trailer" (.Params.trailer | default "")
+        "footer" (.Params.footer | default "")
+        "date_read" (.Params.date_read | default "")
+        "genre" (.Params.genre | default "")
+        "style" (.Params.style | default "")
+        "songs" (.Params.songs | default slice)
+        "screenshots" (.Params.screenshots | default slice)
+        "category" (.Params.category | default "")
+    }}
+{{ end }}
+
 <article class="post">
     <header>
-        <h1>{{ .Title }}</h1>
-        {{ if not (in .File.Path "consumed/") }}
+        {{ if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "movie") }}
+            {{/* Movie: Title (Year) */}}
+            <h1>
+                {{ $mediaData.title | default .Title }}{{ with $mediaData.year }} <span class="title-meta">({{ . }})</span>{{ end }}
+            </h1>
+        {{ else if or (in .File.Path "music/") (and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "music")) }}
+            {{/* Music: Artist - Album (Year) */}}
+            <h1>
+                {{ if and $mediaData.artist $mediaData.title }}
+                    <span class="title-primary">{{ $mediaData.artist }}</span> <span class="title-separator">—</span> <span class="title-secondary">{{ $mediaData.title | default .Title }}</span>{{ with $mediaData.year }} <span class="title-meta">({{ . }})</span>{{ end }}
+                {{ else }}
+                    {{ $mediaData.title | default .Title }}{{ with $mediaData.year }} <span class="title-meta">({{ . }})</span>{{ end }}
+                {{ end }}
+            </h1>
+        {{ else if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "book") }}
+            {{/* Book: Title (Author) */}}
+            <h1>
+                {{ $mediaData.title | default .Title }}{{ with $mediaData.author }} <span class="title-meta">({{ . }})</span>{{ end }}
+            </h1>
+        {{ else if in .File.Path "reviews/" }}
+            {{/* Review page - use title from consumed.toml if available, otherwise use page title */}}
+            <h1>{{ $mediaData.title | default .Title }}</h1>
+        {{ else }}
+            <h1>{{ .Title }}</h1>
+        {{ end }}
         <div class="post-meta">
             <div class="post-meta-left">
                 {{ if in .File.Path "reviews/" }}
-                    {{/* Movie review metadata */}}
-                    {{ with .Params.director }}
+                    {{/* Movie review metadata from consumed.toml */}}
+                    {{ with $mediaData.director }}
                         <span class="director"><span class="rune">ᛉ</span> {{ . }}</span>
                     {{ end }}
-                    {{ with .Params.year }}
+                    {{ with $mediaData.year }}
                         <span class="year"><span class="rune">ᛋ</span> {{ . }}</span>
                     {{ end }}
-                    {{ with .Params.rating }}
-                        <span class="rating"><span class="rune">ᛏ</span> {{ range seq . }}★{{ end }}{{ range seq (sub 5 .) }}☆{{ end }}</span>
+                    {{ with $mediaData.rating }}
+                        {{ $rating := float . }}
+                        {{ if gt $rating 0 }}
+                            {{ $fullStars := int (math.Floor $rating) }}
+                            {{ $hasHalf := ge (mod $rating 1.0) 0.5 }}
+                            {{ $emptyStars := sub 5 (add $fullStars (cond $hasHalf 1 0)) }}
+                            <span class="rating"><span class="rune">ᛏ</span> {{ range seq $fullStars }}★{{ end }}{{ if $hasHalf }}⯨{{ end }}{{ range seq $emptyStars }}☆{{ end }}</span>
+                        {{ end }}
                     {{ end }}
+                    {{ with $mediaData.tmdb }}
+                        <span class="tmdb-link">
+                            <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View on The Movie Database">
+                                <span class="rune">ᛞ</span> TMDB
+                            </a>
+                        </span>
+                    {{ end }}
+                {{ else if or (in .File.Path "music/") (and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "music")) }}
+                    {{/* Music metadata - block layout */}}
+                    <div class="media-metadata">
+                        {{ with $mediaData.artist }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Artist</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.year }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Year</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.label }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Label</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.genre }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Genre</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.style }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Style</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.footer }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Date</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ if or $mediaData.discogs $mediaData.discogsArtist $mediaData.discogsLabel }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Links</span>
+                                <span class="metadata-value">
+                                    {{ with $mediaData.discogs }}
+                                        <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View on Discogs">Discogs</a>
+                                    {{ end }}
+                                    {{ with $mediaData.discogsArtist }}
+                                        {{ if $mediaData.discogs }} · {{ end }}
+                                        <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View Artist on Discogs">Artist</a>
+                                    {{ end }}
+                                    {{ with $mediaData.discogsLabel }}
+                                        {{ if or $mediaData.discogs $mediaData.discogsArtist }} · {{ end }}
+                                        <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View Label on Discogs">Label</a>
+                                    {{ end }}
+                                </span>
+                            </div>
+                        {{ end }}
+                    </div>
+                {{ else if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "movie") }}
+                    {{/* Consumed movie metadata - block layout */}}
+                    <div class="media-metadata">
+                        {{ with $mediaData.director }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Director</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.year }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Year</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.rating }}
+                            {{ $rating := float . }}
+                            {{ if gt $rating 0 }}
+                                {{ $fullStars := int (math.Floor $rating) }}
+                                {{ $hasHalf := ge (mod $rating 1.0) 0.5 }}
+                                {{ $emptyStars := sub 5 (add $fullStars (cond $hasHalf 1 0)) }}
+                                <div class="metadata-item">
+                                    <span class="metadata-label">Rating</span>
+                                    <span class="metadata-value rating">
+                                        {{ range seq $fullStars }}★{{ end }}
+                                        {{ if $hasHalf }}⯨{{ end }}
+                                        {{ range seq $emptyStars }}☆{{ end }}
+                                    </span>
+                                </div>
+                            {{ end }}
+                        {{ end }}
+                        {{ with $mediaData.footer }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Date</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.tmdb }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Links</span>
+                                <span class="metadata-value">
+                                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View on The Movie Database">TMDB</a>
+                                </span>
+                            </div>
+                        {{ end }}
+                    </div>
+                {{ else if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "book") }}
+                    {{/* Consumed book metadata - block layout */}}
+                    <div class="media-metadata">
+                        {{ with $mediaData.author }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Author</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.year }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Year</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.publisher }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Publisher</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.rating }}
+                            {{ $rating := float . }}
+                            {{ if gt $rating 0 }}
+                                {{ $fullStars := int (math.Floor $rating) }}
+                                {{ $hasHalf := ge (mod $rating 1.0) 0.5 }}
+                                {{ $emptyStars := sub 5 (add $fullStars (cond $hasHalf 1 0)) }}
+                                <div class="metadata-item">
+                                    <span class="metadata-label">Rating</span>
+                                    <span class="metadata-value rating">
+                                        {{ range seq $fullStars }}★{{ end }}
+                                        {{ if $hasHalf }}⯨{{ end }}
+                                        {{ range seq $emptyStars }}☆{{ end }}
+                                    </span>
+                                </div>
+                            {{ end }}
+                        {{ end }}
+                        {{ with $mediaData.footer }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Date</span>
+                                <span class="metadata-value">{{ . }}</span>
+                            </div>
+                        {{ end }}
+                        {{ with $mediaData.openlibrary }}
+                            <div class="metadata-item">
+                                <span class="metadata-label">Links</span>
+                                <span class="metadata-value">
+                                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" title="View on Open Library">Open Library</a>
+                                </span>
+                            </div>
+                        {{ end }}
+                    </div>
                 {{ else }}
                     {{/* Regular post metadata */}}
                     {{ with .Date }}
@@ -30,7 +276,6 @@
                 {{ end }}
             </div>
         </div>
-        {{ end }}
     </header>
 
     {{ if .Params.outdate_alert }}
@@ -65,7 +310,185 @@
         {{ end }}
         
         <div class="content{{ if $showTOC }} has-toc{{ end }}">
-            {{ .Content }}
+            {{ if in .File.Path "reviews/" }}
+                {{/* Movie review: show review from consumed.toml, then content, then gallery */}}
+                {{ with $mediaData.review }}
+                    <div class="movie-review">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{/* Show page content if any (for additional notes) */}}
+                {{ if .Content }}
+                    {{ .Content }}
+                {{ end }}
+                {{/* Automatically include gallery if screenshots exist in frontmatter */}}
+                {{ $screenshots := .Params.screenshots }}
+                {{ if $screenshots }}
+                    <h2>Screenshots</h2>
+                    {{ partial "spoiler-gallery" (dict "images" $screenshots "columns" "3" "label" "Show Screenshots (Spoiler Alert)" "context" .) }}
+                {{ end }}
+            {{ else if or (in .File.Path "music/") (and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "music")) }}
+                {{/* Music page: show floating image, description, review, and songs */}}
+                {{ with $mediaData.img }}
+                    <figure class="media-cover float-left music-cover">
+                        <img src="{{ . }}" alt="{{ $mediaData.title | default .Title }}" loading="lazy">
+                    </figure>
+                {{ end }}
+                {{ with $mediaData.content }}
+                    <div class="music-description">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ with $mediaData.review }}
+                    <div class="music-review">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ if .Content }}
+                    {{ .Content }}
+                {{ end }}
+                {{/* Show songs as YouTube embeds if available */}}
+                {{ with $mediaData.songs }}
+                    <h2>Songs</h2>
+                    <div class="music-songs-embeds">
+                        {{ range . }}
+                            {{ $songUrl := "" }}
+                            {{ $songTitle := "" }}
+                            {{ if .url }}
+                                {{ $songUrl = .url }}
+                                {{ $songTitle = .title | default .url }}
+                            {{ else if .title }}
+                                {{ $songTitle = .title }}
+                            {{ else }}
+                                {{/* Treat as URL string */}}
+                                {{ $songUrl = . }}
+                            {{ end }}
+                            {{ if $songUrl }}
+                                {{/* Check if it's a YouTube URL */}}
+                                {{ if or (in $songUrl "youtube.com") (in $songUrl "youtu.be") }}
+                                    {{/* Extract video ID */}}
+                                    {{ $videoId := "" }}
+                                    {{ if in $songUrl "youtube.com/watch?v=" }}
+                                        {{ $videoId = index (split $songUrl "v=") 1 }}
+                                        {{ $videoId = index (split $videoId "&") 0 }}
+                                    {{ else if in $songUrl "youtu.be/" }}
+                                        {{ $videoId = index (split $songUrl "youtu.be/") 1 }}
+                                        {{ $videoId = index (split $videoId "?") 0 }}
+                                    {{ end }}
+                                    {{ if $videoId }}
+                                        <div class="song-embed">
+                                            <iframe 
+                                                width="560" 
+                                                height="315" 
+                                                src="https://www.youtube.com/embed/{{ $videoId }}" 
+                                                frameborder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                allowfullscreen
+                                                loading="lazy">
+                                            </iframe>
+                                            {{ if and $songTitle (ne $songTitle $songUrl) }}
+                                                <p class="song-title">{{ $songTitle }}</p>
+                                            {{ end }}
+                                        </div>
+                                    {{ else }}
+                                        <div class="song-link">
+                                            <a href="{{ $songUrl }}" target="_blank" rel="noopener noreferrer">{{ $songTitle | default $songUrl }}</a>
+                                        </div>
+                                    {{ end }}
+                                {{ else }}
+                                    <div class="song-link">
+                                        <a href="{{ $songUrl }}" target="_blank" rel="noopener noreferrer">{{ $songTitle | default $songUrl }}</a>
+                                    </div>
+                                {{ end }}
+                            {{ else if $songTitle }}
+                                <div class="song-title-only">{{ $songTitle }}</div>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                {{ end }}
+            {{ else if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "movie") }}
+                {{/* Consumed movie page: show floating image, description, review, trailer, and gallery */}}
+                {{ with $mediaData.img }}
+                    <figure class="media-cover float-left">
+                        <img src="{{ . }}" alt="{{ $mediaData.title | default .Title }}" loading="lazy">
+                    </figure>
+                {{ end }}
+                {{ with $mediaData.content }}
+                    <div class="movie-description">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ with $mediaData.review }}
+                    <div class="movie-review">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ if .Content }}
+                    {{ .Content }}
+                {{ end }}
+                {{/* Show trailer if available */}}
+                {{ with $mediaData.trailer }}
+                    <h2>Trailer</h2>
+                    <div class="movie-trailer">
+                        {{ $trailerUrl := . }}
+                        {{ $videoId := "" }}
+                        {{ if in $trailerUrl "youtube.com/watch?v=" }}
+                            {{ $videoId = index (split $trailerUrl "v=") 1 }}
+                            {{ $videoId = index (split $videoId "&") 0 }}
+                        {{ else if in $trailerUrl "youtu.be/" }}
+                            {{ $videoId = index (split $trailerUrl "youtu.be/") 1 }}
+                            {{ $videoId = index (split $videoId "?") 0 }}
+                        {{ else if in $trailerUrl "youtube.com/embed/" }}
+                            {{ $videoId = index (split $trailerUrl "embed/") 1 }}
+                            {{ $videoId = index (split $videoId "?") 0 }}
+                        {{ end }}
+                        {{ if $videoId }}
+                            <div class="trailer-embed">
+                                <iframe 
+                                    width="560" 
+                                    height="315" 
+                                    src="https://www.youtube.com/embed/{{ $videoId }}" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        {{ else }}
+                            <p><a href="{{ $trailerUrl }}" target="_blank" rel="noopener noreferrer">{{ $trailerUrl }}</a></p>
+                        {{ end }}
+                    </div>
+                {{ end }}
+                {{/* Automatically include gallery if screenshots exist in frontmatter */}}
+                {{ $screenshots := .Params.screenshots }}
+                {{ if $screenshots }}
+                    <h2>Screenshots</h2>
+                    {{ partial "spoiler-gallery" (dict "images" $screenshots "columns" "3" "label" "Show Screenshots (Spoiler Alert)" "context" .) }}
+                {{ end }}
+            {{ else if and (in .File.Path "consumed/") (eq (index (split .File.Dir "/") 1) "book") }}
+                {{/* Consumed book page: show floating image, description and review */}}
+                {{ with $mediaData.img }}
+                    <figure class="media-cover float-left">
+                        <img src="{{ . }}" alt="{{ $mediaData.title | default .Title }}" loading="lazy">
+                    </figure>
+                {{ end }}
+                {{ with $mediaData.content }}
+                    <div class="book-description">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ with $mediaData.review }}
+                    <div class="book-review">
+                        {{ . | markdownify }}
+                    </div>
+                {{ end }}
+                {{ if .Content }}
+                    {{ .Content }}
+                {{ end }}
+            {{ else }}
+                {{/* Regular page content */}}
+                {{ .Content }}
+            {{ end }}
         </div>
     </div>
     

@@ -1,0 +1,451 @@
+/* Consumed Single Page Styling - Flat & Minimal */
+
+.consumed-single {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Hero Section with Poster and Info */
+.consumed-hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+/* Poster Styling */
+.consumed-poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* Music albums use square aspect ratio */
+.music .consumed-poster {
+  aspect-ratio: 1/1;
+}
+
+.consumed-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.consumed-poster-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary, #f8f9fa);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* Info Section */
+.consumed-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+
+.consumed-info-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.consumed-header {
+  padding-bottom: 1.5rem;
+}
+
+.consumed-title {
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text, #1f2937);
+  letter-spacing: -0.01em;
+}
+
+.consumed-title .title-year {
+  font-weight: 400;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.consumed-artist {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.375rem 0;
+  letter-spacing: 0.02em;
+}
+
+.consumed-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Metadata - Timeless label style */
+.consumed-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: baseline;
+}
+
+.metadata-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--color-text, #374151);
+}
+
+.metadata-badge::before {
+  content: attr(data-label);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.metadata-badge a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition-base);
+}
+
+.metadata-badge a:hover {
+  opacity: 0.7;
+}
+
+.metadata-icon {
+  display: none;
+}
+
+.rating-badge .rating-stars {
+  color: var(--color-text, #374151);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+}
+
+.consumed-date {
+  font-weight: 400;
+}
+
+/* External Links - Minimal text links */
+.consumed-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-text-secondary, #6b7280);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.external-link:hover {
+  color: var(--color-text, #374151);
+}
+
+.external-link svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+/* Content Section */
+.consumed-content-section {
+  max-width: 1000px;
+  /* margin: 0 auto 3rem; */
+  /* padding: 0 1rem; */
+}
+
+/* Button and screenshots stay within content section */
+.consumed-content-section .spoiler-gallery-container {
+  margin: var(--space-2xl) 0;
+}
+
+.consumed-content-section .spoiler-content {
+  margin-top: var(--space-xl);
+}
+
+/* Keep screenshots within container */
+.consumed-content-section .screenshot-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.consumed-content-section .spoiler-screenshots {
+  max-width: 100%;
+}
+
+.consumed-content-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--color-text, #1f2937);
+  letter-spacing: -0.01em;
+}
+
+.consumed-description,
+.consumed-review,
+.consumed-page-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text, #374151);
+}
+
+.consumed-page-content {
+  overflow: hidden; /* Contain floated elements */
+}
+
+.consumed-page-content > *:first-child {
+  margin-top: 0;
+}
+
+.consumed-page-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.consumed-description {
+  margin-bottom: 2rem;
+}
+
+.consumed-review {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* Video Embeds */
+.movie-trailer,
+.music-songs-embeds {
+  max-width: 100%;
+}
+
+.trailer-embed,
+.song-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #e5e7eb);
+  margin-bottom: 1rem;
+}
+
+.trailer-embed iframe,
+.song-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.song-title {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Bandcamp embed styles for consumed pages */
+.consumed-page-content .bandcamp-embed-standard,
+.consumed-page-content .bandcamp-embed-slim {
+  float: left;
+  width: 520px;
+  max-width: 520px;
+  margin: 0 var(--space-xl) var(--space-lg) 0;
+  clear: none;
+}
+
+.consumed-page-content .bandcamp-embed-standard iframe,
+.consumed-page-content .bandcamp-embed-slim iframe {
+  width: 520px;
+  max-width: 100%;
+}
+
+.consumed-page-content .bandcamp-embed-float-left {
+  float: left;
+  clear: none;
+  margin: 0 var(--space-xl) var(--space-base) 0;
+}
+
+.consumed-page-content .bandcamp-embed-float-right {
+  float: right;
+  margin: 0 0 var(--space-base) var(--space-xl);
+  clear: none;
+}
+
+.consumed-page-content .bandcamp-embed-float-none {
+  float: none;
+  max-width: 520px;
+  width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Album and artwork styles on consumed pages */
+.consumed-page-content .bandcamp-embed-album,
+.consumed-page-content .bandcamp-embed-artwork {
+  width: auto;
+}
+
+.consumed-page-content .bandcamp-embed-album.bandcamp-embed-float-left,
+.consumed-page-content .bandcamp-embed-artwork.bandcamp-embed-float-left {
+  float: left;
+  width: auto;
+  margin: 0 var(--space-xl) var(--space-base) 0;
+  clear: none;
+}
+
+.consumed-page-content .bandcamp-embed-album.bandcamp-embed-float-right,
+.consumed-page-content .bandcamp-embed-artwork.bandcamp-embed-float-right {
+  float: right;
+  width: auto;
+  margin: 0 0 var(--space-base) var(--space-xl);
+  clear: none;
+}
+
+.consumed-page-content .bandcamp-embed-album iframe {
+  width: 350px;
+  height: 654px;
+}
+
+.consumed-page-content .bandcamp-embed-artwork iframe {
+  width: 350px;
+  height: 350px;
+}
+
+.consumed-page-content p {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .consumed-page-content .bandcamp-embed-standard,
+  .consumed-page-content .bandcamp-embed-slim,
+  .consumed-page-content .bandcamp-embed-album,
+  .consumed-page-content .bandcamp-embed-artwork {
+    float: none;
+    max-width: 100%;
+    width: 100%;
+    margin: var(--space-lg) 0;
+  }
+  
+  .consumed-page-content .bandcamp-embed-standard iframe,
+  .consumed-page-content .bandcamp-embed-slim iframe,
+  .consumed-page-content .bandcamp-embed-album iframe,
+  .consumed-page-content .bandcamp-embed-artwork iframe {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .consumed-page-content .bandcamp-embed-float-left,
+  .consumed-page-content .bandcamp-embed-float-right {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-lg) 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .consumed-hero {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .consumed-poster {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .consumed-title {
+    font-size: 2rem;
+  }
+
+  .consumed-artist {
+    font-size: 1.125rem;
+  }
+
+  .consumed-subtitle {
+    font-size: 1rem;
+  }
+
+  .consumed-metadata {
+    justify-content: center;
+  }
+
+  .consumed-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .consumed-single {
+    padding: 1rem 0.5rem;
+  }
+
+  .consumed-hero {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .consumed-title {
+    font-size: 1.75rem;
+  }
+
+  .metadata-badge {
+    font-size: 0.8125rem;
+    padding: 0.375rem 0.875rem;
+  }
+
+  .external-link {
+    font-size: 0.8125rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .consumed-content-section {
+    margin-bottom: 2rem;
+  }
+
+  .consumed-content-section h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .consumed-poster-placeholder {
+  background: var(--color-bg-secondary, #1f2937);
+  color: var(--color-text-secondary, #9ca3af);
+}

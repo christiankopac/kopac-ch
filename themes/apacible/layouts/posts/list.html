@@ -21,19 +21,89 @@
     {{ end }}
     {{ $categories = sort $categories }}
 
-    {{/* Render category filter if there are multiple categories */}}
+    {{/* Render category filter with Alpine.js if there are multiple categories */}}
     {{ if gt (len $categories) 1 }}
+    <div x-data="{ selectedCategory: 'all' }" class="collection-wrapper">
+    <div class="collection-filters">
     <div class="collection-filter" data-filter-type="category">
         <div class="filter-buttons">
-            <button class="filter-btn active" data-category="all">All</button>
+                <button 
+                    class="filter-btn" 
+                    :class="{ active: selectedCategory === 'all' }"
+                    @click="selectedCategory = 'all'"
+                    x-bind:aria-pressed="selectedCategory === 'all'"
+                    type="button"
+                >
+                    All
+                </button>
             {{ range $categories }}
-                <button class="filter-btn" data-category="{{ . | urlize }}">{{ . }}</button>
+                    <button 
+                        class="filter-btn" 
+                        :class="{ active: selectedCategory === '{{ . | urlize }}' }"
+                        @click="selectedCategory = '{{ . | urlize }}'"
+                        x-bind:aria-pressed="selectedCategory === '{{ . | urlize }}'"
+                        type="button"
+                    >
+                        {{ . }}
+                    </button>
             {{ end }}
+            </div>
         </div>
     </div>
+    <div class="posts" data-filterable="category">
+        {{ range .Pages }}
+            {{ $postCategories := .Params.categories }}
+            {{ $categorySlug := "" }}
+            {{ if $postCategories }}
+                {{ $categorySlug = index $postCategories 0 | urlize }}
+            {{ end }}
+            <article 
+                class="post-preview{{ if .Params.featured }} featured{{ end }} collection-item" 
+                x-show="selectedCategory === 'all' || '{{ $categorySlug }}' === selectedCategory"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                {{ if $categorySlug }} data-category="{{ $categorySlug }}"{{ end }}>
+                <h2>
+                    {{ if .Params.featured }}<span class="featured-marker">ᛟ</span>{{ end }}
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h2>
+                <div class="post-meta">
+                    <div class="post-meta-left">
+                    </div>
+                    <div class="post-meta-right">
+                        {{ if $.Site.Params.show_tags_in_list }}
+                            {{ with .Params.tags }}
+                            <div class="tags">
+                                {{ range . }}
+                                    <span class="tag">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
+                        {{ end }}
+                        {{ if $.Site.Params.show_categories_in_list }}
+                            {{ with .Params.categories }}
+                            <div class="categories">
+                                {{ range . }}
+                                    <span class="category">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
+                        {{ end }}
+                        {{ with .Date }}
+                            <time datetime="{{ .Format "2006-01-02" }}">{{ .Format ($.Site.Params.date_format | default "Jan 2, 2006") }}</time>
+                        {{ end }}
+                    </div>
+                </div>
+            </article>
     {{ end }}
-
-    <div class="posts"{{ if gt (len $categories) 1 }} data-filterable="category"{{ end }}>
+    </div>
+    </div>
+    {{ else }}
+    <div class="posts">
         {{ range .Pages }}
             {{ $postCategories := .Params.categories }}
             {{ $categorySlug := "" }}
@@ -75,6 +145,7 @@
             </article>
         {{ end }}
     </div>
+    {{ end }}
 </section>
 {{ end }}
 

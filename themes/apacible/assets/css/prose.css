@@ -6,7 +6,7 @@
 
 @media (min-width: 640px) {
   .prose header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -32,6 +32,9 @@
   font-size: 1rem;
   line-height: 1.7;
   color: var(--color-text);
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 640px) {
@@ -73,9 +76,22 @@
   margin-top: 0;
 }
 
-/* Collection blocks should have consistent spacing */
+/* Collection blocks should have consistent spacing and break out of max-width */
 .prose .content > .collection {
   margin-top: 0; /* Handled by > * + * rule above */
+  margin-bottom: 0;
+  max-width: none;
+  width: 100%;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: clamp(1rem, 5vw, 3rem);
+  padding-right: clamp(1rem, 5vw, 3rem);
+  box-sizing: border-box;
+}
+
+/* Adjust spacing after collection grids */
+.prose .content > .collection + * {
+  margin-top: 2.5rem;
 }
 
 /* Other headings in content - match post content styles */
@@ -119,5 +135,55 @@
   font-weight: 500;
   margin-top: 2em;
   margin-bottom: 1em;
+}
+
+/* Navigation menu for picks page - minimal, refined, timeless */
+.prose .content > p:has(a[href*="/consumed/"]),
+.prose .content > p:has(a[href*="/playlists/"]),
+.blog .content > p:has(a[href*="/consumed/"]),
+.blog .content > p:has(a[href*="/playlists/"]) {
+  margin-top: var(--space-5xl);
+  margin-bottom: 0;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+  opacity: 0.6;
+  max-width: none;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding-left: max(calc((100vw - min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2)) / 2), clamp(1rem, 5vw, 3rem));
+  padding-right: max(calc((100vw - min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2)) / 2), clamp(1rem, 5vw, 3rem));
+  box-sizing: border-box;
+  display: block;
+}
+
+.prose .content > p:has(a[href*="/consumed/"]) a,
+.prose .content > p:has(a[href*="/playlists/"]) a,
+.blog .content > p:has(a[href*="/consumed/"]) a,
+.blog .content > p:has(a[href*="/playlists/"]) a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 400;
+  transition: opacity var(--transition-base), text-decoration var(--transition-base);
+  opacity: 0.8;
+}
+
+.prose .content > p:has(a[href*="/consumed/"]) a:hover,
+.prose .content > p:has(a[href*="/playlists/"]) a:hover,
+.blog .content > p:has(a[href*="/consumed/"]) a:hover,
+.blog .content > p:has(a[href*="/playlists/"]) a:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 

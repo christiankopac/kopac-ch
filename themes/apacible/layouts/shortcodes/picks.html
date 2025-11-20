@@ -1,0 +1,190 @@
+{{/*
+  Picks Shortcode - Show last 6 items with rating >= 3.5
+  Combines movies, music, and books from organized data files
+*/}}
+
+{{ $style := .Get "style" | default "poster-grid" }}
+
+{{/* Get all pages from consumed sections */}}
+{{ $consumedPages := where .Site.Pages "Section" "consumed" }}
+{{ $moviePages := slice }}
+{{ $musicPages := slice }}
+{{ $bookPages := slice }}
+{{ range $consumedPages }}
+  {{ if and (not .IsSection) (in .File.Dir "movie/") }}
+    {{ $moviePages = $moviePages | append . }}
+  {{ else if and (not .IsSection) (in .File.Dir "music/") }}
+    {{ $musicPages = $musicPages | append . }}
+  {{ else if and (not .IsSection) (in .File.Dir "book/") }}
+    {{ $bookPages = $bookPages | append . }}
+  {{ end }}
+{{ end }}
+
+{{/* Convert pages to items for compatibility */}}
+{{ $movies := slice }}
+{{ $music := slice }}
+{{ $books := slice }}
+{{ range $moviePages }}
+  {{ if not .Draft }}
+    {{ $movies = $movies | append (dict 
+      "title" (.Params.title | default .Title)
+      "category" "movies"
+      "year" (.Params.year | default "")
+      "director" (.Params.director | default "")
+      "rating" (.Params.rating | default 0)
+      "img" (.Params.img | default (.Params.image | default ""))
+      "tmdb" (.Params.tmdb | default "")
+      "content" (.Params.content | default "")
+      "review" (.Params.review | default "")
+      "footer" (.Params.footer | default "")
+      "date_read" (.Params.date_read | default "")
+      "draft" false
+      "link" (.RelPermalink | default "")
+    ) }}
+  {{ end }}
+{{ end }}
+{{ range $musicPages }}
+  {{ if not .Draft }}
+    {{ $music = $music | append (dict 
+      "title" (.Params.title | default .Title)
+      "category" "music"
+      "year" (.Params.year | default "")
+      "artist" (.Params.artist | default "")
+      "label" (.Params.label | default "")
+      "discogs" (.Params.discogs | default "")
+      "img" (.Params.img | default (.Params.image | default ""))
+      "footer" (.Params.footer | default "")
+      "date_read" (.Params.date_read | default "")
+      "draft" false
+      "link" (.RelPermalink | default "")
+      "rating" (.Params.rating | default 0)
+    ) }}
+  {{ end }}
+{{ end }}
+{{ range $bookPages }}
+  {{ if not .Draft }}
+    {{ $books = $books | append (dict 
+      "title" (.Params.title | default .Title)
+      "category" "books"
+      "year" (.Params.year | default "")
+      "author" (.Params.author | default "")
+      "publisher" (.Params.publisher | default "")
+      "openlibrary" (.Params.openlibrary | default "")
+      "img" (.Params.img | default (.Params.image | default ""))
+      "footer" (.Params.footer | default "")
+      "date_read" (.Params.date_read | default "")
+      "draft" false
+      "link" (.RelPermalink | default "")
+      "rating" (.Params.rating | default 0)
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{/* Combine and filter by rating >= 3.5 */}}
+{{ $picks := slice }}
+{{ range $movies }}
+  {{ if and (not .draft) (ge (float (.rating | default 0)) 3.5) }}
+    {{ $sortDate := "" }}
+    {{ if .date_read }}
+      {{ $sortDate = .date_read }}
+    {{ else if .footer }}
+      {{/* Try to extract date from footer for sorting */}}
+      {{ $sortDate = .footer }}
+    {{ end }}
+    {{ $picks = $picks | append (dict "item" . "sortDate" $sortDate) }}
+  {{ end }}
+{{ end }}
+
+{{ range $music }}
+  {{ if and (not .draft) (ge (float (.rating | default 0)) 3.5) }}
+    {{ $sortDate := "" }}
+    {{ if .date_read }}
+      {{ $sortDate = .date_read }}
+    {{ else if .footer }}
+      {{ $sortDate = .footer }}
+    {{ end }}
+    {{ $picks = $picks | append (dict "item" . "sortDate" $sortDate) }}
+  {{ end }}
+{{ end }}
+
+{{ range $books }}
+  {{ if and (not .draft) (ge (float (.rating | default 0)) 3.5) }}
+    {{ $sortDate := "" }}
+    {{ if .date_read }}
+      {{ $sortDate = .date_read }}
+    {{ else if .footer }}
+      {{ $sortDate = .footer }}
+    {{ end }}
+    {{ $picks = $picks | append (dict "item" . "sortDate" $sortDate) }}
+  {{ end }}
+{{ end }}
+
+{{/* Sort by date (most recent first) and take last 6 */}}
+{{ $sortedPicks := slice }}
+{{ range $picks }}
+  {{ $sortedPicks = $sortedPicks | append . }}
+{{ end }}
+{{ $sortedPicks = sort $sortedPicks "sortDate" "desc" }}
+{{ $recentPicks := first 6 $sortedPicks }}
+
+{{ if gt (len $recentPicks) 0 }}
+  {{ $isPosterGrid := eq $style "poster-grid" }}
+  <div class="collection collection-{{ if $isPosterGrid }}poster{{ else }}card{{ end }}{{ if $isPosterGrid }} poster-grid picks-grid{{ end }}">
+    {{ range $recentPicks }}
+      {{ $item := .item }}
+      {{/* Generate consumed page link based on category */}}
+      {{ $consumedLink := "" }}
+      {{ if eq $item.category "music" }}
+        {{ if and $item.artist $item.title }}
+          {{ $slug := printf "%s-%s" ($item.artist | urlize) ($item.title | urlize) }}
+          {{ $consumedLink = printf "/consumed/music/%s" $slug }}
+        {{ else if $item.title }}
+          {{ $consumedLink = printf "/consumed/music/%s" ($item.title | urlize) }}
+        {{ end }}
+      {{ else if eq $item.category "movies" }}
+        {{ if $item.title }}
+          {{ $consumedLink = printf "/consumed/movie/%s" ($item.title | urlize) }}
+        {{ end }}
+      {{ else if eq $item.category "books" }}
+        {{ if $item.title }}
+          {{ $consumedLink = printf "/consumed/book/%s" ($item.title | urlize) }}
+        {{ end }}
+      {{ end }}
+      <article class="collection-item"{{ if $item.category }} data-category="{{ $item.category }}"{{ end }}{{ if $item.year }} data-year="{{ $item.year }}"{{ end }}{{ if $item.date_read }} data-date="{{ $item.date_read }}"{{ end }}{{ if $item.title }} data-title="{{ $item.title | safeHTML }}"{{ end }}{{ if $item.director }} data-director="{{ $item.director }}"{{ end }}{{ if $item.author }} data-author="{{ $item.author }}"{{ end }}{{ if $item.artist }} data-artist="{{ $item.artist }}"{{ end }}{{ if $item.label }} data-label="{{ $item.label }}"{{ end }}{{ if $item.publisher }} data-publisher="{{ $item.publisher }}"{{ end }}{{ if $item.rating }} data-rating="{{ $item.rating }}"{{ end }}{{ if $item.review }} data-review="{{ $item.review | safeHTML }}"{{ end }}{{ if $item.content }} data-content="{{ $item.content | safeHTML }}"{{ end }}{{ if $item.footer }} data-footer="{{ $item.footer | safeHTML }}"{{ end }}{{ if $item.tmdb }} data-tmdb="{{ $item.tmdb }}"{{ end }}{{ if $item.discogs }} data-discogs="{{ $item.discogs }}"{{ end }}{{ if $item.discogsArtist }} data-discogs-artist="{{ $item.discogsArtist }}"{{ end }}{{ if $item.discogsLabel }} data-discogs-label="{{ $item.discogsLabel }}"{{ end }}{{ if $item.genre }} data-genre="{{ $item.genre }}"{{ end }}{{ if $item.style }} data-style="{{ $item.style }}"{{ end }}{{ if $item.openlibrary }} data-openlibrary="{{ $item.openlibrary }}"{{ end }}{{ if $item.songs }} data-songs="{{ $item.songs | jsonify }}"{{ end }}{{ if $consumedLink }} data-link="{{ $consumedLink }}"{{ end }}>
+        {{ if $isPosterGrid }}
+          {{ $itemImg := $item.image | default ($item.img | default "") }}
+          {{ if $itemImg }}
+            {{ if $consumedLink }}
+              <a href="{{ $consumedLink }}">
+                <img src="{{ $itemImg }}" alt="{{ $item.title | safeHTML }}">
+              </a>
+            {{ else }}
+              <a href="/consumed/" title="{{ $item.title | safeHTML }}">
+                <img src="{{ $itemImg }}" alt="{{ $item.title | safeHTML }}">
+              </a>
+            {{ end }}
+          {{ end }}
+        {{ else }}
+          <div class="item-content">
+            <h3 class="item-title">
+              {{ if $consumedLink }}
+                <a href="{{ $consumedLink }}">
+                  {{ $item.title | safeHTML }}
+                </a>
+              {{ else }}
+                {{ $item.title | safeHTML }}
+              {{ end }}
+            </h3>
+            {{ with $item.content }}
+              <p class="item-description">{{ . | safeHTML }}</p>
+            {{ end }}
+          </div>
+        {{ end }}
+      </article>
+    {{ end }}
+  </div>
+{{ else }}
+  <p><em>No picks yet.</em></p>
+{{ end }}
+
+

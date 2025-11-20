@@ -1,30 +1,37 @@
 {{/*
-  Spoiler Gallery Shortcode - Gallery with spoiler toggle
-  
-  Usage:
-  {{< spoiler-gallery file="movie-screenshots.toml" columns="3" label="Show Images (Spoiler Alert)" >}}
-  
-  Shows a button that reveals the gallery when clicked
+  Spoiler Gallery Partial - Gallery with spoiler toggle
+  Same as shortcode but as partial for use in templates
 */}}
 
-{{ $file := .Get "file" }}
-{{ $columns := .Get "columns" | default "3" }}
-{{ $label := .Get "label" | default "Show Images (Spoiler Alert)" }}
-{{ $hideLabel := .Get "hide_label" | default "Hide Screenshots" }}
-{{ $thumbWidth := .Get "thumb_width" | default "300" }}
-{{ $thumbHeight := .Get "thumb_height" | default "200" }}
-{{ $fullWidth := .Get "full_width" | default "2400" }}
-{{ $fullHeight := .Get "full_height" | default "1600" }}
-{{ $thumbQuality := .Get "thumb_quality" | default "75" }}
-{{ $fullQuality := .Get "full_quality" | default "95" }}
+{{ $file := .file }}
+{{ $imagesParam := .images }}
+{{ $columns := .columns | default "3" }}
+{{ $label := .label | default "Show Images (Spoiler Alert)" }}
+{{ $hideLabel := .hide_label | default "Hide Screenshots" }}
+{{ $thumbWidth := .thumb_width | default "300" }}
+{{ $thumbHeight := .thumb_height | default "200" }}
+{{ $fullWidth := .full_width | default "2400" }}
+{{ $fullHeight := .full_height | default "1600" }}
+{{ $thumbQuality := .thumb_quality | default "75" }}
+{{ $fullQuality := .full_quality | default "95" }}
+{{ $context := .context }}
 
 {{ $images := slice }}
-{{ if $file }}
+{{/* First check if images are passed directly (from frontmatter) */}}
+{{ if $imagesParam }}
+  {{ $images = $imagesParam }}
+{{ else if $file }}
+  {{/* Fallback to data file for backwards compatibility */}}
   {{ $dataPath := replace $file (path.Ext $file) "" }}
   {{ $dataPath = replace $dataPath "/" "." }}
-  {{ $data := index .Site.Data $dataPath }}
+  {{ $data := index $context.Site.Data $dataPath }}
   {{ if $data }}
-    {{ $images = $data.images }}
+    {{ if $data.images }}
+      {{ $images = $data.images }}
+    {{ else if $data }}
+      {{/* If data is directly an array of images */}}
+      {{ $images = $data }}
+    {{ end }}
   {{ end }}
 {{ end }}
 
@@ -80,9 +87,9 @@
             {{ end }}
           </figure>
         {{ else }}
-          {{/* Fallback: try static directory (no optimization) */}}
+          {{/* Fallback to direct path if not found in assets (e.g., in static) */}}
           <figure class="screenshot-item">
-            <img src="{{ $imgSrc }}" 
+            <img src="{{ $imgSrc | relURL }}" 
                  alt="{{ $imgAlt }}" 
                  loading="lazy"
                  decoding="async">

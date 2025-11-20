@@ -110,40 +110,7 @@
   });
 })();
 
-// Toggle original/dithered images
-function toggleOriginal(element) {
-  const figure = element.closest('figure');
-  if (!figure) return;
-  
-  const container = figure.querySelector('.image-container');
-  if (!container) return;
-  
-  const dithered = container.querySelector('.dithered-img');
-  const original = container.querySelector('.original-img');
-  const showText = element.querySelector('.show-text');
-  const hideText = element.querySelector('.hide-text');
-  
-  if (!dithered || !original) return;
-  
-  // Toggle active class
-  const isActive = dithered.classList.contains('active');
-  
-  if (isActive) {
-    // Show original
-    dithered.classList.remove('active');
-    dithered.style.display = 'none';
-    original.style.display = 'block';
-    if (showText) showText.style.display = 'none';
-    if (hideText) hideText.style.display = 'inline';
-  } else {
-    // Show dithered
-    dithered.classList.add('active');
-    dithered.style.display = 'block';
-    original.style.display = 'none';
-    if (showText) showText.style.display = 'inline';
-    if (hideText) hideText.style.display = 'none';
-  }
-}
+// Image toggles are now handled by Alpine.js - removed toggleOriginal function
 
 // Cursor gradient effect - only on headings and links
 (function() {
@@ -842,4 +809,3 @@ function toggleOriginal(element) {
   setTimeout(hideGiscusCommentForm, 3000);
   setTimeout(hideGiscusCommentForm, 5000);
 })();
-

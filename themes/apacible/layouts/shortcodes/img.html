@@ -90,11 +90,14 @@
 
   {{/* Wrap in figure if caption is provided */}}
   {{ if $caption }}
-<figure class="responsive-image{{ if and $dithered $ditheredImg }} has-toggle{{ end }}">
+<figure class="responsive-image{{ if and $dithered $ditheredImg }} has-toggle{{ end }}" x-data="{ showOriginal: false }">
   <div class="image-container">
     {{ if and $dithered $ditheredImg }}
       {{/* Dithered images with toggle */}}
-      <img class="dithered-img active" 
+      <img class="dithered-img" 
+           :class="{ active: !showOriginal }"
+           x-show="!showOriginal"
+           x-transition
            src="{{ $processedDithered.RelPermalink }}" 
            alt="{{ $alt }}" 
            width="{{ $processedDithered.Width }}" 
@@ -102,7 +105,10 @@
            loading="lazy"
            decoding="async">
       {{ if $showOriginal }}
-      <picture class="original-img" style="display: none;">
+      <picture class="original-img" 
+               x-show="showOriginal"
+               x-transition
+               style="display: none;">
         <source srcset="{{ $processedOrigAVIF.RelPermalink }}" type="image/avif">
         <source srcset="{{ $processedOrigWebP.RelPermalink }}" type="image/webp">
         <img src="{{ $processedOrig.RelPermalink }}"
@@ -129,10 +135,13 @@
   <figcaption>
     {{ $caption | markdownify }}
     {{ if and $dithered $ditheredImg $showOriginal }}
-    <span class="toggle-original" onclick="toggleOriginal(this)">
-      <span class="show-text">→ show original</span>
-      <span class="hide-text" style="display: none;">← dither</span>
-    </span>
+    <button class="toggle-original" 
+            @click="showOriginal = !showOriginal"
+            type="button"
+            :aria-pressed="showOriginal">
+      <span x-show="!showOriginal">→ show original</span>
+      <span x-show="showOriginal">← dither</span>
+    </button>
     {{ end }}
   </figcaption>
 </figure>
@@ -159,32 +168,6 @@
     </picture>
     {{ end }}
   {{ end }}
-
-<script>
-function toggleOriginal(button) {
-  const figure = button.closest('figure');
-  const dithered = figure.querySelector('.dithered-img');
-  const original = figure.querySelector('.original-img');
-  const showText = button.querySelector('.show-text');
-  const hideText = button.querySelector('.hide-text');
-  
-  if (dithered.style.display === 'none') {
-    dithered.style.display = 'block';
-    original.style.display = 'none';
-    showText.style.display = 'inline';
-    hideText.style.display = 'none';
-    dithered.classList.add('active');
-    original.classList.remove('active');
-  } else {
-    dithered.style.display = 'none';
-    original.style.display = 'block';
-    showText.style.display = 'none';
-    hideText.style.display = 'inline';
-    dithered.classList.remove('active');
-    original.classList.add('active');
-  }
-}
-</script>
 {{ else }}
   <p><em>Image not found: {{ $src }}</em></p>
 {{ end }}

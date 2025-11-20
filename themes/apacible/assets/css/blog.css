@@ -432,6 +432,24 @@
   }
 }
 
+/* Consumed pages - modern header styling */
+.post header:has(.media-metadata) {
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.06));
+}
+
+[data-theme="dark"] .post header:has(.media-metadata) {
+  border-bottom-color: var(--color-border, rgba(255, 255, 255, 0.06));
+}
+
+@media (min-width: 640px) {
+  .post header:has(.media-metadata) {
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-2xl);
+  }
+}
+
 .post header h1 {
   margin: 0 0 var(--space-md);
   font-size: var(--font-size-3xl);
@@ -441,10 +459,51 @@
   letter-spacing: var(--letter-spacing-tight);
 }
 
+/* Consumed pages - larger, cleaner title */
+.post header:has(.media-metadata) h1 {
+  margin: 0 0 var(--space-xl);
+  font-size: clamp(2rem, 1.75rem + 1.5vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
 @media (min-width: 640px) {
   .post header h1 {
     font-size: clamp(1.5rem, 1.25rem + 0.75vw, 2rem);
   }
+}
+
+/* Modern title styling for consumed pages - Apple/Figma inspired */
+.post header h1 .title-primary {
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.025em;
+}
+
+.post header h1 .title-separator {
+  color: var(--color-text-secondary);
+  opacity: 0.25;
+  margin: 0 0.5rem;
+  font-weight: 300;
+  font-size: 0.9em;
+}
+
+.post header h1 .title-secondary {
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: 0.8;
+  letter-spacing: -0.015em;
+}
+
+.post header h1 .title-meta {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  opacity: 0.45;
+  font-size: 0.75em;
+  letter-spacing: 0.01em;
+  margin-left: 0.375rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .post header .post-meta {
@@ -458,6 +517,13 @@
   margin-bottom: 0;
   font-weight: var(--font-weight-normal);
   line-height: var(--line-height-relaxed);
+}
+
+/* Consumed pages - cleaner meta layout */
+.post header:has(.media-metadata) .post-meta {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
 }
 
 @media (max-width: 640px) {
@@ -479,6 +545,12 @@
   flex-wrap: nowrap;
   align-items: center;
   line-height: var(--line-height-relaxed);
+}
+
+/* Consumed pages - full width for metadata */
+.post header:has(.media-metadata) .post-meta .post-meta-left {
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 640px) {
@@ -566,6 +638,79 @@
 
 .post header .categories .category .rune {
   display: none;
+}
+
+/* Media metadata block layout for consumed pages - Modern Apple/Figma style */
+.post header .post-meta .media-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xl) var(--space-3xl);
+  padding: 0;
+  margin-top: 0;
+  width: 100%;
+  max-width: 100%;
+  border: none;
+}
+
+.post header .post-meta .media-metadata .metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.post header .post-meta .media-metadata .metadata-label {
+  font-size: 0.5625rem;
+  color: var(--color-text-secondary);
+  opacity: 0.4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+.post header .post-meta .media-metadata .metadata-value {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.post header .post-meta .media-metadata .metadata-value a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.post header .post-meta .media-metadata .metadata-value a:hover {
+  opacity: 0.5;
+}
+
+.post header .post-meta .media-metadata .metadata-value.rating {
+  font-size: 1.0625rem;
+  color: var(--color-text);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .post header .post-meta .media-metadata {
+    gap: var(--space-xl) var(--space-2xl);
+  }
+  
+  .post header .post-meta .media-metadata .metadata-value {
+    font-size: 0.875rem;
+  }
+  
+  .post header .post-meta .media-metadata .metadata-label {
+    font-size: 0.5rem;
+  }
 }
 
 .post header .categories .category a {
@@ -1219,6 +1364,24 @@
   margin-top: 1.5em;
 }
 
+/* Don't add top margin to floated embeds - they're part of the text flow */
+.post .content > .bandcamp-embed-standard,
+.post .content > .bandcamp-embed-slim {
+  margin-top: 0;
+}
+
+/* Ensure paragraphs and other block elements can wrap around floated embeds */
+.post .content p {
+  overflow-wrap: break-word;
+}
+
+/* When a bandcamp embed is present, allow text to flow around it */
+.post .content:has(.bandcamp-embed-standard),
+.post .content:has(.bandcamp-embed-slim) {
+  /* Ensure content can flow around floats */
+  min-height: 0;
+}
+
 /* Headings in content - more minimal */
 .post .content h1 {
   font-size: var(--font-size-3xl);
@@ -1290,6 +1453,73 @@
 
 .post .content code {
   background: unset !important;
+}
+
+/* Floating media cover for consumed pages - text wraps around */
+.post .content .media-cover {
+  float: left;
+  margin: 0 var(--space-xl) var(--space-lg) 0;
+  max-width: 280px;
+  width: 100%;
+  clear: left;
+}
+
+.post .content .media-cover.float-left {
+  float: left;
+  margin-right: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  margin-top: 0;
+}
+
+.post .content .media-cover.float-right {
+  float: right;
+  margin-left: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  margin-top: 0;
+}
+
+.post .content .media-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .post .content .media-cover img {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Movies and Books: portrait aspect ratio (2/3) */
+.post:has(.media-metadata) .content .media-cover img {
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
+
+/* Music: square aspect ratio (1/1) - detect by checking if it's a music page */
+.post header:has(.media-metadata) ~ .post-with-toc .content .media-cover img {
+  aspect-ratio: 2/3;
+}
+
+/* We'll use a data attribute or class to distinguish music */
+.post .content .media-cover.music-cover img {
+  aspect-ratio: 1/1;
+}
+
+@media (max-width: 640px) {
+  .post .content .media-cover {
+    float: none;
+    max-width: 200px;
+    margin: 0 auto var(--space-lg);
+    display: block;
+  }
+  
+  .post .content .media-cover.float-left,
+  .post .content .media-cover.float-right {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .post .post-footer {

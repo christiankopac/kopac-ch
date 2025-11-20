@@ -1,7 +1,8 @@
 /* Home page - Personal and calm aesthetic */
 
 .home {
-  width: min(65ch, 100% - clamp(1.5rem, 5vw, 3rem) * 2);
+  /* Match site-wide container width for consistency */
+  width: min(65ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
   margin-inline: auto;
   padding-block: clamp(3rem, 10vh, 6rem);
   min-height: 100vh;
@@ -14,7 +15,6 @@
 
 @media (max-width: 640px) {
   .home {
-    width: calc(100% - 2rem);
     padding-block: 2.5rem 2rem;
     min-height: 100vh;
     min-height: 100dvh;
@@ -24,7 +24,6 @@
 
 @media (max-width: 480px) {
   .home {
-    width: calc(100% - 1.5rem);
     padding-block: 2rem 1.5rem;
   }
 }
@@ -33,21 +32,21 @@
 .theme-toggle-wrapper {
   position: absolute;
   top: 2rem;
-  right: clamp(1.5rem, 5vw, 3rem);
+  right: clamp(1rem, 5vw, 3rem);
   z-index: 10;
 }
 
 @media (max-width: 640px) {
   .theme-toggle-wrapper {
     top: 1.25rem;
-    right: 1rem;
+    right: clamp(1rem, 5vw, 3rem);
   }
 }
 
 @media (max-width: 480px) {
   .theme-toggle-wrapper {
     top: 1rem;
-    right: 0.75rem;
+    right: clamp(1rem, 5vw, 3rem);
   }
 }
 

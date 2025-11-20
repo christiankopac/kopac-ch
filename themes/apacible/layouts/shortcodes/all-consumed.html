@@ -1,0 +1,343 @@
+{{/*
+  All Consumed Shortcode - Combines movies, music, and books into one collection
+  Shows all consumed items with category and year filters
+  Reads from content pages instead of data files
+*/}}
+
+{{ $style := .Get "style" | default "poster-grid" }}
+
+{{/* Get all pages from consumed sections - check directory path */}}
+{{ $consumedPages := where .Site.RegularPages "Section" "consumed" }}
+{{ $moviePages := slice }}
+{{ $musicPages := slice }}
+{{ $bookPages := slice }}
+{{ range $consumedPages }}
+  {{ if and (not .IsSection) (ne .File.Path "consumed/_index.md") }}
+    {{ $dir := .File.Dir }}
+    {{ $path := .File.Path }}
+    {{ $relPath := .RelPermalink }}
+    {{/* Check File.Dir, File.Path, and RelPermalink for flexibility */}}
+    {{ if or (in $dir "movie/") (in $path "consumed/movie/") (in $relPath "/consumed/movie/") (eq (.Params.category | default "") "movie") }}
+      {{ $moviePages = $moviePages | append . }}
+    {{ else if or (in $dir "music/") (in $path "consumed/music/") (in $relPath "/consumed/music/") (eq (.Params.category | default "") "music") }}
+      {{ $musicPages = $musicPages | append . }}
+    {{ else if or (in $dir "book/") (in $path "consumed/book/") (in $relPath "/consumed/book/") (eq (.Params.category | default "") "book") }}
+      {{ $bookPages = $bookPages | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Convert pages to items (extract params) */}}
+{{ $allItems := slice }}
+{{ range $moviePages }}
+  {{ if not .Draft }}
+    {{ $item := dict 
+      "title" (.Params.title | default .Title)
+      "category" "movies"
+      "year" (.Params.year | default "")
+      "director" (.Params.director | default "")
+      "rating" (.Params.rating | default 0)
+      "img" (.Params.img | default (.Params.image | default ""))
+      "tmdb" (.Params.tmdb | default "")
+      "content" (.Params.content | default "")
+      "review" (.Params.review | default "")
+      "trailer" (.Params.trailer | default "")
+      "footer" (.Params.footer | default "")
+      "draft" (cond .Draft "true" "false")
+      "link" (.RelPermalink | default "")
+      "processed" (.Params.processed | default false)
+    }}
+    {{ $allItems = $allItems | append $item }}
+  {{ end }}
+{{ end }}
+{{ range $musicPages }}
+  {{ if not .Draft }}
+    {{ $item := dict
+      "title" (.Params.title | default .Title)
+      "category" "music"
+      "year" (.Params.year | default "")
+      "artist" (.Params.artist | default "")
+      "label" (.Params.label | default "")
+      "discogs" (.Params.discogs | default "")
+      "discogsArtist" (.Params.discogsArtist | default "")
+      "discogsLabel" (.Params.discogsLabel | default "")
+      "img" (.Params.img | default (.Params.image | default ""))
+      "content" (.Params.content | default "")
+      "footer" (.Params.footer | default "")
+      "draft" (cond .Draft "true" "false")
+      "link" (.RelPermalink | default "")
+      "genre" (.Params.genre | default "")
+      "style" (.Params.style | default "")
+      "songs" (.Params.songs | default slice)
+      "rating" (.Params.rating | default 0)
+      "processed" (.Params.processed | default false)
+    }}
+    {{ $allItems = $allItems | append $item }}
+  {{ end }}
+{{ end }}
+{{ range $bookPages }}
+  {{ if not .Draft }}
+    {{ $item := dict
+      "title" (.Params.title | default .Title)
+      "category" "books"
+      "year" (.Params.year | default "")
+      "author" (.Params.author | default "")
+      "publisher" (.Params.publisher | default "")
+      "openlibrary" (.Params.openlibrary | default "")
+      "img" (.Params.img | default (.Params.image | default ""))
+      "content" (.Params.content | default "")
+      "review" (.Params.review | default "")
+      "footer" (.Params.footer | default "")
+      "rating" (.Params.rating | default 0)
+      "draft" (cond .Draft "true" "false")
+      "link" (.RelPermalink | default "")
+      "processed" (.Params.processed | default false)
+    }}
+    {{ $allItems = $allItems | append $item }}
+  {{ end }}
+{{ end }}
+
+{{/* Extract unique categories */}}
+{{ $categories := slice }}
+{{ $categoriesMap := dict }}
+{{ range $allItems }}
+  {{ if and .category (ne .draft "true") }}
+    {{ $categoriesMap = merge $categoriesMap (dict .category true) }}
+  {{ end }}
+{{ end }}
+{{ range $category, $_ := $categoriesMap }}
+  {{ $categories = $categories | append $category }}
+{{ end }}
+{{ $categories = sort $categories }}
+
+{{/* Extract unique years consumed (from footer only) - NOT release year */}}
+{{ $years := slice }}
+{{ $yearsMap := dict }}
+{{ $yearsByCategory := dict }}
+{{ range $allItems }}
+  {{ if ne .draft "true" }}
+    {{ $consumedYear := "" }}
+    {{/* First check footer (e.g., "Watched Nov 2025", "Read Oct 2025", "Listened Aug 2025") */}}
+    {{ if .footer }}
+      {{ $footerTrimmed := strings.TrimSpace .footer }}
+      {{/* Extract year from footer - search for 4-digit year pattern */}}
+      {{ $footerLower := lower $footerTrimmed }}
+      {{ range $i := seq 2000 2100 }}
+        {{ $yearStr := printf "%d" $i }}
+        {{ if in $footerLower $yearStr }}
+          {{ $consumedYear = $yearStr }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{/* Add year to map if found */}}
+    {{ if and $consumedYear (ne $consumedYear "") }}
+      {{ $yearsMap = merge $yearsMap (dict $consumedYear true) }}
+      {{/* Track which categories have this year */}}
+      {{ if .category }}
+        {{ $categoryYearsKey := printf "%s_years" .category }}
+        {{ $categoryYears := index $yearsByCategory $categoryYearsKey | default (dict) }}
+        {{ $categoryYears = merge $categoryYears (dict $consumedYear true) }}
+        {{ $yearsByCategory = merge $yearsByCategory (dict $categoryYearsKey $categoryYears) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ range $year, $_ := $yearsMap }}
+  {{ $years = $years | append $year }}
+{{ end }}
+{{/* Sort years in descending order - convert to int, sort, then reverse by iterating backwards */}}
+{{ $sortedYears := slice }}
+{{ range $years }}
+  {{ $sortedYears = $sortedYears | append (int .) }}
+{{ end }}
+{{ $sortedYears = sort $sortedYears }}
+{{ $years = slice }}
+{{/* Reverse by iterating from end to start */}}
+{{ $len := len $sortedYears }}
+{{ range $i := seq $len }}
+  {{ $idx := sub $len $i }}
+  {{ $years = $years | append (printf "%d" (index $sortedYears $idx)) }}
+{{ end }}
+
+{{/* Render filters with Alpine.js - show if we have items */}}
+{{ if gt (len $allItems) 0 }}
+<div x-data="{ 
+  selectedCategory: 'all', 
+  selectedYear: 'all',
+  checkYearAvailability() {
+    if (this.selectedCategory !== 'all' && this.selectedYear !== 'all') {
+      const yearBtn = document.querySelector(`button[data-year='${this.selectedYear}']`);
+      if (yearBtn && yearBtn.style.display === 'none') {
+        this.selectedYear = 'all';
+      }
+    }
+  }
+}" 
+x-effect="checkYearAvailability()"
+class="collection-wrapper">
+  {{/* Show filters - always show if we have categories or years */}}
+  {{ if or (gt (len $categories) 0) (gt (len $years) 0) }}
+<div class="collection-filters">
+    {{ if gt (len $categories) 0 }}
+  <div class="collection-filter" data-filter-type="category">
+    <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          :class="{ active: selectedCategory === 'all' }"
+          @click="selectedCategory = 'all'; selectedYear = 'all'"
+          x-bind:aria-pressed="selectedCategory === 'all'"
+          type="button"
+        >
+          All
+        </button>
+      {{ range $categories }}
+          <button
+            class="filter-btn"
+            :class="{ active: selectedCategory === '{{ . }}' }"
+            @click="selectedCategory = '{{ . }}'"
+            x-bind:aria-pressed="selectedCategory === '{{ . }}'"
+            type="button"
+          >
+            {{ title . }}
+          </button>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+    {{ if gt (len $years) 0 }}
+  <div class="collection-filter" data-filter-type="date">
+    <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          :class="{ active: selectedYear === 'all' }"
+          @click="selectedYear = 'all'"
+          x-bind:aria-pressed="selectedYear === 'all'"
+          type="button"
+        >
+          All Years
+        </button>
+      {{ range $year := $years }}
+        {{/* Get categories that have this year */}}
+        {{ $yearCategories := slice }}
+        {{ range $category := $categories }}
+          {{ $categoryYearsKey := printf "%s_years" $category }}
+          {{ $categoryYears := index $yearsByCategory $categoryYearsKey | default (dict) }}
+          {{ if index $categoryYears $year }}
+            {{ $yearCategories = $yearCategories | append $category }}
+          {{ end }}
+        {{ end }}
+        {{ $yearCategoriesStr := delimit $yearCategories "," }}
+        <button
+          class="filter-btn"
+          :class="{ active: selectedYear === '{{ $year }}' }"
+          x-show="selectedCategory === 'all' || '{{ $yearCategoriesStr }}'.split(',').includes(selectedCategory)"
+          @click="selectedYear = '{{ $year }}'"
+          x-bind:aria-pressed="selectedYear === '{{ $year }}'"
+          type="button"
+          data-year="{{ $year }}"
+          data-categories="{{ $yearCategoriesStr }}"
+        >
+          {{ $year }}
+        </button>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+</div>
+{{ end }}
+
+  {{ $isPosterGrid := eq $style "poster-grid" }}
+  <div class="collection{{ if $isPosterGrid }} collection-poster poster-grid{{ else }} collection-card{{ end }}" data-filterable="category date">
+    {{ if gt (len $allItems) 0 }}
+      {{ range $allItems }}
+      {{/* Use link from item if available, otherwise generate from title */}}
+      {{ $consumedLink := .link | default "" }}
+      {{ if not $consumedLink }}
+      {{ if eq .category "music" }}
+        {{ if and .artist .title }}
+          {{ $slug := printf "%s-%s" (.artist | urlize) (.title | urlize) }}
+          {{ $consumedLink = printf "/consumed/music/%s" $slug }}
+        {{ else if .title }}
+          {{ $consumedLink = printf "/consumed/music/%s" (.title | urlize) }}
+        {{ end }}
+      {{ else if eq .category "movies" }}
+        {{ if .title }}
+          {{ $consumedLink = printf "/consumed/movie/%s" (.title | urlize) }}
+        {{ end }}
+      {{ else if eq .category "books" }}
+        {{ if .title }}
+          {{ $consumedLink = printf "/consumed/book/%s" (.title | urlize) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{/* Extract consumed year for filtering - MUST match the logic used for filter generation above */}}
+      {{ $consumedYear := "" }}
+      {{/* First check footer (e.g., "Watched Nov 2025", "Read Oct 2025", "Listened Aug 2025") */}}
+      {{ if .footer }}
+        {{ $footerTrimmed := strings.TrimSpace .footer }}
+        {{/* Extract year from footer - search for 4-digit year pattern */}}
+        {{ $footerLower := lower $footerTrimmed }}
+        {{ range $i := seq 2000 2100 }}
+          {{ $yearStr := printf "%d" $i }}
+          {{ if in $footerLower $yearStr }}
+            {{ $consumedYear = $yearStr }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      <article
+        class="collection-item{{ if and .rating (eq (int .rating) 5) }} five-star-pick{{ end }}"
+        x-show="(selectedCategory === 'all' || selectedCategory === '{{ .category }}') && (selectedYear === 'all'{{ if $consumedYear }} || selectedYear === '{{ $consumedYear }}'{{ end }})"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
+        {{ if .category }} data-category="{{ .category }}"{{ end }}{{ if .year }} data-year="{{ .year }}"{{ end }}{{ if $consumedYear }} data-date="{{ $consumedYear }}"{{ end }}{{ if .title }} data-title="{{ .title | safeHTML }}"{{ end }}{{ if .director }} data-director="{{ .director }}"{{ end }}{{ if .author }} data-author="{{ .author }}"{{ end }}{{ if .artist }} data-artist="{{ .artist }}"{{ end }}{{ if .label }} data-label="{{ .label }}"{{ end }}{{ if .publisher }} data-publisher="{{ .publisher }}"{{ end }}{{ if .rating }} data-rating="{{ .rating }}"{{ end }}{{ if .review }} data-review="{{ .review | safeHTML }}"{{ end }}{{ if .content }} data-content="{{ .content | safeHTML }}"{{ end }}{{ if .footer }} data-footer="{{ .footer | safeHTML }}"{{ end }}{{ if .tmdb }} data-tmdb="{{ .tmdb }}"{{ end }}{{ if .discogs }} data-discogs="{{ .discogs }}"{{ end }}{{ if .discogsArtist }} data-discogs-artist="{{ .discogsArtist }}"{{ end }}{{ if .discogsLabel }} data-discogs-label="{{ .discogsLabel }}"{{ end }}{{ if .genre }} data-genre="{{ .genre }}"{{ end }}{{ if .style }} data-style="{{ .style }}"{{ end }}{{ if .openlibrary }} data-openlibrary="{{ .openlibrary }}"{{ end }}{{ if .songs }} data-songs="{{ .songs | jsonify }}"{{ end }}{{ if $consumedLink }} data-link="{{ $consumedLink }}"{{ end }}>
+        {{ if $isPosterGrid }}
+          {{ $itemImg := .img | default "" }}
+          {{ if $itemImg }}
+            {{ if $consumedLink }}
+              <a href="{{ $consumedLink }}">
+                <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+              </a>
+            {{ else }}
+              <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+            {{ end }}
+          {{ else }}
+            {{/* Show placeholder or title if no image */}}
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--color-bg-secondary, #f0f0f0); color: var(--color-text-secondary, #666); font-size: 0.75rem; text-align: center; padding: 0.5rem; border: 1px solid var(--color-border, #ddd);">
+              {{ if $consumedLink }}
+                <a href="{{ $consumedLink }}" style="text-decoration: none; color: inherit;">
+                  {{ .title | safeHTML }}
+                </a>
+              {{ else }}
+                {{ .title | safeHTML }}
+              {{ end }}
+            </div>
+          {{ end }}
+        {{ else }}
+          <div class="item-content">
+            <h3 class="item-title">
+              {{ if $consumedLink }}
+                <a href="{{ $consumedLink }}">
+                  {{ .title | safeHTML }}
+                </a>
+              {{ else }}
+                {{ .title | safeHTML }}
+              {{ end }}
+            </h3>
+            {{ with .content }}
+              <p class="item-description">{{ . | safeHTML }}</p>
+            {{ end }}
+          </div>
+        {{ end }}
+      </article>
+    {{ end }}
+  {{ else }}
+    <p><em>No items to display.</em></p>
+  {{ end }}
+</div>
+</div>
+{{ end }}
+

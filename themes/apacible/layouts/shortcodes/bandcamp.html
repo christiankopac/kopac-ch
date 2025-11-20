@@ -1,0 +1,135 @@
+{{/*
+  Bandcamp Shortcode - Embed Bandcamp albums or tracks
+
+  Usage:
+  {{< bandcamp url="..." >}}                    - standard (120px, small artwork, no tracklist)
+  {{< bandcamp url="..." style="slim" >}}       - slim (42px, no artwork, no tracklist)
+  {{< bandcamp url="..." style="artwork" >}}    - artwork only (350x350px)
+  {{< bandcamp url="..." style="album" >}}      - full album (350x654px with tracklist)
+
+  Parameters:
+  - url: Bandcamp album or track URL (required)
+  - style: "standard" (default), "slim", "artwork", or "album"
+  - bgcol: Background color in hex (default: "ffffff")
+  - linkcol: Link color in hex (default: "0687f5")
+*/}}
+
+{{ $url := .Get "url" }}
+{{ if not $url }}
+  <p><em>Error: Bandcamp URL is required. Usage: {{ "{{" }}&lt; bandcamp url="https://artist.bandcamp.com/album/album-name" &gt;{{ "}}" }}</em></p>
+{{ else }}
+  {{/* Get style parameter */}}
+  {{ $style := .Get "style" | default "standard" }}
+  {{/* Get float parameter: left, right, none, or unset (defaults to left for standard/slim via CSS) */}}
+  {{ $floatParam := .Get "float" }}
+  {{ $float := $floatParam | default "none" }}
+  {{ $floatExplicitlySet := ne $floatParam "" }}
+  {{/* Auto-float artwork and album styles if float not explicitly set */}}
+  {{ if eq $float "none" }}
+    {{ if or (eq $style "artwork") (eq $style "album") }}
+      {{ $float = "left" }}
+    {{ end }}
+  {{ end }}
+  {{/* Use theme colors: white bg for light theme, dark bg for dark theme */}}
+  {{ $bgcol := .Get "bgcol" | default "ffffff" }}
+  {{ $linkcol := .Get "linkcol" | default "0687f5" }}
+
+  {{/* Configure embed based on style */}}
+  {{ $width := "520px" }}
+  {{ $height := 120 }}
+  {{ $size := "large" }}
+  {{ $minimal := "" }}
+  {{ $artwork := "small" }}
+  {{ $tracklist := "false" }}
+  {{ $transparent := "true" }}
+
+  {{ if eq $style "slim" }}
+    {{/* Slim: 520px width, 42px height, size=small, no artwork, no tracklist */}}
+    {{ $width = "520px" }}
+    {{ $height = 42 }}
+    {{ $size = "small" }}
+    {{ $artwork = "" }}
+  {{ else if eq $style "artwork" }}
+    {{/* Artwork: 350x350px, minimal=true (just artwork) */}}
+    {{ $width = "350px" }}
+    {{ $height = 350 }}
+    {{ $size = "large" }}
+    {{ $minimal = "true" }}
+    {{ $artwork = "" }}
+  {{ else if eq $style "album" }}
+    {{/* Album: 350x654px, full tracklist */}}
+    {{ $width = "350px" }}
+    {{ $height = 654 }}
+    {{ $size = "large" }}
+    {{ $tracklist = "true" }}
+    {{ $artwork = "" }}
+  {{ end }}
+  {{/* else style="standard": 520px width, 120px, small artwork, no tracklist (defaults) */}}
+
+  {{/* Build embed URL - Bandcamp requires embed URLs with numeric IDs */}}
+  {{ $embedUrl := $url }}
+  {{ $isEmbedUrl := in $embedUrl "/EmbeddedPlayer/" }}
+  
+  {{ if not $isEmbedUrl }}
+    {{/* Regular Bandcamp URL provided - need embed URL with numeric ID */}}
+    {{ $urlLower := lower $embedUrl }}
+    {{ if or (in $urlLower "bandcamp.com/album/") (in $urlLower "bandcamp.com/track/") }}
+      {{/* Bandcamp requires numeric IDs - show helpful error with instructions */}}
+      <div style="padding: 1rem; border: 1px solid var(--color-border); background: var(--color-bg-secondary); margin: 1rem 0;">
+        <p style="margin: 0 0 0.5rem 0; font-weight: 500;">⚠️ Bandcamp embed requires the embed URL</p>
+        <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem;">To get the embed URL:</p>
+        <ol style="margin: 0 0 0.75rem 0; padding-left: 1.5rem; font-size: 0.875rem;">
+          <li>Go to <a href="{{ $url }}" target="_blank" rel="noopener" style="text-decoration: underline;">{{ $url }}</a></li>
+          <li>Click the <strong>"Share"</strong> or <strong>"Embed"</strong> button</li>
+          <li>Copy the embed URL (format: <code>https://bandcamp.com/EmbeddedPlayer/album=1234567890</code>)</li>
+          <li>Replace the URL in your markdown file</li>
+        </ol>
+        <p style="margin: 0; font-size: 0.875rem;"><strong>Current URL:</strong> <code style="font-size: 0.8125rem;">{{ $url }}</code></p>
+      </div>
+    {{ end }}
+  {{ end }}
+  
+  {{ if $isEmbedUrl }}
+    {{/* Extract base URL - remove any existing parameters and keep only up to album= or track= */}}
+    {{ $baseUrl := $embedUrl }}
+    {{/* Remove trailing slash if present */}}
+    {{ $baseUrl = strings.TrimSuffix "/" $baseUrl }}
+    {{/* Remove any existing path parameters - size= is always the first parameter in Bandcamp URLs */}}
+    {{ if in $baseUrl "/size=" }}
+      {{ $baseUrl = index (split $baseUrl "/size=") 0 }}
+    {{ end }}
+
+    {{/* Build path segments */}}
+    {{ $segments := slice }}
+    {{ $segments = $segments | append (printf "size=%s" $size) }}
+    {{ $segments = $segments | append (printf "bgcol=%s" $bgcol) }}
+    {{ $segments = $segments | append (printf "linkcol=%s" $linkcol) }}
+    {{ if ne $artwork "" }}
+      {{ $segments = $segments | append (printf "artwork=%s" $artwork) }}
+    {{ end }}
+    {{ if ne $tracklist "" }}
+      {{ $segments = $segments | append (printf "tracklist=%s" $tracklist) }}
+    {{ end }}
+    {{ if ne $minimal "" }}
+      {{ $segments = $segments | append (printf "minimal=%s" $minimal) }}
+    {{ end }}
+    {{ $segments = $segments | append (printf "transparent=%s" $transparent) }}
+
+    {{/* Build final URL with path segments */}}
+    {{ $embedUrl = printf "%s/%s/" $baseUrl (delimit $segments "/") }}
+
+    <div class="bandcamp-embed bandcamp-embed-{{ $style }}{{ if ne $float "none" }} bandcamp-embed-float-{{ $float }}{{ else if and $floatExplicitlySet (or (eq $style "standard") (eq $style "slim")) }} bandcamp-embed-float-none{{ end }}">
+      <iframe
+        style="border: 0; width: {{ $width }}; height: {{ $height }}px;"
+        src="{{ $embedUrl }}"
+        seamless
+        loading="lazy"
+        allow="encrypted-media">
+        <a href="{{ $url }}">{{ $url }}</a>
+      </iframe>
+    </div>
+  {{ else }}
+    {{/* Error already displayed above */}}
+  {{ end }}
+{{ end }}
+

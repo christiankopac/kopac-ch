@@ -215,15 +215,15 @@ p {
 /* Links */
 a {
   color: var(--color-link);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width-thin);
+  text-underline-offset: var(--space-sm);
+  text-decoration-color: var(--color-link);
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
 }
 
 a:hover {
   color: var(--color-link-hover);
-  text-decoration: underline;
-  text-decoration-thickness: var(--border-width-thin);
-  text-underline-offset: var(--space-sm);
   text-decoration-color: var(--color-link-hover);
 }
 

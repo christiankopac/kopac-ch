@@ -2,8 +2,8 @@
 /* Follows fluid container pattern from layout.css */
 
 .back-nav {
-  /* Width calculation already includes padding */
-  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  /* Match main content width for alignment */
+  width: min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2);
   margin-inline: auto;
   padding-block-start: var(--container-padding-y-sm);
   padding-block-end: var(--space-base);

@@ -1,0 +1,23 @@
+{{ define "content" }}
+<article class="post playlist-single">
+  <header>
+    <h1>{{ .Title }}</h1>
+    <div class="post-meta">
+      <div class="post-meta-left">
+      </div>
+      <div class="post-meta-right">
+        {{ with .Date }}
+          {{ $dateFormatted := .Format "January 2006" }}
+          {{ if ne $dateFormatted $.Title }}
+            <time datetime="{{ .Format "2006-01-02" }}">{{ $dateFormatted }}</time>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

@@ -75,8 +75,8 @@ body {
 /* Content wrapper for all pages - optimal character width for readability */
 /* Use :is() to reduce repetition */
 :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
-  /* Width calculation already includes padding in the formula */
-  width: min(75ch, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  /* Wider container for better use of screen space */
+  width: min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2);
   margin-inline: auto;
   padding-block: var(--container-padding-y-sm);
   flex: 1 0 auto; /* Allow content to grow and push footer down */
@@ -92,6 +92,56 @@ body {
 
 @media (min-width: 1024px) {
   :is(main, .prose, .blog, .post, .taxonomy, .taxonomy-single) {
+    padding-block: var(--container-padding-y-lg);
+  }
+}
+
+/* Consumed section - wider layout for collections */
+.consumed-section {
+  width: min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2);
+  margin-inline: auto;
+  padding-block: var(--container-padding-y-sm);
+  flex: 1 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.consumed-section header {
+  margin-bottom: var(--space-xl);
+}
+
+.consumed-section header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.consumed-section .section-description {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-loose);
+}
+
+.consumed-content {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .consumed-section {
+    padding-block: var(--container-padding-y-md);
+  }
+  
+  .consumed-section header {
+    margin-bottom: var(--space-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .consumed-section {
     padding-block: var(--container-padding-y-lg);
   }
 }
