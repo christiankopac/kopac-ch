@@ -78,6 +78,7 @@ body.section-posts .site-footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
   text-align: center;
   flex: 1;
   min-width: 0;
@@ -472,7 +473,7 @@ body.section-posts .site-footer {
     width: 100%;
     justify-content: center;
     margin: 0;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .newsletter-content button {
