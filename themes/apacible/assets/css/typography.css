@@ -321,7 +321,6 @@ pre {
 :is(.footnotes, section.footnotes) {
   margin-block-start: var(--space-xl);
   padding-block-start: var(--space-lg);
-  border-block-start: var(--border-width-thin) solid var(--color-border);
   font-size: var(--font-size-base-sm);
   color: var(--color-text-secondary);
   opacity: var(--opacity-visible);

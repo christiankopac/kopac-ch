@@ -1,0 +1,150 @@
+# English translations
+[readMore]
+other = "Read more"
+
+[back]
+other = "Back"
+
+[allPosts]
+other = "all posts"
+
+[recentPosts]
+other = "Recent posts"
+
+[tags]
+other = "Tags"
+
+[categories]
+other = "Categories"
+
+[wordCount]
+other = "words"
+
+[readingTime]
+other = "min read"
+
+[explore]
+other = "Explore"
+
+[connect]
+other = "Connect"
+
+[posts]
+other = "posts"
+
+[about]
+other = "about"
+
+[now]
+other = "now"
+
+[picks]
+other = "picks"
+
+[all]
+other = "All"
+
+[allYears]
+other = "All Years"
+
+[movies]
+other = "Movies"
+
+[music]
+other = "Music"
+
+[books]
+other = "Books"
+
+[newsletterSubscribe]
+other = "Subscribe to my"
+
+[newsletterIrregular]
+other = "irregular"
+
+[newsletterNewsletter]
+other = "newsletter"
+
+[name]
+other = "Name"
+
+[email]
+other = "Email"
+
+[emailAddress]
+other = "Email address"
+
+[emailError]
+other = "Please enter a valid email address"
+
+[consent]
+other = "Consent"
+
+[send]
+other = "Send"
+
+[newsletterThanks]
+other = "Thanks for subscribing! I promise I won't send any spam."
+
+[by]
+other = "by"
+
+[directedBy]
+other = "Directed by"
+
+[viewOnTMDB]
+other = "View on TMDB"
+
+[viewOnDiscogs]
+other = "View on Discogs"
+
+[artistProfile]
+other = "Artist Profile"
+
+[viewOnOpenLibrary]
+other = "View on Open Library"
+
+[review]
+other = "Review"
+
+[songs]
+other = "Songs"
+
+[trailer]
+other = "Trailer"
+
+[showGallery]
+other = "Show Gallery"
+
+[hideGallery]
+other = "Hide Gallery"
+
+[spoilerAlert]
+other = "Spoiler Alert"
+
+[notFound]
+other = "404 Not Found"
+
+[notFoundMessage]
+other = "The page you're looking for doesn't exist."
+
+[notFoundRecover]
+other = "⇽ back to home"
+
+[noPicksYet]
+other = "No picks yet."
+
+[noPlaylistsYet]
+other = "No playlists yet."
+
+[doNotFill]
+other = "Don't fill this out if you're human:"
+
+[builtWith]
+other = "Built with"
+
+[atomFeed]
+other = "Atom Feed"
+
+[toggleTheme]
+other = "Toggle theme"

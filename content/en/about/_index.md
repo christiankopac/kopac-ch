@@ -5,6 +5,11 @@ outputs = ["HTML", "Gemini"]
 +++
 
 Argentinian born, slovenian made developer. Living in Europe since 2010.
+Reachable on dial-up since 1999. As experienced as the first C++ release.
+
+My journey started with HTML tables and has evolved through the entire stack. Today, I craft modern, responsive applications using tools like _Vue/Svelte/React_, _Node.js/Python_, and _some_ cloud. The tools change, but the commitment to excellence doesn't. 
+
+Sadly there never enough time to learn all my curious brain wants to dig on.
 
 ## What I Do
 

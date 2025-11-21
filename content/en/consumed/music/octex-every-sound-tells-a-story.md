@@ -13,6 +13,11 @@ discogsLabel = "https://www.discogs.com/label/16501"
 genres = ["Dub Techno"]
 footer = "Listened Sep 2025"
 rating = 5
+songs = [
+    "https://www.youtube.com/watch?v=x93gseHQLyo",
+    "https://www.youtube.com/watch?v=hMS88YQnvlQ",
+    "https://www.youtube.com/watch?v=Hh8eKjCR0D0"
+]
 +++
 
 {{< bandcamp url="https://bandcamp.com/EmbeddedPlayer/album=3553509833/" style="album" float="right" >}}

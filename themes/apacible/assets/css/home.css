@@ -28,12 +28,35 @@
   }
 }
 
-/* Theme toggle - subtle top right corner */
+/* Theme toggle and language switcher - subtle top right corner */
 .theme-toggle-wrapper {
   position: absolute;
   top: 2rem;
   right: clamp(1rem, 5vw, 3rem);
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Language switcher */
+.language-switcher {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.language-switcher a {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.4;
+  transition: opacity var(--transition-base);
+  letter-spacing: 0.05em;
+}
+
+.language-switcher a:hover {
+  opacity: 0.8;
 }
 
 @media (max-width: 640px) {

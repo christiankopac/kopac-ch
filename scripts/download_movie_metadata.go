@@ -46,6 +46,17 @@ type MovieDetails struct {
 	Credits Credits `json:"credits"`
 }
 
+type Video struct {
+	Key      string `json:"key"`
+	Type     string `json:"type"`
+	Site     string `json:"site"`
+	Name     string `json:"name"`
+}
+
+type VideosResponse struct {
+	Results []Video `json:"results"`
+}
+
 // MovieData is now defined in markdown_helpers.go
 
 func main() {
@@ -180,6 +191,7 @@ func main() {
 	fmt.Printf("  Processed: %d movies\n", len(results))
 	posterCount := 0
 	directorCount := 0
+	trailerCount := 0
 	for _, r := range results {
 		if r.PosterPath != "" {
 			posterCount++
@@ -187,9 +199,13 @@ func main() {
 		if r.Director != "" {
 			directorCount++
 		}
+		if r.TrailerURL != "" {
+			trailerCount++
+		}
 	}
 	fmt.Printf("  Posters downloaded: %d\n", posterCount)
 	fmt.Printf("  Directors found: %d\n", directorCount)
+	fmt.Printf("  Trailers found: %d\n", trailerCount)
 }
 
 func getAPIKey() string {
@@ -296,6 +312,43 @@ func getMovieDetails(apiKey string, movieID int) (*MovieDetails, error) {
 	return &details, nil
 }
 
+func getMovieVideos(apiKey string, movieID int) (string, error) {
+	u := fmt.Sprintf("%s/movie/%d/videos", tmdbAPIBase, movieID)
+	req, _ := http.NewRequest("GET", u, nil)
+	q := req.URL.Query()
+	q.Set("api_key", apiKey)
+	q.Set("language", "en-US")
+	req.URL.RawQuery = q.Encode()
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	var videosResp VideosResponse
+	if err := json.NewDecoder(resp.Body).Decode(&videosResp); err != nil {
+		return "", err
+	}
+
+	// Look for official trailer on YouTube
+	for _, video := range videosResp.Results {
+		if video.Site == "YouTube" && video.Type == "Trailer" {
+			return fmt.Sprintf("https://www.youtube.com/watch?v=%s", video.Key), nil
+		}
+	}
+
+	// Fallback: look for any YouTube trailer (including teasers)
+	for _, video := range videosResp.Results {
+		if video.Site == "YouTube" && (video.Type == "Trailer" || video.Type == "Teaser") {
+			return fmt.Sprintf("https://www.youtube.com/watch?v=%s", video.Key), nil
+		}
+	}
+
+	return "", nil
+}
+
 func getDirector(credits Credits) string {
 	for _, member := range credits.Crew {
 		if member.Job == "Director" {
@@ -393,6 +446,14 @@ func processMovie(apiKey, title, year, existingDirector string) *MovieData {
 
 	tmdbURL := fmt.Sprintf("https://www.themoviedb.org/movie/%d", movie.ID)
 
+	// Fetch trailer
+	trailerURL := ""
+	trailer, err := getMovieVideos(apiKey, movie.ID)
+	if err == nil && trailer != "" {
+		trailerURL = trailer
+		fmt.Printf("  ✓ Trailer found\n")
+	}
+
 	return &MovieData{
 		Title:      movie.Title,
 		Year:       releaseYear,
@@ -401,6 +462,7 @@ func processMovie(apiKey, title, year, existingDirector string) *MovieData {
 		PosterURL:  posterURL,
 		TMDBID:     movie.ID,
 		TMDBURL:    tmdbURL,
+		TrailerURL: trailerURL,
 	}
 }
 

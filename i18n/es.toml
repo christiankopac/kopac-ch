@@ -1,0 +1,150 @@
+# Spanish translations
+[readMore]
+other = "Leer más"
+
+[back]
+other = "Volver"
+
+[allPosts]
+other = "todas las publicaciones"
+
+[recentPosts]
+other = "Publicaciones recientes"
+
+[tags]
+other = "Etiquetas"
+
+[categories]
+other = "Categorías"
+
+[wordCount]
+other = "palabras"
+
+[readingTime]
+other = "min de lectura"
+
+[explore]
+other = "Explorar"
+
+[connect]
+other = "Conectar"
+
+[posts]
+other = "publicaciones"
+
+[about]
+other = "acerca de"
+
+[now]
+other = "ahora"
+
+[picks]
+other = "selecciones"
+
+[all]
+other = "Todo"
+
+[allYears]
+other = "Todos los años"
+
+[movies]
+other = "Películas"
+
+[music]
+other = "Música"
+
+[books]
+other = "Libros"
+
+[newsletterSubscribe]
+other = "Suscríbete a mi"
+
+[newsletterIrregular]
+other = "newsletter"
+
+[newsletterNewsletter]
+other = "irregular"
+
+[name]
+other = "Nombre"
+
+[email]
+other = "Correo"
+
+[emailAddress]
+other = "Dirección de correo"
+
+[emailError]
+other = "Por favor ingresa una dirección de correo válida"
+
+[consent]
+other = "Consentimiento"
+
+[send]
+other = "Enviar"
+
+[newsletterThanks]
+other = "¡Gracias por suscribirte! Prometo no enviar spam."
+
+[by]
+other = "por"
+
+[directedBy]
+other = "Dirigida por"
+
+[viewOnTMDB]
+other = "Ver en TMDB"
+
+[viewOnDiscogs]
+other = "Ver en Discogs"
+
+[artistProfile]
+other = "Perfil del Artista"
+
+[viewOnOpenLibrary]
+other = "Ver en Open Library"
+
+[review]
+other = "Reseña"
+
+[songs]
+other = "Canciones"
+
+[trailer]
+other = "Tráiler"
+
+[showGallery]
+other = "Mostrar Galería"
+
+[hideGallery]
+other = "Ocultar Galería"
+
+[spoilerAlert]
+other = "Alerta de Spoiler"
+
+[notFound]
+other = "404 No Encontrado"
+
+[notFoundMessage]
+other = "La página que buscas no existe."
+
+[notFoundRecover]
+other = "⇽ volver al inicio"
+
+[noPicksYet]
+other = "Aún no hay selecciones."
+
+[noPlaylistsYet]
+other = "Aún no hay listas de reproducción."
+
+[doNotFill]
+other = "No llenes esto si eres humano:"
+
+[builtWith]
+other = "Construido con"
+
+[atomFeed]
+other = "Feed Atom"
+
+[toggleTheme]
+other = "Alternar tema"

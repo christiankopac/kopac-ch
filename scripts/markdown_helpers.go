@@ -28,6 +28,7 @@ type MovieData struct {
 	TMDBID     int
 	TMDBURL    string
 	ImagePath  string // Path for frontmatter img field
+	TrailerURL string // YouTube trailer URL
 	Draft      bool   // Mark as draft if no poster found
 }
 
@@ -233,6 +234,29 @@ func updateMarkdownFrontmatter(filePath string, data MovieData) error {
 				updated = true
 			} else if regexp.MustCompile(`title\s*=\s*"[^"]+"`).MatchString(frontmatter) {
 				frontmatter = regexp.MustCompile(`(title\s*=\s*"[^"]+")`).ReplaceAllString(frontmatter, fmt.Sprintf("$1\nimg = \"%s\"", data.ImagePath))
+				updated = true
+			}
+		}
+	}
+
+	// Update or add trailer URL
+	if data.TrailerURL != "" {
+		if regexp.MustCompile(`trailer\s*=\s*"[^"]*"`).MatchString(frontmatter) {
+			frontmatter = regexp.MustCompile(`trailer\s*=\s*"[^"]*"`).ReplaceAllString(frontmatter, fmt.Sprintf(`trailer = "%s"`, data.TrailerURL))
+			updated = true
+		} else {
+			// Insert after tmdb, img, director, or title
+			if regexp.MustCompile(`tmdb\s*=\s*"[^"]+"`).MatchString(frontmatter) {
+				frontmatter = regexp.MustCompile(`(tmdb\s*=\s*"[^"]+")`).ReplaceAllString(frontmatter, fmt.Sprintf("$1\ntrailer = \"%s\"", data.TrailerURL))
+				updated = true
+			} else if regexp.MustCompile(`img\s*=\s*"[^"]+"`).MatchString(frontmatter) {
+				frontmatter = regexp.MustCompile(`(img\s*=\s*"[^"]+")`).ReplaceAllString(frontmatter, fmt.Sprintf("$1\ntrailer = \"%s\"", data.TrailerURL))
+				updated = true
+			} else if regexp.MustCompile(`director\s*=\s*"[^"]+"`).MatchString(frontmatter) {
+				frontmatter = regexp.MustCompile(`(director\s*=\s*"[^"]+")`).ReplaceAllString(frontmatter, fmt.Sprintf("$1\ntrailer = \"%s\"", data.TrailerURL))
+				updated = true
+			} else if regexp.MustCompile(`title\s*=\s*"[^"]+"`).MatchString(frontmatter) {
+				frontmatter = regexp.MustCompile(`(title\s*=\s*"[^"]+")`).ReplaceAllString(frontmatter, fmt.Sprintf("$1\ntrailer = \"%s\"", data.TrailerURL))
 				updated = true
 			}
 		}

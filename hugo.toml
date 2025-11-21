@@ -7,8 +7,26 @@
 # === Base ===
 baseURL = "https://kopac.ch/"
 title = "CK"
-languageCode = "en"
+defaultContentLanguage = "en"
 theme = "apacible"
+
+# === Languages ===
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    languageCode = "en"
+    languageName = "English"
+    weight = 1
+    title = "CK"
+    contentDir = "content/en"
+
+  [languages.es]
+    languageCode = "es"
+    languageName = "Español"
+    weight = 2
+    title = "CK"
+    contentDir = "content/es"
 
 # === Build ===
 [build]

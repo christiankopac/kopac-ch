@@ -181,14 +181,14 @@ class="collection-wrapper">
     {{ if gt (len $categories) 0 }}
   <div class="collection-filter" data-filter-type="category">
     <div class="filter-buttons">
-        <button 
-          class="filter-btn" 
+        <button
+          class="filter-btn"
           :class="{ active: selectedCategory === 'all' }"
           @click="selectedCategory = 'all'; selectedYear = 'all'"
           x-bind:aria-pressed="selectedCategory === 'all'"
           type="button"
         >
-          All
+          {{ i18n "all" | default "All" }}
         </button>
       {{ range $categories }}
           <button
@@ -198,7 +198,7 @@ class="collection-wrapper">
             x-bind:aria-pressed="selectedCategory === '{{ . }}'"
             type="button"
           >
-            {{ title . }}
+            {{ i18n . | default (title .) }}
           </button>
       {{ end }}
     </div>
@@ -207,14 +207,14 @@ class="collection-wrapper">
     {{ if gt (len $years) 0 }}
   <div class="collection-filter" data-filter-type="date">
     <div class="filter-buttons">
-        <button 
-          class="filter-btn" 
+        <button
+          class="filter-btn"
           :class="{ active: selectedYear === 'all' }"
           @click="selectedYear = 'all'"
           x-bind:aria-pressed="selectedYear === 'all'"
           type="button"
         >
-          All Years
+          {{ i18n "allYears" | default "All Years" }}
         </button>
       {{ range $year := $years }}
         {{/* Get categories that have this year */}}

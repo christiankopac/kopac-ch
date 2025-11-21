@@ -68,12 +68,12 @@
     <!-- Navigation - Integrated naturally -->
     {{ with .Site.Params.sections }}
     <nav class="home-explore">
-      <span class="explore-label">Explore</span>
+      <span class="explore-label">{{ i18n "explore" }}</span>
       {{ range . }}
         {{ if .is_external }}
-          <a href="{{ .path }}" target="_blank" rel="noopener noreferrer">{{ .name }}</a>
+          <a href="{{ .path }}" target="_blank" rel="noopener noreferrer">{{ i18n .name | default .name }}</a>
         {{ else }}
-          <a href="{{ .path | relURL }}">{{ .name }}</a>
+          <a href="{{ .path | relLangURL }}">{{ i18n .name | default .name }}</a>
         {{ end }}
       {{ end }}
     </nav>

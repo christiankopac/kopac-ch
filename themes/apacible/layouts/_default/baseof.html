@@ -90,7 +90,7 @@
         <link rel="stylesheet" href="{{ $postBundled.Permalink }}" integrity="{{ $postBundled.Data.Integrity }}" crossorigin="anonymous">
       {{ else }}
         {{/* Check if this is a consumed single page */}}
-        {{ if hasPrefix .RelPermalink "/consumed/" }}
+        {{ if or (hasPrefix .RelPermalink "/consumed/") (in .RelPermalink "/consumed/") }}
           {{/* Consumed single page */}}
           {{ $consumedFiles := slice "css/prose.css" "css/consumed-single.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
           {{ $consumedCSS := slice }}
@@ -102,7 +102,7 @@
           {{ end }}
           {{ $consumedBundled := $consumedCSS | resources.Concat "css/consumed-bundle.css" | minify | fingerprint }}
           <link rel="stylesheet" href="{{ $consumedBundled.Permalink }}" integrity="{{ $consumedBundled.Data.Integrity }}" crossorigin="anonymous">
-        {{ else if hasPrefix .RelPermalink "/playlists/" }}
+        {{ else if or (hasPrefix .RelPermalink "/playlists/") (in .RelPermalink "/playlists/") }}
           {{/* Playlist single page */}}
           {{ $playlistFiles := slice "css/prose.css" "css/playlist.css" "css/anchors.css" "css/shortcodes.css" "css/responsive-images.css" "css/syntax.css" }}
           {{ $playlistCSS := slice }}
@@ -208,6 +208,17 @@
 
     <!-- Skip to main content link for keyboard navigation -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Language switcher (all pages) -->
+    {{ if .IsTranslated }}
+    <nav class="global-language-switcher">
+      {{ range .Translations }}
+        <a href="{{ .Permalink }}" title="{{ .Language.LanguageName }}" aria-label="Switch to {{ .Language.LanguageName }}">
+          {{ if eq .Language.Lang "es" }}ES{{ else if eq .Language.Lang "en" }}EN{{ else }}{{ .Language.Lang | upper }}{{ end }}
+        </a>
+      {{ end }}
+    </nav>
+    {{ end }}
 
     <!-- Back button (hidden on homepage) -->
     {{ if not .IsHome }}

@@ -14,12 +14,12 @@ icon = "github"
 
 [[params.links]]
 name = "Email"
-url = "mailto:hello@christiankopac.com"
+url = "mailto:christian@kopac.ch"
 icon = "email"
 
 [[params.links]]
 name = "Bluesky"
-url = "https://bsky.app/profile/kopac.dev"
+url = "https://bsky.app/profile/kopac.ch"
 icon = "bluesky"
 
 # Recent posts section
@@ -30,6 +30,6 @@ recent_more_text = "all posts →"
 date_format = "Jan 2, 2006"
 +++
 
-Reachable online since 1999 and as old as the first C++ commercial release.
+Reachable on dial-up since 1999 and as old as the first C++ commercial release.
 
 I write when something's worth sharing — usually about code, music or movies. No schedule, no agenda, just documenting the work and learning in public.

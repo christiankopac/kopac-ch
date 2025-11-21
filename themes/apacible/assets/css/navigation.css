@@ -1,6 +1,47 @@
 /* Navigation styles - Modern and calm with tokens */
 /* Follows fluid container pattern from layout.css */
 
+/* Global language switcher - positioned left of theme toggle */
+.global-language-switcher {
+  position: fixed;
+  top: 2rem;
+  right: calc(clamp(1rem, 5vw, 3rem) + 3rem);
+  z-index: 100;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.global-language-switcher a {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.4;
+  transition: opacity var(--transition-base);
+  letter-spacing: 0.05em;
+}
+
+.global-language-switcher a:hover {
+  opacity: 0.8;
+}
+
+/* Align with back button on smaller screens */
+@media (max-width: 640px) {
+  .global-language-switcher {
+    position: absolute;
+    top: var(--container-padding-y-sm);
+    left: auto;
+    right: clamp(1rem, 5vw, 3rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .global-language-switcher {
+    top: var(--container-padding-y-sm);
+    right: clamp(1rem, 5vw, 3rem);
+  }
+}
+
 .back-nav {
   /* Match main content width for alignment */
   width: min(1200px, 100% - clamp(1rem, 5vw, 3rem) * 2);
