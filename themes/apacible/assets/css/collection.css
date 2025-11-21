@@ -245,37 +245,22 @@
   outline-offset: -2px;
 }
 
-/* Five-star pick indicator - walking ants border (only on consumed page, not picks) */
+/* Five-star pick indicator - plain border (only on consumed page, not picks) */
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick {
   position: relative;
   opacity: 0.85;
-  border: 1px solid var(--color-border);
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick::before {
   content: '';
   position: absolute;
-  top: -8px;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  background: 
-    repeating-linear-gradient(0deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-  animation: walkingAnts 0.8s linear infinite;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid var(--color-accent);
   pointer-events: none;
   z-index: 10;
-  mask: 
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  padding: 8px;
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover {
@@ -283,47 +268,25 @@
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover::before {
-  background: 
-    repeating-linear-gradient(0deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+  border-color: var(--color-link-hover);
 }
 
-/* Four-plus star pick indicator - walking ants border (only on consumed page, not picks) */
+/* Four-plus star pick indicator - plain border (only on consumed page, not picks) */
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick {
   position: relative;
   opacity: 0.85;
-  border: 1px solid var(--color-border);
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick::before {
   content: '';
   position: absolute;
-  top: -8px;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  background: 
-    repeating-linear-gradient(0deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, var(--color-text-secondary) 0, var(--color-text-secondary) 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-  animation: walkingAnts 0.8s linear infinite;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid var(--color-accent);
   pointer-events: none;
   z-index: 10;
-  mask: 
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  padding: 8px;
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover {
@@ -331,73 +294,7 @@
 }
 
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover::before {
-  background: 
-    repeating-linear-gradient(0deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, var(--color-text) 0, var(--color-text) 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-}
-
-@keyframes walkingAnts {
-  0% {
-    background-position: 0 0, 0 0, 0 100%, 100% 0;
-  }
-  100% {
-    background-position: 16px 0, 0 16px, -16px 100%, 100% -16px;
-  }
-}
-
-/* Light theme - darker border for better visibility (only on consumed page) */
-.collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick::before,
-.collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick::before {
-  background: 
-    repeating-linear-gradient(0deg, #2a2a2a 0, #2a2a2a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, #2a2a2a 0, #2a2a2a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, #2a2a2a 0, #2a2a2a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, #2a2a2a 0, #2a2a2a 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-}
-
-.collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover::before,
-.collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover::before {
-  background: 
-    repeating-linear-gradient(0deg, #1a1a1a 0, #1a1a1a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, #1a1a1a 0, #1a1a1a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, #1a1a1a 0, #1a1a1a 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, #1a1a1a 0, #1a1a1a 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-}
-
-/* Dark theme - lighter border for better visibility (only on consumed page) */
-[data-theme="dark"] .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick::before,
-[data-theme="dark"] .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick::before {
-  background: 
-    repeating-linear-gradient(0deg, #d5d5d5 0, #d5d5d5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, #d5d5d5 0, #d5d5d5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, #d5d5d5 0, #d5d5d5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, #d5d5d5 0, #d5d5d5 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
-}
-
-[data-theme="dark"] .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover::before,
-[data-theme="dark"] .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover::before {
-  background: 
-    repeating-linear-gradient(0deg, #e5e5e5 0, #e5e5e5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(90deg, #e5e5e5 0, #e5e5e5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(180deg, #e5e5e5 0, #e5e5e5 8px, transparent 8px, transparent 16px),
-    repeating-linear-gradient(270deg, #e5e5e5 0, #e5e5e5 8px, transparent 8px, transparent 16px);
-  background-size: 100% 8px, 8px 100%, 100% 8px, 8px 100%;
-  background-position: 0 0, 0 0, 0 100%, 100% 0;
-  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+  border-color: var(--color-link-hover);
 }
 
 .collection-poster.poster-grid .collection-item img {
@@ -406,9 +303,10 @@
   object-fit: cover;
   display: block;
   transition: filter 0.3s ease, opacity 0.3s ease, image-rendering 0.3s ease;
-  /* Pixelated dithering effect - high contrast grayscale, lighter blend */
-  filter: grayscale(100%) contrast(2.5) brightness(0.85);
-  opacity: 0.95;
+  /* Pixelated dithering effect - grayscale tones with multiply blend */
+  filter: grayscale(85%) contrast(2.0) brightness(1.05);
+  opacity: 0.96;
+  mix-blend-mode: multiply;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
@@ -427,8 +325,9 @@
 }
 
 [data-theme="dark"] .collection-poster.poster-grid .collection-item img {
-  filter: grayscale(100%) contrast(2.5) brightness(0.8);
-  opacity: 0.9;
+  filter: grayscale(80%) contrast(2.0) brightness(0.95);
+  opacity: 0.94;
+  mix-blend-mode: multiply;
 }
 
 [data-theme="dark"] .collection.picks-grid.poster-grid .collection-item img {

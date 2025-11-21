@@ -315,12 +315,33 @@ class="collection-wrapper">
         {{ if $isPosterGrid }}
           {{ $itemImg := .img | default "" }}
           {{ if $itemImg }}
-            {{ if $consumedLink }}
-              <a href="{{ $consumedLink }}">
-                <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
-              </a>
+            {{/* Process image through Hugo for dithering effect - resize small then scale up for pixelation */}}
+            {{ $imgResource := "" }}
+            {{ if hasPrefix $itemImg "/" }}
+              {{ $imgPath := strings.TrimPrefix "/" $itemImg }}
+              {{ $imgResource = resources.Get $imgPath }}
             {{ else }}
-              <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+              {{ $imgResource = resources.Get $itemImg }}
+            {{ end }}
+            {{ if $imgResource }}
+              {{/* Create pixelated version: resize to medium size for subtle pixelation */}}
+              {{ $pixelated := $imgResource.Resize "120x q85" }}
+              {{ if $consumedLink }}
+                <a href="{{ $consumedLink }}">
+                  <img src="{{ $pixelated.RelPermalink }}" alt="{{ .title | safeHTML }}" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; width: 100%; height: 100%; object-fit: cover;">
+                </a>
+              {{ else }}
+                <img src="{{ $pixelated.RelPermalink }}" alt="{{ .title | safeHTML }}" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; width: 100%; height: 100%; object-fit: cover;">
+              {{ end }}
+            {{ else }}
+              {{/* Fallback to original image if resource not found */}}
+              {{ if $consumedLink }}
+                <a href="{{ $consumedLink }}">
+                  <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+                </a>
+              {{ else }}
+                <img src="{{ $itemImg }}" alt="{{ .title | safeHTML }}">
+              {{ end }}
             {{ end }}
           {{ else }}
             {{/* Show placeholder or title if no image */}}

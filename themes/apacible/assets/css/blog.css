@@ -1351,6 +1351,9 @@
   font-size: var(--font-size-lg);
   line-height: var(--line-height-2xl);
   color: var(--color-text);
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 640px) {

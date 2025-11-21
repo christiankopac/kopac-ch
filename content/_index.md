@@ -19,7 +19,7 @@ icon = "email"
 
 [[params.links]]
 name = "Bluesky"
-url = "https://bsky.app/profile/christiankopac.com"
+url = "https://bsky.app/profile/kopac.dev"
 icon = "bluesky"
 
 # Recent posts section
