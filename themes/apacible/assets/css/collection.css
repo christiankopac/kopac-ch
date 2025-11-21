@@ -335,24 +335,14 @@
   opacity: 1;
 }
 
-/* 4+ star picks show color on hover (only for consumed page, not picks page) */
+/* All items show color on hover - needs to override specific classes */
+.collection-poster.poster-grid:not(.picks-grid) .collection-item:hover img,
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover img,
 .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover img {
-  filter: grayscale(0%) contrast(1) brightness(1);
-  opacity: 1;
-  mix-blend-mode: normal;
-  image-rendering: auto;
-}
-
-/* Regular items (less than 4 stars) remain dithered even on hover */
-.collection-poster.poster-grid .collection-item:not(.four-plus-star-pick):not(.five-star-pick):hover img {
-  /* Keep dithered on hover for regular items */
-  filter: grayscale(100%) contrast(2.2) brightness(1.1);
-  mix-blend-mode: multiply;
-  opacity: 0.96;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  filter: grayscale(0%) contrast(1) brightness(1) !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  image-rendering: auto !important;
 }
 
 .collection.picks-grid.poster-grid .collection-item:hover img {
