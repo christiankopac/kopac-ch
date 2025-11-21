@@ -176,6 +176,13 @@ body.section-posts .site-footer {
   min-height: 15px;
 }
 
+/* Hide footer theme toggle on large screens when global one is visible */
+@media (min-width: 1024px) {
+  .footer-right #theme-toggle {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
   #theme-toggle {
     width: 14px;

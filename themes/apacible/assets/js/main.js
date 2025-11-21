@@ -51,7 +51,7 @@
 
 // Theme toggle functionality
 (function() {
-  const themeToggles = document.querySelectorAll('[id="theme-toggle"]');
+  const themeToggles = document.querySelectorAll('[id="theme-toggle"], [id="theme-toggle-top"]');
   if (!themeToggles.length) return;
   
   const htmlElement = document.documentElement;

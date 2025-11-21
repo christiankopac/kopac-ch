@@ -1,14 +1,23 @@
 /* Navigation styles - Modern and calm with tokens */
 /* Follows fluid container pattern from layout.css */
 
-/* Global language switcher - positioned left of theme toggle */
-.global-language-switcher {
+/* Global theme toggle wrapper - matches home page layout */
+.global-theme-toggle-wrapper {
   position: fixed;
   top: 2rem;
-  right: calc(clamp(1rem, 5vw, 3rem) + 3rem);
+  right: clamp(1rem, 5vw, 3rem);
   z-index: 100;
   display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Global language switcher - inside wrapper */
+.global-language-switcher {
+  display: flex;
   gap: 0.5rem;
+  align-items: center;
+  height: 32px; /* Match theme toggle height */
 }
 
 .global-language-switcher a {
@@ -19,24 +28,90 @@
   opacity: 0.4;
   transition: opacity var(--transition-base);
   letter-spacing: 0.05em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px; /* Match theme toggle height exactly */
 }
 
 .global-language-switcher a:hover {
   opacity: 0.8;
 }
 
-/* Align with back button on smaller screens */
-@media (max-width: 640px) {
-  .global-language-switcher {
+/* Global theme toggle button */
+.global-theme-toggle {
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity var(--transition-base);
+  position: relative;
+}
+
+.global-theme-toggle:hover {
+  opacity: 0.8;
+}
+
+.global-theme-toggle .theme-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  width: 14px;
+  height: 14px;
+}
+
+.global-theme-toggle .theme-icon-sun {
+  opacity: var(--opacity-full);
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+.global-theme-toggle .theme-icon-moon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-90deg) scale(0.8);
+}
+
+[data-theme="dark"] .global-theme-toggle .theme-icon-sun {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+}
+
+[data-theme="dark"] .global-theme-toggle .theme-icon-moon {
+  opacity: var(--opacity-full);
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+/* Hide theme toggle on smaller screens, show only language switcher */
+@media (max-width: 1023px) {
+  .global-theme-toggle-wrapper {
     position: absolute;
     top: var(--container-padding-y-sm);
-    left: auto;
+    right: clamp(1rem, 5vw, 3rem);
+  }
+  
+  .global-theme-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .global-theme-toggle-wrapper {
+    top: var(--container-padding-y-sm);
     right: clamp(1rem, 5vw, 3rem);
   }
 }
 
 @media (max-width: 480px) {
-  .global-language-switcher {
+  .global-theme-toggle-wrapper {
     top: var(--container-padding-y-sm);
     right: clamp(1rem, 5vw, 3rem);
   }
