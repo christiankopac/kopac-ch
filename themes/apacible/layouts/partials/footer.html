@@ -28,7 +28,7 @@
   {{ end }}
 
   <div class="footer-content">
-    {{/* Left: License/Copyright */}}
+    {{/* Left: License/Copyright + Credits */}}
     <div class="footer-left">
       {{ $license := .Site.Params.footer_license | default "cc-by-nc-nd" }}
       {{ $copyrightYear := .Site.Params.copyright_year | default (now.Year) }}
@@ -61,15 +61,16 @@
       {{ else if eq $license "copyright" }}
         <span class="footer-copyright">© {{ $copyrightYear }} {{ $copyrightHolder }}</span>
       {{ end }}
-    </div>
-    
-    {{/* Center: Credits */}}
-    <div class="footer-center">
+      
       {{ if .Site.Params.footer_credits }}
         <span class="footer-credits">{{ .Site.Params.footer_credits | safeHTML }}</span>
       {{ else }}
         <span class="footer-credits">{{ i18n "builtWith" | default "Built with" }}&nbsp;<a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>&nbsp;and&nbsp;the&nbsp;<a href="https://github.com/christiankopac/apacible" target="_blank" rel="noopener">apacible</a>&nbsp;theme</span>
       {{ end }}
+    </div>
+    
+    {{/* Center: Empty (for spacing) */}}
+    <div class="footer-center">
     </div>
     
     {{/* Right: Icons */}}
