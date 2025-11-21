@@ -1,7 +1,7 @@
 +++
 title = "Autumn Leaves"
 date = 2025-10-15
-draft = false
+draft = true
 +++
 
 A collection of tracks that capture the essence of autumn—melancholic melodies, warm textures, and contemplative rhythms perfect for crisp October evenings.

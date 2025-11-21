@@ -1,7 +1,7 @@
 +++
 title = "July 2025"
 date = 2025-07-15
-draft = false
+draft = true
 +++
 
 Mid-summer musical discoveries and favorites.

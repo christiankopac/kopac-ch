@@ -1,12 +1,10 @@
 +++
 title = "About"
-description = "About Christian Kopač"
+description = ""
 outputs = ["HTML", "Gemini"]
 +++
 
-## About Me
-
-Christian Kopač is a software developer, music producer, and lifelong learner based in [location]. With a passion for building elegant solutions to complex problems, Christian works across the full stack—from frontend interfaces to backend systems.
+Argentinian born, slovenian made developer. Living in Europe since 2010.
 
 ## What I Do
 
@@ -24,7 +22,7 @@ This site serves as a digital garden where I share:
 
 ### Design Philosophy
 
-The site embraces the **smolweb** philosophy—prioritizing accessibility, minimal JavaScript, and small file sizes. Images use dithering to reduce bandwidth while maintaining visual interest.
+The site embraces the **smolweb** philosophy—prioritizing accessibility, minimal JavaScript, and small file sizes. Images use dithering to reduce bandwidth while maintaining visual interest. For interactivity some JavaScrip was sacrified, went with Alpine.js for some simplicity.
 
 ### Runes
 
@@ -47,4 +45,4 @@ These symbols provide visual hierarchy while respecting smolweb constraints (no 
 
 ## Get In Touch
 
-Feel free to reach out via the links in the header, or check out my work on GitHub.
+Feel free to reach out via the links in homepage or email me to christian[@]kopac.ch

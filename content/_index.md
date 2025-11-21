@@ -30,6 +30,6 @@ recent_more_text = "all posts →"
 date_format = "Jan 2, 2006"
 +++
 
-I write about code, design, and the craft of building things that work. Sometimes I share what I'm learning, sometimes what I've figured out, and sometimes just what's on my mind.
+Reachable online since 1999 and as old as the first C++ commercial release.
 
-This is my corner of the internet—a place for thinking out loud and sharing the journey.
+I write when something's worth sharing — usually about code, music or movies. No schedule, no agenda, just documenting the work and learning in public.

@@ -1,7 +1,7 @@
 +++
 title = "September 2025"
 date = 2025-09-10
-draft = false
+draft = true
 +++
 
 A curated selection of music discovered throughout September.

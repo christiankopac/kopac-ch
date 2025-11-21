@@ -1,6 +1,6 @@
 +++
 title = "Consumed"
-description = "All books, movies, and music I've consumed"
+description = "Some or most of the books, movies, and music I've consumed"
 outputs = ["HTML", "Atom", "Gemini"]
 +++
 
