@@ -303,8 +303,8 @@
   object-fit: cover;
   display: block;
   transition: filter 0.3s ease, opacity 0.3s ease, image-rendering 0.3s ease;
-  /* Pixelated dithering effect - grayscale tones with multiply blend */
-  filter: grayscale(85%) contrast(2.0) brightness(1.05);
+  /* Pixelated dithering effect - full monochrome with multiply blend */
+  filter: grayscale(100%) contrast(2.2) brightness(1.1);
   opacity: 0.96;
   mix-blend-mode: multiply;
   image-rendering: pixelated;
@@ -325,7 +325,7 @@
 }
 
 [data-theme="dark"] .collection-poster.poster-grid .collection-item img {
-  filter: grayscale(80%) contrast(2.0) brightness(0.95);
+  filter: grayscale(100%) contrast(2.2) brightness(0.95);
   opacity: 0.94;
   mix-blend-mode: multiply;
 }
@@ -335,22 +335,24 @@
   opacity: 1;
 }
 
-/* On mobile, 4+ star picks should not be dithered (only for consumed page, not picks page) */
-@media (max-width: 639px) {
-  .collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick img,
-  .collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick img {
-    filter: grayscale(0%) contrast(1) brightness(1);
-    opacity: 1;
-    image-rendering: auto;
-  }
+/* 4+ star picks show color on hover (only for consumed page, not picks page) */
+.collection-poster.poster-grid:not(.picks-grid) .collection-item.four-plus-star-pick:hover img,
+.collection-poster.poster-grid:not(.picks-grid) .collection-item.five-star-pick:hover img {
+  filter: grayscale(0%) contrast(1) brightness(1);
+  opacity: 1;
+  mix-blend-mode: normal;
+  image-rendering: auto;
 }
 
-.collection-poster.poster-grid .collection-item:hover img {
-  /* Show full color on hover */
-  filter: grayscale(0%) contrast(1) brightness(1);
-  mix-blend-mode: normal;
-  opacity: 1;
-  image-rendering: auto;
+/* Regular items (less than 4 stars) remain dithered even on hover */
+.collection-poster.poster-grid .collection-item:not(.four-plus-star-pick):not(.five-star-pick):hover img {
+  /* Keep dithered on hover for regular items */
+  filter: grayscale(100%) contrast(2.2) brightness(1.1);
+  mix-blend-mode: multiply;
+  opacity: 0.96;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .collection.picks-grid.poster-grid .collection-item:hover img {
