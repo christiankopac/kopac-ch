@@ -11,4 +11,5 @@ img = "/images/books/slow_productivity_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/024165291X"
 footer = "Read Jun 2024"
 processed = true
+rating = 4
 +++

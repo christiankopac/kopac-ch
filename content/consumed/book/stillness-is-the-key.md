@@ -11,4 +11,5 @@ img = "/images/books/stillness_is_the_key_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9781782835271"
 footer = "Read May 2022"
 processed = true
+rating = 4
 +++

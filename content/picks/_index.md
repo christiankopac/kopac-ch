@@ -1,6 +1,6 @@
 +++
 title = "Picks"
-description = "A selection of books, movies, podcasts, and other media I'd recommend to a friend."
+description = "A selection of recent books, movies, and other media I'd recommend to a friend."
 outputs = ["HTML", "Atom", "Gemini"]
 +++
 

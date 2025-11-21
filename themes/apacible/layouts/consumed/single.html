@@ -224,7 +224,26 @@
             {{ if .Content }}
                 <div class="consumed-page-content">
                     {{ .Content }}
+                    {{/* Movie-specific: Show screenshots/gallery - after text, before footnotes */}}
+                    {{ if $isMovie }}
+                        {{ $screenshots := $mediaData.screenshots }}
+                        {{ if $screenshots }}
+                            <div class="consumed-gallery-before-footnotes">
+                                {{ partial "spoiler-gallery" (dict "images" $screenshots "columns" "3" "label" "Show Gallery ⚠ Spoiler Alert" "context" .) }}
+                            </div>
+                        {{ end }}
+                    {{ end }}
                 </div>
+            {{ else }}
+                {{/* Movie-specific: Show screenshots/gallery - if no content */}}
+                {{ if $isMovie }}
+                    {{ $screenshots := $mediaData.screenshots }}
+                    {{ if $screenshots }}
+                        <div class="consumed-content-section">
+                            {{ partial "spoiler-gallery" (dict "images" $screenshots "columns" "3" "label" "Show Gallery ⚠ Spoiler Alert" "context" .) }}
+                        </div>
+                    {{ end }}
+                {{ end }}
             {{ end }}
         </div>
     {{ end }}
@@ -310,16 +329,6 @@
                 {{ end }}
             </div>
         </div>
-    {{ end }}
-
-    {{/* Movie-specific: Show screenshots/gallery */}}
-    {{ if $isMovie }}
-        {{ $screenshots := $mediaData.screenshots }}
-        {{ if $screenshots }}
-            <div class="consumed-content-section">
-                {{ partial "spoiler-gallery" (dict "images" $screenshots "columns" "3" "label" "Show Gallery ⚠ Spoiler Warning" "context" .) }}
-            </div>
-        {{ end }}
     {{ end }}
 </article>
 {{ end }}

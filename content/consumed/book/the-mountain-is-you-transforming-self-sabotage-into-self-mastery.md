@@ -10,4 +10,5 @@ img = "/images/books/the_mountain_is_you_transforming_self_sabotage_into_self_ma
 openlibrary = "https://openlibrary.org/isbn/9789355434142"
 footer = "Read Jul 2025"
 processed = true
+rating = 4
 +++

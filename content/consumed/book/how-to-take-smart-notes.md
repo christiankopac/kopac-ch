@@ -11,4 +11,5 @@ img = "/images/books/how_to_take_smart_notes_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9783982438818"
 footer = "Read Oct 2025"
 processed = true
+rating = 5
 +++

@@ -11,4 +11,5 @@ img = "/images/books/it_didnt_start_with_you_how_inherited_family_trauma_shapes_
 openlibrary = "https://openlibrary.org/isbn/9780593994436"
 footer = "Read Jun 2025"
 processed = true
+rating = 4
 +++

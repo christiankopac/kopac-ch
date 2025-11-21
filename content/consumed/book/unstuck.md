@@ -11,4 +11,5 @@ img = "/images/books/unstuck_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9780768408546"
 footer = "Read Sep 2025"
 processed = true
+rating = 4 
 +++

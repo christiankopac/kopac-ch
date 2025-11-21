@@ -12,6 +12,7 @@ discogs = "https://www.discogs.com/release/2260167-Octex-Every-Sound-Tells-A-Sto
 discogsLabel = "https://www.discogs.com/label/16501"
 genres = ["Dub Techno"]
 footer = "Listened Sep 2025"
+rating = 5
 +++
 
 {{< bandcamp url="https://bandcamp.com/EmbeddedPlayer/album=3553509833/" style="album" float="right" >}}

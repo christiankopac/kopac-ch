@@ -11,4 +11,5 @@ img = "/images/books/building_a_second_brain_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9781982167387"
 footer = "Read Apr 2023"
 processed = true
+rating = 4
 +++

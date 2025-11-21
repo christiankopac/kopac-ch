@@ -10,4 +10,5 @@ publisher = "The School Of Life"
 img = "/images/books/on_confidence_cover.jpg"
 footer = "Read Mar 2023"
 processed = true
+rating = 2
 +++

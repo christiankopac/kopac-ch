@@ -284,8 +284,26 @@ class="collection-wrapper">
           {{ end }}
         {{ end }}
       {{ end }}
+      {{ $ratingValue := 0.0 }}
+      {{ if .rating }}
+        {{ $ratingNum := .rating }}
+        {{ if eq (printf "%T" $ratingNum) "int" }}
+          {{ $ratingValue = float $ratingNum }}
+        {{ else if eq (printf "%T" $ratingNum) "float64" }}
+          {{ $ratingValue = $ratingNum }}
+        {{ else }}
+          {{ $ratingStr := printf "%v" $ratingNum }}
+          {{ $ratingValue = float $ratingStr }}
+        {{ end }}
+      {{ end }}
+      {{ $ratingClass := "" }}
+      {{ if and $ratingValue (ge $ratingValue 5.0) }}
+        {{ $ratingClass = " five-star-pick" }}
+      {{ else if and $ratingValue (ge $ratingValue 4.0) }}
+        {{ $ratingClass = " four-plus-star-pick" }}
+      {{ end }}
       <article
-        class="collection-item{{ if and .rating (eq (int .rating) 5) }} five-star-pick{{ end }}"
+        class="collection-item{{ $ratingClass }}"
         x-show="(selectedCategory === 'all' || selectedCategory === '{{ .category }}') && (selectedYear === 'all'{{ if $consumedYear }} || selectedYear === '{{ $consumedYear }}'{{ end }})"
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 scale-95"

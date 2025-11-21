@@ -11,4 +11,5 @@ img = "/images/books/the_obstacle_is_the_way_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9781101620595"
 footer = "Read Feb 2023"
 processed = true
+rating = 4
 +++

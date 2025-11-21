@@ -189,6 +189,7 @@
 /* Button and screenshots stay within content section */
 .consumed-content-section .spoiler-gallery-container {
   margin: var(--space-2xl) 0;
+  text-align: center;
 }
 
 .consumed-content-section .spoiler-content {
@@ -223,6 +224,8 @@
 
 .consumed-page-content {
   overflow: hidden; /* Contain floated elements */
+  display: flex;
+  flex-direction: column;
 }
 
 .consumed-page-content > *:first-child {
@@ -233,6 +236,21 @@
   margin-bottom: 0;
 }
 
+/* Gallery before footnotes - use order to position */
+.consumed-page-content .consumed-gallery-before-footnotes {
+  order: 1;
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+.consumed-page-content :is(.footnotes, section.footnotes) {
+  order: 2;
+  /* Remove border-top when gallery is present before footnotes */
+  border-block-start: none;
+  padding-block-start: 0;
+  margin-block-start: var(--space-lg);
+}
+
 .consumed-description {
   margin-bottom: 2rem;
 }
@@ -241,6 +259,19 @@
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+
+/* Remove border-top from footnotes if they follow a review section */
+.consumed-review ~ :is(.footnotes, section.footnotes) {
+  border-block-start: none;
+  padding-block-start: 0;
+  margin-block-start: var(--space-lg);
+}
+
+.consumed-page-content {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Video Embeds */

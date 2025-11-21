@@ -11,4 +11,5 @@ img = "/images/books/how_do_you_choose_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9781317999263"
 footer = "Read Jun 2025"
 processed = true
+rating = 3
 +++

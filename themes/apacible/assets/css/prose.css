@@ -87,6 +87,7 @@
   padding-left: clamp(1rem, 5vw, 3rem);
   padding-right: clamp(1rem, 5vw, 3rem);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 /* Adjust spacing after collection grids */

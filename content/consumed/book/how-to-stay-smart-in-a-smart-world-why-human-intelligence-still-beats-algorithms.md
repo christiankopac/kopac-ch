@@ -11,4 +11,5 @@ img = "/images/books/how_to_stay_smart_in_a_smart_world_why_human_intelligence_s
 openlibrary = "https://openlibrary.org/isbn/9780262046954"
 footer = "Read Nov 2025"
 processed = true
+rating = 4
 +++

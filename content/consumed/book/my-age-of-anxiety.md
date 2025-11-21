@@ -11,4 +11,5 @@ img = "/images/books/my_age_of_anxiety_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9781409022671"
 footer = "Read Feb 2023"
 processed = true
+rating = 3.5
 +++

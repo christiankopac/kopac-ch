@@ -11,4 +11,5 @@ img = "/images/books/the_school_of_life_an_emotional_education_cover.jpg"
 openlibrary = "https://openlibrary.org/isbn/9780241985854"
 footer = "Read Jan 2023"
 processed = true
+rating = 2
 +++
