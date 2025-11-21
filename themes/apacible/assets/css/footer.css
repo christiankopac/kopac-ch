@@ -42,7 +42,7 @@ body.section-posts .site-footer {
   box-sizing: border-box;
   padding-inline: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
@@ -52,8 +52,16 @@ body.section-posts .site-footer {
   gap: var(--space-md);
 }
 
+/* Dark theme: Use space-between when moon icon is visible */
+[data-theme="dark"] .footer-content {
+  justify-content: space-between;
+}
+
 /* Mobile: Keep single row with compact spacing */
 @media (max-width: 768px) {
+  .footer-content {
+    justify-content: space-between;
+  }
   .footer-credits {
     font-size: var(--font-size-xs);
   }
@@ -80,22 +88,14 @@ body.section-posts .site-footer {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
   overflow: hidden;
   gap: var(--space-sm);
 }
 
 .footer-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  text-align: center;
-  flex: 0 0 auto;
-  min-width: 0;
-  flex-shrink: 0;
-  padding-inline: var(--space-sm);
+  display: none;
 }
 
 .footer-right {
